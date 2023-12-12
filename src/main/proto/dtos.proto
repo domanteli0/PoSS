@@ -1,0 +1,133 @@
+syntax = "proto3";
+
+package psp_pos_api;
+
+option java_package = "com.spaghettininjas.yaposs";
+option java_outer_classname = "Domain";
+
+message Appointment {
+    int32 customerId = 1;
+    string dateTime = 2;
+    int32 id = 3;
+    int32 staffUserId = 4;
+    string status = 5;
+}
+
+message AppointmentIEnumerablePaginatableResponseObject {
+    repeated Appointment data = 1;
+    string nextPage = 2;
+}
+
+message Cheque {
+    Appointment appointment = 1;
+    int32 id = 2;
+    repeated OrderItemsWithPrices itemsWithPrices = 3;
+    int32 orderId = 4;
+    string paymentType = 5;
+    int32 price = 6;
+    int32 priceWithTax = 7;
+    int32 priceWithTaxAndDiscount = 8;
+    int32 tax = 9;
+    int64 time = 10;
+    int32 totalDiscount = 11;
+}
+
+message ChequeIEnumerablePaginatableResponseObject {
+    repeated Cheque data = 1;
+    string nextPage = 2;
+}
+
+message Customer {
+    string email = 1;
+    repeated string feedBack = 2;
+    int32 id = 3;
+    string loyaltyLevel = 4;
+    int32 loyaltyPoints = 5;
+    string name = 6;
+}
+
+message CustomerIEnumerablePaginatableResponseObject {
+    repeated Customer data = 1;
+    string nextPage = 2;
+}
+
+message Inventory {
+    int32 id = 1;
+    int32 productId = 2;
+    int32 stockQuantity = 3;
+    int32 supplierId = 4;
+}
+
+message InventoryIEnumerablePaginatableResponseObject {
+    repeated Inventory data = 1;
+    string nextPage = 2;
+}
+
+message OrderItems {
+    int32 orderId = 1;
+    int32 productId = 2;
+    int32 quantity = 3;
+}
+
+message OrderItemsIEnumerablePaginatableResponseObject {
+    repeated OrderItems data = 1;
+    string nextPage = 2;
+}
+
+message OrderItemsWithPrices {
+    int32 name = 1;
+    int32 price = 2;
+    int32 quantity = 3;
+}
+
+message Product {
+    string category = 1;
+    int32 id = 2;
+    string name = 3;
+    int32 price = 4;
+}
+
+message ProductIEnumerablePaginatableResponseObject {
+    repeated Product data = 1;
+    string nextPage = 2;
+}
+
+message StaffUser {
+    string email = 1;
+    int32 id = 2;
+    string name = 3;
+    string password = 4;
+    string role = 5;
+}
+
+message StaffUserIEnumerablePaginatableResponseObject {
+    repeated StaffUser data = 1;
+    string nextPage = 2;
+}
+
+message Supplier {
+    string contacts = 1;
+    int32 id = 2;
+    string name = 3;
+}
+
+message SupplierIEnumerablePaginatableResponseObject {
+    repeated Supplier data = 1;
+    string nextPage = 2;
+}
+
+message Transaction {
+    int32 discountApplied = 1;
+    int32 id = 2;
+    int32 orderId = 3;
+    string paymentType = 4;
+    int32 staffUserId = 5;
+    int32 tax = 6;
+    int32 tip = 7;
+    int32 totalDiscount = 8;
+}
+
+message TransactionIEnumerablePaginatableResponseObject {
+    repeated Transaction data = 1;
+    string nextPage = 2;
+}
