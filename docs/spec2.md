@@ -20,6 +20,8 @@ Lukas Pupelis
 
 Nojus Džiaugys
 
+# Table of Contents
+
 <!-- TOC -->
 * [Context of Users](#context-of-users)
   * [Geography of Use](#geography-of-use)
@@ -333,12 +335,12 @@ The system must process transactions with a response time of less than 2 seconds
 ## Scalability
 
 -   The POS system must easily scale to support an additional 20%
-    increase in concurrent users within a one-year period. *(1.2 User
-    Expectations)*
+    increase in concurrent users within a one-year period. [(*User
+    Expectations*)](#user-expectations)
 
 -   The system should be able to scale horizontally to handle a 30%
     increase in transaction volume during peak hours within the next six
-    months. *(1.2 User Expectations)*
+    months. [(*User Expectations*)](#user-expectations).
 
 -   Vertical scaling should be supported to accommodate a growth of up
     to 50% in transaction volume over the next two years.
@@ -353,7 +355,7 @@ The system must process transactions with a response time of less than 2 seconds
     50% increase in data storage requirements over the next two years.
 
 -   The system should handle a 40% increase in electronic payment
-    transactions per hour over the next year. *(1.4 System Patterns)*
+    transactions per hour over the next year. [(*System Patterns*)](#system-patterns)
 
 -   The system should easily integrate with new printing and peripheral
     devices as the business expands.
@@ -367,13 +369,13 @@ The system must process transactions with a response time of less than 2 seconds
     hours. Peak hours in this context usually mean lunch time (approx.
     12:00-14:00), dinner time (18:00-20:00) and hours after work until
     midnight (17:00-24:00), hotel Check-out (11:00-12:00), Check-in
-    (15:00-16:00). *(1.3 Usage Patterns)*
+    (15:00-16:00). [(*Usage Patterns*)](#usage-patterns)
 
 -   The system must support a daily user count of 30000, meaning at
-    minimum 1250 users per hour at peak hours. *(1.3 Usage Patterns)*
+    minimum 1250 users per hour at peak hours. [(*Usage Patterns*)](#usage-patterns)
 
 -   The system must support a minimum of 10 concurrent users per
-    terminal. *(1.3 Usage Patterns)*
+    terminal. [(*Usage Patterns*)](#usage-patterns)
 
 -   The system must support a minimum of 1000 unique products or menu
     items.
@@ -391,7 +393,7 @@ The system must process transactions with a response time of less than 2 seconds
 
 -   The system must be maintained at least once a week during the early
     morning hours (03:00-05:00) and must be put online in less than a
-    minute after maintenance. *(1.3 Usage Patterns)*
+    minute after maintenance. [(*Usage Patterns*)](#usage-patterns)
 
 -   Load balancing mechanisms should be implemented to distribute
     incoming transactions and requests evenly across servers.
@@ -403,10 +405,10 @@ The system must process transactions with a response time of less than 2 seconds
     geographic locations (Lithuania, Latvia, Estonia) to support
     businesses with multiple branches or franchises.
 
--   The POS system should be available 24/7. *(1.3 Usage Patterns)*
+-   The POS system should be available 24/7. [(*Usage Patterns*)](#usage-patterns)
 
 -   Geographic redundancy and failover mechanisms should be in place to
-    address regional outages. *(1.1 Geography of use)*
+    address regional outages. [(*Geography of use*)](#geography-of-use)
 
 -   In the event of a network or system failure, the POS system should
     provide emergency access mechanisms, such as offline mode, to enable
@@ -415,14 +417,14 @@ The system must process transactions with a response time of less than 2 seconds
 ## Reliability
 
 -   The system must have a minimum uptime of 99%. Must be up from 05:00
-    -- 3:00 EET time. *(1.3 Usage Patterns)*
+    -- 3:00 EET time. [(*Usage Patterns*)](#usage-patterns)
 
 -   In the event of a system failure, data recovery should be possible
     within 30 minutes.
 
 -   Critical data, such as transaction records and customer information,
     should be replicated across geographically distributed servers for
-    data redundancy. *(1.1 Geography of Use)*
+    data redundancy. [(*Geography of use*)](#geography-of-use)
 
 -   Error messages presented to users should be informative, avoiding
     technical jargon, and guiding users on appropriate actions.
@@ -502,7 +504,7 @@ The system must process transactions with a response time of less than 2 seconds
 ## Compliance
 
 -   System must comply with relevant data protection regulations, such
-    as GDPR. [1.5 Dependencies on external systems](#Dependencies-on-external-systems)
+    as GDPR. [(*Dependencies on external systems*)](#Dependencies-on-external-systems)
 
 ## Environmental
 
