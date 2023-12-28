@@ -1,8 +1,11 @@
+import org.springframework.boot.gradle.tasks.run.BootRun
+
 plugins {
 	id 'java'
 	id 'org.springframework.boot' version '3.2.0'
 	id 'io.spring.dependency-management' version '1.1.4'
 	id "com.google.protobuf" version "0.9.4"
+	id 'com.bmuschko.docker-spring-boot-application' version '6.7.0'
 }
 
 group = 'com.spaghettininjas'
@@ -34,5 +37,12 @@ protobuf {
 	protoc {
 		// Download from repositories
 		artifact = 'com.google.protobuf:protoc:3.25.1'
+	}
+}
+
+tasks.register('postman')  {
+	dependsOn 'bootJar'
+	exec {
+		commandLine 'newman', 'run', 'postman_collection.json'
 	}
 }

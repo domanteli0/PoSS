@@ -2,6 +2,9 @@
 info:
   title: Psp.Pos.Api
   version: '1.0'
+servers:
+- url: http://localhost:8080
+  description: Localhost
 paths:
   "/api/Appointment":
     get:
