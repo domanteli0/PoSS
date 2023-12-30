@@ -7,7 +7,7 @@ import com.spaghettininjas.yaposs.Domain.Customer;
 import java.util.Arrays;
 
 @RestController
-@RequestMapping("/api/customers")
+@RequestMapping("/api/Customers")
 public class CustomersController {
 
     @RequestMapping(value = "/{id}", method = RequestMethod.GET, produces=MediaType.APPLICATION_JSON_VALUE)

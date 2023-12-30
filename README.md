@@ -11,6 +11,25 @@ __Java version__: OpenJDK 17
 __Others useful tools__:
 - <https://editor.swagger.io> - Online OpenApi viewer
 
+## Building & Running
+
+## Testing
+
+Testing is done with Postman using [newman](https://github.com/postmanlabs/newman).
+Simply launch the server and run `gradle postman`.
+
+### Editing tests
+
+To edit or add a test case simply import `postman_collection.json` into Postman,
+once done export it as `Collection v2` to the project root.
+
+> [!WARNING]
+> 
+> Changing `postman_collection.json` doesn't affect the imported Postman collection,
+> you need to re-import it. The opposite also applied, editing the collection inside Postman collection
+> doesn't affect `postman_collection.json`, you need to re-export it.
+
+
 ## Project generation
 
 This project was generated from a swagger/OpenApi yaml [conf file](contract.yaml).
