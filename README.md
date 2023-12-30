@@ -26,7 +26,8 @@ once done export it as `Collection v2` to the project root.
 > [!WARNING]
 > 
 > Changing `postman_collection.json` doesn't affect the imported Postman collection,
-> you need to re-import it.
+> you need to re-import it. The opposite also applied, editing the collection inside Postman collection
+> doesn't affect `postman_collection.json`, you need to re-export it.
 
 
 ## Project generation

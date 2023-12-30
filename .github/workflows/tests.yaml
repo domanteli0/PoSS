@@ -1,8 +1,8 @@
-name: example-workflow
-run-name: Example workflow
+name: tests
+run-name: Tests
 on: [pull_request]
 jobs:
-  example-job:
+  postman-tests:
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v4
