@@ -404,11 +404,6 @@
 												"exec": [
 													"pm.test(\"Test test\", function () {",
 													"    pm.expect(pm.response.code).to.be.oneOf([201, 202, 406]);",
-													"});",
-													"",
-													"",
-													"pm.test(\"This test should fail\", function () {",
-													"    pm.expect(pm.response.code).to.be.oneOf([404]);",
 													"});"
 												],
 												"type": "text/javascript"
