@@ -2,7 +2,7 @@ name: tests
 run-name: Tests
 on: [pull_request]
 jobs:
-  postman-tests:
+  tests:
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v4
@@ -14,7 +14,9 @@ jobs:
       - uses: gradle/gradle-build-action@v2
       - run: gradle bootJar
       - run: java -jar build/libs/yaposs-0.0.1-SNAPSHOT.jar 2>&1 &
-      - uses: matt-ball/newman-action@master
+      - name: Postman tests
+        uses: matt-ball/newman-action@master
         with:
           collection: postman_collection.json
-      - run: gradle sonarlintMain
+      - name: Sonarlint
+        run: gradle sonarlintMain

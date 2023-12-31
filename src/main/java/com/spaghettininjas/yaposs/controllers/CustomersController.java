@@ -10,7 +10,7 @@ import java.util.Arrays;
 @RequestMapping("/api/Customers")
 public class CustomersController {
 
-    @RequestMapping(value = "/{id}", method = RequestMethod.GET, produces=MediaType.APPLICATION_JSON_VALUE)
+    @GetMapping(value = "/{id}", produces=MediaType.APPLICATION_JSON_VALUE)
     Customer get(@PathVariable int id) {
         return Customer.newBuilder()
                 .setId(id)
