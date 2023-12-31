@@ -7,3 +7,6 @@ gradlew
 .idea/
 
 .DS_Store
+
+# Secrets #
+.env

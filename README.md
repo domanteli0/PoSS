@@ -4,14 +4,14 @@
 
 __Build tool__: Gradle (run with `gradle bootRun`)
 
-__IDE__: IntelliJ IDEA CE (it's free btw)
+__IDE__: IntelliJ IDEA CE (it's free btw), with these plugins:
+- Sonarlint
 
 __Java version__: OpenJDK 17
 
 __Others useful tools__:
 - <https://editor.swagger.io> - Online OpenApi viewer
-
-## Building & Running
+- Sonarlint - can be used via an IntelliJ plugin, gradle with `gradle solarlintMain` and is used in CI
 
 ## Testing
 
