@@ -8,10 +8,10 @@ import org.springframework.http.converter.protobuf.ProtobufJsonFormatHttpMessage
 import com.google.protobuf.util.JsonFormat;
 
 @SpringBootApplication
-public class YAPoSSApplication {
+public class CustomerService {
 
 	public static void main(String[] args) {
-		SpringApplication.run(YAPoSSApplication.class, args);
+		SpringApplication.run(CustomerService.class, args);
 	}
 
 	@Bean
