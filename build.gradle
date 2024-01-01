@@ -42,7 +42,9 @@ protobuf {
 
 tasks.register('postman')  {
 	dependsOn 'bootJar'
-	exec {
-		commandLine 'newman', 'run', 'postman_collection.json'
+	doLast {
+		exec {
+			commandLine 'newman', 'run', 'postman_collection.json'
+		}
 	}
 }
