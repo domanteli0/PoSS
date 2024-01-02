@@ -2,7 +2,7 @@
 
 ## Tooling
 
-__Build tool__: Gradle (run with `gradle bootRun`)
+__Build tool__: Gradle
 
 __IDE__: IntelliJ IDEA CE (it's free btw)
 
@@ -12,6 +12,29 @@ __Others useful tools__:
 - <https://editor.swagger.io> - Online OpenApi viewer
 
 ## Building & Running
+
+Simply `docker compose up`, to run all services and `api-gateway`.
+
+> [!NOTE]
+> 
+> All Dockerfiles simply copy the `.jar` files, since building inside takes too long.
+> This means you need to `gradle bootJar` from project root directory beforehand, this should build all projects.
+
+### Single service
+To run a service locally bare-metal with `gradle bootRun`
+
+If you want to run an individual service in docker do this from project root:
++ `docker build --tag FOO:BAR -f SERVICE_DIR/Dockerfile .`
++ `docker run -p <PORT_ON_YOUR_SIDE>:<PORT_ON_DOCKER_SIDE> FOO:BAR`
+
+For example:
++ `docker build --tag yaposs:customer-service -f customer-service/Dockerfile .`
++ `docker run -p 8081:8080 yaposs:customer-service`
+
+> [!NOTE] 
+> 
+> `api-gateway` expects `SPRING_APPLICATION_JSON` to be set.
+> TODO: bare-metal instructions (you can do it, but all applications expect port 8080 to be free, so there's going to be conflicts)
 
 ## Testing
 

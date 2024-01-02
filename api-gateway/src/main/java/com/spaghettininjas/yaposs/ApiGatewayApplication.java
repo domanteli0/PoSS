@@ -1,5 +1,6 @@
 package com.spaghettininjas.yaposs;
 
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 import org.springframework.cloud.gateway.route.RouteLocator;
@@ -9,18 +10,27 @@ import org.springframework.context.annotation.Bean;
 @SpringBootApplication
 public class ApiGatewayApplication {
 
+//    @Value("${rewrite.backend.uri}")
+//    private String backendUri;
+    @Value("${customerService.hostname}")
+    private String customerServiceHostname;
+
+    @Value("${customerService.port}")
+    private String customerServicePort;
+
     public static void main(String[] args) {
         SpringApplication.run(ApiGatewayApplication.class, args);
     }
 
     @Bean
     public RouteLocator myRoutes(RouteLocatorBuilder builder) {
-        return builder
-            .routes()
-            .route(p -> p
-                .path("/get")
-                .filters(f -> f.addRequestHeader("Hello", "World"))
-                .uri("http://httpbin.org:80")
+        return builder.routes()
+            .route(
+                "customer-service",
+                p -> p
+                    .path("/api/Customers/**")
+                    .filters(f -> f.rewritePath("/api/Customers/(?<segment>.*)", "/api/Customers/${segment}"))
+                    .uri("http://" + customerServiceHostname + ":" + customerServicePort)
             )
             .build();
     }
