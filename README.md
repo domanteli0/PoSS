@@ -24,12 +24,12 @@ Simply `docker compose up`, to run all services and `api-gateway`.
 To run a service locally bare-metal with `gradle bootRun`
 
 If you want to run an individual service in docker do this from project root:
-+ `docker build --tag FOO:BAR -f SERVICE_DIR/Dockerfile .`
-+ `docker run -p <PORT_ON_YOUR_SIDE>:<PORT_ON_DOCKER_SIDE> FOO:BAR`
+1. `docker build --tag FOO:BAR -f SERVICE_DIR/Dockerfile .`
+2. `docker run -p <PORT_ON_YOUR_SIDE>:<PORT_ON_DOCKER_SIDE> FOO:BAR`
 
 For example:
-+ `docker build --tag yaposs:customer-service -f customer-service/Dockerfile .`
-+ `docker run -p 8081:8080 yaposs:customer-service`
+1. `docker build --tag yaposs:customer-service -f customer-service/Dockerfile .`
+2. `docker run -p 8081:8080 yaposs:customer-service`
 
 > [!NOTE] 
 > 
