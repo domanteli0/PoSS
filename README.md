@@ -73,7 +73,7 @@ Currently, these ports are taken:
 ## Testing
 
 Testing is done with Postman using [newman](https://github.com/postmanlabs/newman).
-Simply launch the server and run `gradle postman`.
+Simply launch the server and run `newman run postman_collection.json`.
 
 ### Editing tests
 
