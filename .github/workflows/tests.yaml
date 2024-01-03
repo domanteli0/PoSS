@@ -7,13 +7,13 @@ jobs:
     steps:
       - uses: actions/checkout@v4
       - uses: actions/setup-node@v4
-      - uses: actions/setup-java@v3
+      - uses: actions/setup-java@v4
         with:
           distribution: temurin
           java-version: 17
       - uses: gradle/gradle-build-action@v2
       - run: gradle bootJar
-      - run: java -jar build/libs/yaposs-0.0.1-SNAPSHOT.jar 2>&1 &
-      - uses: matt-ball/newman-action@master
-        with:
-          collection: postman_collection.json
+      - run: java -jar api-gateway/build/libs/api-gateway.jar 2>&1 &
+      - run: java -jar customer-service/build/libs/customer-service.jar 2>&1 &
+      - run: sleep 10
+      - run: newman run postman_collection.json
