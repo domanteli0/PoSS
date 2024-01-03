@@ -10,12 +10,10 @@ import org.springframework.context.annotation.Bean;
 @SpringBootApplication
 public class ApiGatewayApplication {
 
-//    @Value("${rewrite.backend.uri}")
-//    private String backendUri;
-    @Value("${customerService.hostname}")
+    @Value("${customerService.hostname:localhost}")
     private String customerServiceHostname;
 
-    @Value("${customerService.port}")
+    @Value("${customerService.port:8081}")
     private String customerServicePort;
 
     public static void main(String[] args) {

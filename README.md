@@ -13,17 +13,36 @@ __Others useful tools__:
 
 ## Building & Running
 
-Simply `docker compose up`, to run all services and `api-gateway`.
+You must have gradle and docker installed.
 
-> [!NOTE]
-> 
-> All Dockerfiles simply copy the `.jar` files, since building inside takes too long.
-> This means you need to `gradle bootJar` from project root directory beforehand, this should build all projects.
+All Dockerfiles simply copy the `.jar` files, since building inside takes way too long. To run project:
+1. `gradle bootJar` - creates `.jar` for each project.
+2. `docker compose build` - builds docker images.
+3. `docker compose up` - runs the whole project.
+
+For your convenience: `gradle bootJar && docker compose build && docker compose up`
+
+By default `api-gateway` should be available on `localhost:8080`, see [Taken ports](#taken-ports) for other services.
 
 ### Single service
-To run a service locally bare-metal with `gradle bootRun`
 
-If you want to run an individual service in docker do this from project root:
+#### Native
+
+Run a service locally with `gradle <PROJECT_NAME>:bootRun`,
+
+For example: `gradle api-gateway:bootRun`
+
+> [!NOTE]
+>
+> `api-gateway` needs service hostnames and ports set, at the time this documentation is written,
+> all services have proper defaults set for development bare-metal and with docker.
+> 
+> These can be overwritten with `SPRING_APPLICATION_JSON` environment variable.
+> Example: `SPRING_APPLICATION_JSON='{"customerService":{"hostname":"localhost","port":8081}}' gradle api-gateway:bootRun`.
+
+#### Docker
+
+If you want to run an individual service in docker do this __from project root__:
 1. `docker build --tag FOO:BAR -f SERVICE_DIR/Dockerfile .`
 2. `docker run -p <PORT_ON_YOUR_SIDE>:<PORT_ON_DOCKER_SIDE> FOO:BAR`
 
@@ -31,10 +50,25 @@ For example:
 1. `docker build --tag yaposs:customer-service -f customer-service/Dockerfile .`
 2. `docker run -p 8081:8080 yaposs:customer-service`
 
-> [!NOTE] 
+> [!WARNING]
 > 
-> `api-gateway` expects `SPRING_APPLICATION_JSON` to be set.
-> TODO: bare-metal instructions (you can do it, but all applications expect port 8080 to be free, so there's going to be conflicts)
+> Running `api-gateway` this way is unsupported
+> (I don't have the time to configure a third way of running it, but you can try to make it happen and open a PR).
+
+
+## Development guidelines
+
+To save us all some headache please make the default port of each service a different one. This doesn't really matter when running with docker, but causes problems when running multiple services natively.
+
+### Taken ports
+
+Currently, these ports are taken:
+
+| Service          | Port   |
+|:-----------------|--------|
+| Customer service | `8081` |
+| API Gateway      | `8080` |
+
 
 ## Testing
 
