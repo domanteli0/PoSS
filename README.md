@@ -35,7 +35,7 @@ For example: `gradle api-gateway:bootRun`
 > [!NOTE]
 >
 > `api-gateway` needs service hostnames and ports set, at the time this documentation is written,
-> all services have proper defaults set for development bare-metal and with docker.
+> all services have proper defaults set for native development and with docker.
 > 
 > These can be overwritten with `SPRING_APPLICATION_JSON` environment variable.
 > Example: `SPRING_APPLICATION_JSON='{"customerService":{"hostname":"localhost","port":8081}}' gradle api-gateway:bootRun`.
@@ -48,7 +48,7 @@ If you want to run an individual service in docker do this __from project root__
 
 For example:
 1. `docker build --tag yaposs:customer-service -f customer-service/Dockerfile .`
-2. `docker run -p 8081:8080 yaposs:customer-service`
+2. `docker run -p 8081:8081 yaposs:customer-service`
 
 > [!WARNING]
 > 
@@ -85,7 +85,6 @@ once done export it as `Collection v2` to the project root.
 > Changing `postman_collection.json` doesn't affect the imported Postman collection,
 > you need to re-import it. The opposite also applied, editing the collection inside Postman collection
 > doesn't affect `postman_collection.json`, you need to re-export it.
-
 
 ## Project generation
 
