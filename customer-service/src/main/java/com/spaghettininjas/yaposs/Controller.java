@@ -1,14 +1,14 @@
-package com.spaghettininjas.yaposs.controllers;
+package com.spaghettininjas.yaposs;
 
 import org.springframework.http.MediaType;
 import org.springframework.web.bind.annotation.*;
-import com.spaghettininjas.yaposs.Domain.Customer;
+import com.spaghettininjas.yaposs.DTO.Customer;
 
 import java.util.Arrays;
 
 @RestController
 @RequestMapping("/api/Customers")
-public class CustomersController {
+public class Controller {
 
     @RequestMapping(value = "/{id}", method = RequestMethod.GET, produces=MediaType.APPLICATION_JSON_VALUE)
     Customer get(@PathVariable int id) {

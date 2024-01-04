@@ -1,0 +1,17 @@
+services:
+  customer-service:
+    build:
+      dockerfile: customer-service/Dockerfile
+      context: .
+    ports:
+      - "8081:8081"
+
+  api-gateway:
+    build:
+      dockerfile: api-gateway/Dockerfile
+      context: .
+    environment:
+      -
+        SPRING_APPLICATION_JSON={"customerService":{"hostname":"customer-service","port":8081}}
+    ports:
+      - "8080:8080"

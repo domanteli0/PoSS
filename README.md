@@ -2,7 +2,7 @@
 
 ## Tooling
 
-__Build tool__: Gradle (run with `gradle bootRun`)
+__Build tool__: Gradle
 
 __IDE__: IntelliJ IDEA CE (it's free btw)
 
@@ -13,10 +13,67 @@ __Others useful tools__:
 
 ## Building & Running
 
+You must have gradle and docker installed.
+
+All Dockerfiles simply copy the `.jar` files, since building inside takes way too long. To run project:
+1. `gradle bootJar` - creates `.jar` for each project.
+2. `docker compose build` - builds docker images.
+3. `docker compose up` - runs the whole project.
+
+For your convenience: `gradle bootJar && docker compose build && docker compose up`
+
+By default `api-gateway` should be available on `localhost:8080`, see [Taken ports](#taken-ports) for other services.
+
+### Single service
+
+#### Native
+
+Run a service locally with `gradle <PROJECT_NAME>:bootRun`,
+
+For example: `gradle api-gateway:bootRun`
+
+> [!NOTE]
+>
+> `api-gateway` needs service hostnames and ports set, at the time this documentation is written,
+> all services have proper defaults set for native development and with docker.
+> 
+> These can be overwritten with `SPRING_APPLICATION_JSON` environment variable.
+> Example: `SPRING_APPLICATION_JSON='{"customerService":{"hostname":"localhost","port":8081}}' gradle api-gateway:bootRun`.
+
+#### Docker
+
+If you want to run an individual service in docker do this __from project root__:
+1. `docker build --tag FOO:BAR -f SERVICE_DIR/Dockerfile .`
+2. `docker run -p <PORT_ON_YOUR_SIDE>:<PORT_ON_DOCKER_SIDE> FOO:BAR`
+
+For example:
+1. `docker build --tag yaposs:customer-service -f customer-service/Dockerfile .`
+2. `docker run -p 8081:8081 yaposs:customer-service`
+
+> [!WARNING]
+> 
+> Running `api-gateway` this way is unsupported
+> (I don't have the time to configure a third way of running it, but you can try to make it happen and open a PR).
+
+
+## Development guidelines
+
+To save us all some headache please make the default port of each service a different one. This doesn't really matter when running with docker, but causes problems when running multiple services natively.
+
+### Taken ports
+
+Currently, these ports are taken:
+
+| Service          | Port   |
+|:-----------------|--------|
+| Customer service | `8081` |
+| API Gateway      | `8080` |
+
+
 ## Testing
 
 Testing is done with Postman using [newman](https://github.com/postmanlabs/newman).
-Simply launch the server and run `gradle postman`.
+Simply launch the server and run `newman run postman_collection.json`.
 
 ### Editing tests
 
@@ -28,7 +85,6 @@ once done export it as `Collection v2` to the project root.
 > Changing `postman_collection.json` doesn't affect the imported Postman collection,
 > you need to re-import it. The opposite also applied, editing the collection inside Postman collection
 > doesn't affect `postman_collection.json`, you need to re-export it.
-
 
 ## Project generation
 

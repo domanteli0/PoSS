@@ -1,9 +1,7 @@
 syntax = "proto3";
 
-package psp_pos_api;
-
-option java_package = "com.spaghettininjas.yaposs";
-option java_outer_classname = "Domain";
+option java_package = "com.spaghettininjas.yaposs.dto";
+option java_outer_classname = "DTO";
 
 message Appointment {
     int32 customerId = 1;
@@ -34,20 +32,6 @@ message Cheque {
 
 message ChequeIEnumerablePaginatableResponseObject {
     repeated Cheque data = 1;
-    string nextPage = 2;
-}
-
-message Customer {
-    string email = 1;
-    repeated string feedBack = 2;
-    int32 id = 3;
-    string loyaltyLevel = 4;
-    int32 loyaltyPoints = 5;
-    string name = 6;
-}
-
-message CustomerIEnumerablePaginatableResponseObject {
-    repeated Customer data = 1;
     string nextPage = 2;
 }
 
