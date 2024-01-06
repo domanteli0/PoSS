@@ -6,4 +6,6 @@ gradlew
 
 .idea/
 
+postgres-data/
+
 .DS_Store
