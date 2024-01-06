@@ -14,6 +14,7 @@ public class CustomerService {
 		SpringApplication.run(CustomerService.class, args);
 	}
 
+
 	@Bean
 	ProtobufHttpMessageConverter protobufHttpMessageConverter() {
 		return new ProtobufJsonFormatHttpMessageConverter(

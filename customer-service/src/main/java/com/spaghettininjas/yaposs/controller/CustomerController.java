@@ -3,6 +3,8 @@ package com.spaghettininjas.yaposs.controller;
 import com.spaghettininjas.yaposs.service.CustomersService;
 import lombok.AllArgsConstructor;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.HttpStatusCode;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
@@ -20,11 +22,16 @@ public class CustomerController {
     public ResponseEntity<Customer> get(@PathVariable int id) {
         return service.findById((long) id)
                 .map(customer -> ResponseEntity.ok().body(customer))
-                .orElse(ResponseEntity.ok().body(new Customer()));
+                .orElse(ResponseEntity.notFound().build());
     }
 
     @RequestMapping(value = "/{id}", method = RequestMethod.DELETE, produces = MediaType.APPLICATION_JSON_VALUE)
     public void deleteById(@PathVariable int id){
         service.deleteById((long) id);
+    }
+
+    @PostMapping
+    public ResponseEntity<Customer> addCustomer(@RequestBody Customer customer){
+        return  ResponseEntity.status(HttpStatus.CREATED).body(service.save(customer));
     }
 }

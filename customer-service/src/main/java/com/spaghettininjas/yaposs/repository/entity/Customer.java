@@ -9,21 +9,42 @@ import lombok.Data;
 @Table(name = "customer")
 public class Customer {
     @Id
-    @GeneratedValue(strategy = GenerationType.AUTO)
-    @Column(name = "customer_id")
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
-    @Column(name = "email")
     private String email;
 
-    @Column(name = "loyalty_level")
     private  String loyaltyLevel;
 
-    @Column(name = "loyalty_points")
     private String loyaltyPoints;
 
-
-    @Column(name = "name")
     private String name;
 
+    public Customer(String email, String loyaltyLevel, String loyaltyPoints, String name) {
+        this.email = email;
+        this.loyaltyLevel = loyaltyLevel;
+        this.loyaltyPoints = loyaltyPoints;
+        this.name = name;
+    }
+    public Customer() {
+    }
+    public Long getId() {
+        return id;
+    }
+
+    public String getEmail() {
+        return email;
+    }
+
+    public String getLoyaltyLevel() {
+        return loyaltyLevel;
+    }
+
+    public String getLoyaltyPoints() {
+        return loyaltyPoints;
+    }
+
+    public String getName() {
+        return name;
+    }
 }

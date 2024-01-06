@@ -2,9 +2,7 @@ package com.spaghettininjas.yaposs.service;
 
 import com.spaghettininjas.yaposs.repository.entity.Customer;
 import com.spaghettininjas.yaposs.repository.CustomerRepository;
-import lombok.AllArgsConstructor;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.context.annotation.Primary;
 import org.springframework.stereotype.Service;
 
 import java.util.Optional;
@@ -20,5 +18,9 @@ public class CustomersService {
 
     public void deleteById(Long id){
         repository.deleteById(id);
+    }
+
+    public Customer save(Customer customer){
+        return repository.save(customer);
     }
 }
