@@ -18,6 +18,8 @@ services:
         SPRING_APPLICATION_JSON={"customerService":{"hostname":"customer-service","port":8081}}
     ports:
       - "8080:8080"
+    depends_on:
+      [customer-service]
 
   customer-db:
     image: postgres:14

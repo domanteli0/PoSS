@@ -16,5 +16,5 @@ jobs:
         with:
           compose-file: "compose.yaml"
       - uses: gacts/install-hurl@v1
-      # wait 10 seconds for all services to be up
-      - run: sleep 10 & hurl --verbose tests/*.hurl
+      # wait 20 seconds for all services to be up
+      - run: sleep 20 & hurl --verbose tests/*.hurl
