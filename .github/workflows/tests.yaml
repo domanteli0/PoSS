@@ -16,4 +16,4 @@ jobs:
         with:
           compose-file: "compose.yaml"
       - uses: gacts/install-hurl@v1
-      - run: hurl tests/*.hurl
+      - run: hurl --verbose tests/*.hurl
