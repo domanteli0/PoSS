@@ -72,19 +72,7 @@ Currently, these ports are taken:
 
 ## Testing
 
-Testing is done with Postman using [newman](https://github.com/postmanlabs/newman).
-Simply launch the server and run `newman run postman_collection.json`.
-
-### Editing tests
-
-To edit or add a test case simply import `postman_collection.json` into Postman,
-once done export it as `Collection v2` to the project root.
-
-> [!WARNING]
-> 
-> Changing `postman_collection.json` doesn't affect the imported Postman collection,
-> you need to re-import it. The opposite also applied, editing the collection inside Postman collection
-> doesn't affect `postman_collection.json`, you need to re-export it.
+Testing is done with [Hurl](https://hurl.dev). To run them all simply `hurl tests/*.hurl`
 
 ## Project generation
 

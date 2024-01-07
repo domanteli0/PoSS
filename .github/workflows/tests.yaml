@@ -6,7 +6,6 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v4
-      - uses: actions/setup-node@v4
       - uses: actions/setup-java@v4
         with:
           distribution: temurin
@@ -16,4 +15,5 @@ jobs:
       - uses: isbang/compose-action@v1.5.1
         with:
           compose-file: "compose.yaml"
-      - run: newman run postman_collection.json
+      - uses: gacts/install-hurl@v1
+      - run: hurl tests/*.hurl
