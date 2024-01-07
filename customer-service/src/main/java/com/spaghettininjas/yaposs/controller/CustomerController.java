@@ -34,8 +34,6 @@ public class CustomerController {
 
     @PostMapping
     public ResponseEntity<Customer> addCustomer(@RequestBody Customer customer) {
-        // NOTE: if `Id` is null, it'll throw an exception and return 500
-        customer.setId((long)0);
         return ResponseEntity.status(HttpStatus.CREATED).body(service.save(customer));
     }
 
