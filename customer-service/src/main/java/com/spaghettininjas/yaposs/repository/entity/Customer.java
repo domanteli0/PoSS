@@ -16,11 +16,11 @@ public class Customer {
 
     private  String loyaltyLevel;
 
-    private String loyaltyPoints;
+    private int loyaltyPoints;
 
     private String name;
 
-    public Customer(String email, String loyaltyLevel, String loyaltyPoints, String name) {
+    public Customer(String email, String loyaltyLevel, int loyaltyPoints, String name) {
         this.email = email;
         this.loyaltyLevel = loyaltyLevel;
         this.loyaltyPoints = loyaltyPoints;
@@ -40,7 +40,7 @@ public class Customer {
         return loyaltyLevel;
     }
 
-    public String getLoyaltyPoints() {
+    public int getLoyaltyPoints() {
         return loyaltyPoints;
     }
 

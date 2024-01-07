@@ -15,17 +15,20 @@ import java.util.Arrays;
 @RequestMapping("/api/Customers")
 public class CustomerController {
 
-    @Autowired
-    private CustomersService service;
+    private final CustomersService service;
 
-    @RequestMapping(value = "/{id}", method = RequestMethod.GET, produces=MediaType.APPLICATION_JSON_VALUE)
-    public ResponseEntity<Customer> get(@PathVariable int id) {
+    public CustomerController(CustomersService service) {
+        this.service = service;
+    }
+
+    @GetMapping(path = "/{id}")
+    public ResponseEntity<Customer> getById(@PathVariable int id) {
         return service.findById((long) id)
                 .map(customer -> ResponseEntity.ok().body(customer))
                 .orElse(ResponseEntity.notFound().build());
     }
 
-    @RequestMapping(value = "/{id}", method = RequestMethod.DELETE, produces = MediaType.APPLICATION_JSON_VALUE)
+    @DeleteMapping(path = "/{id}")
     public void deleteById(@PathVariable int id){
         service.deleteById((long) id);
     }

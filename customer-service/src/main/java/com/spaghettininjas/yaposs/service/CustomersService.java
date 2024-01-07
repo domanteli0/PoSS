@@ -9,8 +9,11 @@ import java.util.Optional;
 
 @Service
 public class CustomersService {
-    @Autowired
-    public CustomerRepository repository;
+    public final CustomerRepository repository;
+
+    public CustomersService(CustomerRepository repository) {
+        this.repository = repository;
+    }
 
     public Optional<Customer> findById(Long id){
         return repository.findById(id);
