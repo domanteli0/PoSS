@@ -7,5 +7,6 @@ gradlew
 .idea/
 
 postgres-data/
+.db/
 
 .DS_Store
