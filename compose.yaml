@@ -5,6 +5,9 @@ services:
       context: .
     ports:
       - "8081:8081"
+    depends_on:
+      poss-db:
+        condition: service_healthy
 
   api-gateway:
     build:
@@ -29,3 +32,9 @@ services:
       - "5433:5432"
     volumes:
       - ./postgres-data:/var/lib/postgresql/data
+    healthcheck:
+      test: pg_isready -d poss_db -U poss
+      interval: 3s
+      retries: 4
+      start_period: 10s
+      timeout: 1s
