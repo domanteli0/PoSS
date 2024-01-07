@@ -2,7 +2,6 @@ package com.spaghettininjas.yaposs.service;
 
 import com.spaghettininjas.yaposs.repository.entity.Customer;
 import com.spaghettininjas.yaposs.repository.CustomerRepository;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.util.Optional;
@@ -25,5 +24,9 @@ public class CustomersService {
 
     public Customer save(Customer customer){
         return repository.save(customer);
+    }
+
+    public boolean existsById(Long id){
+        return repository.existsById(id);
     }
 }

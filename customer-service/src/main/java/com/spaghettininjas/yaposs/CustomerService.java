@@ -14,7 +14,6 @@ public class CustomerService {
 		SpringApplication.run(CustomerService.class, args);
 	}
 
-
 	@Bean
 	ProtobufHttpMessageConverter protobufHttpMessageConverter() {
 		return new ProtobufJsonFormatHttpMessageConverter(
@@ -22,7 +21,5 @@ public class CustomerService {
 				JsonFormat.printer().omittingInsignificantWhitespace()
 		);
 	}
-
-
 
 }
