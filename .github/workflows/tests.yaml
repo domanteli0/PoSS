@@ -4,22 +4,6 @@ on: [pull_request]
 jobs:
   postman-tests:
     runs-on: ubuntu-latest
-
-    services:
-      # Label used to access the service container
-      postgres:
-        # Docker Hub image
-        image: postgres:14
-        # Provide the password for postgres
-        env:
-          POSTGRES_PASSWORD: poss
-        # Set health checks to wait until postgres has started
-        options: >-
-          --health-cmd "pg_isready -d poss_db -U poss"
-          --health-interval 10s
-          --health-timeout 5s
-          --health-retries 5
-
     steps:
       - uses: actions/checkout@v4
       - uses: actions/setup-node@v4
@@ -29,6 +13,7 @@ jobs:
           java-version: 17
       - uses: gradle/gradle-build-action@v2
       - run: gradle bootJar
-      - run: java -jar api-gateway/build/libs/api-gateway.jar 2>&1 &
-      - run: java -jar customer-service/build/libs/customer-service.jar 2>&1 &
+      - uses: isbang/compose-action@v1.5.1
+        with:
+          compose-file: "compose.yaml"
       - run: newman run postman_collection.json
