@@ -1,15 +1,10 @@
 package com.spaghettininjas.yaposs.controller;
 
+import com.spaghettininjas.yaposs.repository.entity.Customer;
 import com.spaghettininjas.yaposs.service.CustomersService;
-import lombok.AllArgsConstructor;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
-import org.springframework.http.HttpStatusCode;
-import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
-import com.spaghettininjas.yaposs.repository.entity.Customer;
-import java.util.Arrays;
 
 @RestController
 @RequestMapping("/api/Customers")
@@ -26,6 +21,15 @@ public class CustomerController {
         return service.findById((long) id)
                 .map(customer -> ResponseEntity.ok().body(customer))
                 .orElse(ResponseEntity.notFound().build());
+    }
+
+    @GetMapping
+    public ResponseEntity<Iterable<Customer>> findAll(@RequestParam(required = false, defaultValue = "0") Integer page,
+                                                      @RequestParam(required = false, defaultValue = "10") Integer pageSize,
+                                                      @RequestParam(required = false) String name,
+                                                      @RequestParam(required = false) String email) {
+        Iterable<Customer> customers = service.findAll(page, pageSize, name, email);
+        return new ResponseEntity<>(customers, HttpStatus.OK);
     }
 
     @DeleteMapping(path = "/{id}")
