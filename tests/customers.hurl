@@ -1,6 +1,5 @@
 POST http://localhost:8080/api/Customers
 {
-    "id": 4,
     "email": "asd",
     "loyaltyPoints": "23",
     "loyaltyLevel": "Level",
@@ -10,10 +9,15 @@ HTTP 201
 [Captures]
 id: jsonpath "$.id"
 
+PUT http://localhost:8080/api/Customers/{{id}}
+{
+    "email": "example@example.com"
+}
+
 GET http://localhost:8080/api/Customers/{{id}}
 HTTP 200
 [Asserts]
-jsonpath "$.email" == "asd"
+jsonpath "$.email" == "example@example.com"
 jsonpath "$.loyaltyLevel" == "Level"
 jsonpath "$.loyaltyPoints" == 23
 jsonpath "$.name" == "asd"

@@ -1,6 +1,8 @@
 package com.spaghettininjas.yaposs.controller;
 
 import com.spaghettininjas.yaposs.repository.entity.Customer;
+import com.spaghettininjas.yaposs.repository.CustomerMapper;
+import com.spaghettininjas.yaposs.repository.entity.CustomerDTO;
 import com.spaghettininjas.yaposs.service.CustomersService;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -11,8 +13,10 @@ import org.springframework.web.bind.annotation.*;
 public class CustomerController {
 
     private final CustomersService service;
+    private final CustomerMapper mapper;
 
-    public CustomerController(CustomersService service) {
+    public CustomerController(CustomersService service, CustomerMapper mapper) {
+        this.mapper = mapper;
         this.service = service;
     }
 
@@ -38,7 +42,20 @@ public class CustomerController {
     }
 
     @PostMapping
-    public ResponseEntity<Customer> addCustomer(@RequestBody Customer customer){
-        return  ResponseEntity.status(HttpStatus.CREATED).body(service.save(customer));
+    public ResponseEntity<Customer> addCustomer(@RequestBody Customer customer) {
+        return ResponseEntity.status(HttpStatus.CREATED).body(service.save(customer));
+    }
+
+    @PutMapping(path = "/{id}")
+    ResponseEntity<Customer> addOrUpdateCustomer(
+        @PathVariable int id,
+        @RequestBody CustomerDTO dto
+    ) {
+      dto.setId((long) id);
+      return service.findById((long) id)
+            .map(value -> mapper.mergeWithDto(value, dto))
+            .map(service::save)
+            .map(value -> ResponseEntity.ok().body(value))
+            .orElseGet(() -> ResponseEntity.notFound().build());
     }
 }

@@ -41,4 +41,8 @@ public class CustomersService {
     public Customer save(Customer customer){
         return repository.save(customer);
     }
+
+    public boolean existsById(Long id){
+        return repository.existsById(id);
+    }
 }
