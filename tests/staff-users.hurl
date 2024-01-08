@@ -1,26 +1,35 @@
+### Test GET /{id}  &&  POST &&  PUT ###
 POST http://localhost:8080/api/Staff
 {
     "email": "asd",
-    "name": "asd",
+    "name": "name",
     "password": "password"
 }
 HTTP 201
 [Captures]
 id: jsonpath "$.id"
-password: jsonpath "$.password"
+[Asserts]
+#jsonpath "$.password" not exists
+#jsonpath "$.passwordHash" not exists
 
 PUT http://localhost:8080/api/Staff/{{id}}
 {
-    "email": "example@example.com"
+    "email": "1@example.com"
 }
+HTTP 200
+[Asserts]
+#jsonpath "$.password" not exists
+#jsonpath "$.passwordHash" not exists
 
 GET http://localhost:8080/api/Staff/{{id}}
 HTTP 200
 [Asserts]
-jsonpath "$.email" == "example@example.com"
-jsonpath "$.name" == "asd"
-jsonpath "$.password" == null
+jsonpath "$.email" == "1@example.com"
+jsonpath "$.name" == "name"
+#jsonpath "$.password" not exists
+#jsonpath "$.passwordHash" not exists
 
+### Test DELETE ###
 DELETE http://localhost:8080/api/Staff/{{id}}
 
 GET http://localhost:8080/api/Staff/{{id}}

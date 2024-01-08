@@ -19,7 +19,7 @@ public class ApiGatewayApplication {
     @Value("${STAFF_SERVICE_HOSTNAME:localhost}")
     private String staffServiceHostname;
 
-    @Value("${STAFF_SERVICE_PORT:8081}")
+    @Value("${STAFF_SERVICE_PORT:8085}")
     private String staffServicePort;
 
 

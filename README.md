@@ -70,9 +70,25 @@ Currently, these ports are taken:
 | API Gateway      | `8080` |
 
 
+### Tests
+
+All tests assume to be in init state, i.e. there are no entities. Therefore, all tests should clean up after themselves, deleting all entities they have created.
+
+If you did some manual testing, you can run: `curl 'http://localhost:8080/api/<SOME_ENDPOINT>' | jq -r '.[].id' | xargs -I % curl -X DELETE localhost:8080/api/Staff/%` to wipe all entities.
+
+For example: `curl 'http://localhost:8080/api/Staff' | jq -r '.[].id' | xargs -I % curl -X DELETE localhost:8080/api/Staff/%`.
+
+> [!NOTE]
+> 
+> The previous command requires [jq](https://jqlang.github.io/jq/) to be installed.
+
 ## Testing
 
-Testing is done with [Hurl](https://hurl.dev). To run them all simply `hurl tests/*.hurl`
+Testing is done with [Hurl](https://hurl.dev). To run them all simply `hurl tests/*.hurl`.
+
+> [!WARNING]
+> 
+> As mentioned, some tests may fail because they did not expect there to be additional entities. See [Development Guidelines/Tetes](#tests) for more detail.
 
 ## Project generation
 

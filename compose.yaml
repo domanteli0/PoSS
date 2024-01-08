@@ -14,7 +14,7 @@ services:
       dockerfile: staff-service/Dockerfile
       context: .
     ports:
-      - "8085:8081"
+      - "8085:8085"
     depends_on:
       staff-db:
         condition: service_healthy
