@@ -1,4 +1,5 @@
 rootProject.name = 'yaposs'
 include 'customer-service'
+include 'staff-service'
 include 'dto'
 include 'api-gateway'
