@@ -5,6 +5,9 @@ services:
       context: .
     ports:
       - "8081:8081"
+    depends_on:
+      customer-db:
+        condition: service_healthy
 
   api-gateway:
     build:
@@ -15,3 +18,25 @@ services:
         SPRING_APPLICATION_JSON={"customerService":{"hostname":"customer-service","port":8081}}
     ports:
       - "8080:8080"
+    depends_on:
+      [customer-service]
+
+  customer-db:
+    image: postgres:14
+    restart: always
+    environment:
+      POSTGRES_USER: poss
+      POSTGRES_PASSWORD: poss
+      POSTGRES_DB: poss_db
+    expose:
+       - 5432
+    ports:
+      - "5433:5432"
+    volumes:
+      - ./.db/customer-data:/var/lib/postgresql/data
+    healthcheck:
+      test: pg_isready -d poss_db -U poss
+      interval: 3s
+      retries: 4
+      start_period: 10s
+      timeout: 1s
