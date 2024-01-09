@@ -5,7 +5,6 @@ import com.spaghettininjas.yaposs.repository.entity.InventoryDTO;
 import com.spaghettininjas.yaposs.repository.entity.Product;
 import com.spaghettininjas.yaposs.service.InventoriesService;
 import com.spaghettininjas.yaposs.service.ProductService;
-import jakarta.persistence.criteria.CriteriaBuilder;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
@@ -56,7 +55,7 @@ public class InventoryController {
         return inventoriesService.findById((long)id)
                 .map(in->{
                     in.setStockQuantity(inventory.getStockQuantity());
-                    Product newP = productService.findById(inventory.getProduct_id()).orElse(null);
+                    Product newP = productService.findById(inventory.getProductId()).orElse(null);
                     in.setProduct(newP);
                     return ResponseEntity.status(HttpStatus.OK).body(inventoriesService.save(in));
                 })

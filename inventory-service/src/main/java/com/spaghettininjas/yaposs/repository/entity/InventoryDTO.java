@@ -11,7 +11,7 @@ public class InventoryDTO {
 
     private Long id;
 
-    private Long product_id;
+    private Long productId;
 
     private int stockQuantity;
 
