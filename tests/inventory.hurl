@@ -24,7 +24,8 @@ HTTP 201
 [Captures]
 id: jsonpath "$.id"
 [Asserts]
-jsonpath "$.product" exists
+jsonpath "$.id" exists
+jsonpath "$.stockQuantity" exists
 
 # Test PUT /api/Inventory/{{id}}
 PUT http://localhost:8080/api/Inventory/{{id}}
