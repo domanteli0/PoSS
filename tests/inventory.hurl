@@ -1,3 +1,19 @@
+# SETUP
+POST http://localhost:8080/api/Products
+{
+  "category": "string",
+  "name": "string",
+  "price": 0
+}
+HTTP 201
+[Captures]
+id: jsonpath "$.id"
+[Asserts]
+jsonpath "$.category" == "string"
+jsonpath "$.name" == "string"
+jsonpath "$.price" == 0
+
+
 # Test POST /api/Inventory
 POST http://localhost:8080/api/Inventory
 {
