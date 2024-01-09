@@ -44,13 +44,13 @@ public class ApiGatewayApplication {
                     .filters(f -> f.rewritePath("/api/Inventory/(?<segment>.*)", "/api/Inventory/${segment}"))
                     .uri("http://" + inventoryServiceHostname + ":" + inventoryServicePort) // добавить порт
             )
-                .route(
-                        "inventory-service",
-                        p -> p
-                                .path("/api/Products/**")
-                                .filters(f -> f.rewritePath("/api/Products/(?<segment>.*)", "/api/Products/${segment}"))
-                                .uri("http://" + inventoryServiceHostname + ":" + inventoryServicePort) // добавить порт
-                )
+            .route(
+                "inventory-service",
+                p -> p
+                    .path("/api/Products/**")
+                    .filters(f -> f.rewritePath("/api/Products/(?<segment>.*)", "/api/Products/${segment}"))
+                    .uri("http://" + inventoryServiceHostname + ":" + inventoryServicePort) // добавить порт
+            )
             .build();
     }
 
