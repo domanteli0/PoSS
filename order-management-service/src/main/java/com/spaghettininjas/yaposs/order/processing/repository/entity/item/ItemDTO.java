@@ -9,11 +9,9 @@ import java.math.BigDecimal;
 public class ItemDTO {
     private Long id;
 
-    private String paymentType;
+    private String name;
 
-    private BigDecimal tax;
-
-    private BigDecimal totalDiscount;
+    private Integer quantity;
 
     private BigDecimal price;
 }

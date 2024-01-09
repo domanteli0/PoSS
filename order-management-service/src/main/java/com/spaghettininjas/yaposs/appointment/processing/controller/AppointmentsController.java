@@ -32,9 +32,9 @@ public class AppointmentsController {
     @GetMapping
     public ResponseEntity<Iterable<Appointment>> findAll(@RequestParam(required = false, defaultValue = "0") Integer page,
                                                    @RequestParam(required = false, defaultValue = "10") Integer pageSize,
-                                                   @RequestParam(required = false) ZonedDateTime fromDateTime,
-                                                   @RequestParam(required = false) ZonedDateTime tillDateTime) {
-        Iterable<Appointment> appointments = service.findAll(page, pageSize, fromDateTime, tillDateTime);
+                                                   @RequestParam(required = false) ZonedDateTime fromDateTimeGMT,
+                                                   @RequestParam(required = false) ZonedDateTime tillDateTimeGMT) {
+        Iterable<Appointment> appointments = service.findAll(page, pageSize, fromDateTimeGMT, tillDateTimeGMT);
         return new ResponseEntity<>(appointments, HttpStatus.OK);
     }
 

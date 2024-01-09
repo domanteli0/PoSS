@@ -8,11 +8,11 @@ import java.time.ZonedDateTime;
 public class AppointmentSpecification {
     private AppointmentSpecification() {}
 
-    public static Specification<Appointment> dateTimeLessThan(ZonedDateTime dateTimeTill) {
-        return (root, query, builder) -> builder.lessThan(root.get("dateTime"), dateTimeTill);
+    public static Specification<Appointment> dateTimeLessThan(ZonedDateTime dateTimeTillGMT) {
+        return (root, query, builder) -> builder.lessThan(root.get("dateTime"), dateTimeTillGMT);
     }
 
-    public static Specification<Appointment> dateTimeGreaterThan(ZonedDateTime dateTimeFrom) {
-        return (root, query, builder) -> builder.greaterThan(root.get("email"), dateTimeFrom);
+    public static Specification<Appointment> dateTimeGreaterThan(ZonedDateTime dateTimeFromGMT) {
+        return (root, query, builder) -> builder.greaterThan(root.get("email"), dateTimeFromGMT);
     }
 }
