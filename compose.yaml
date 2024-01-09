@@ -60,7 +60,7 @@ services:
     environment:
       POSTGRES_USER: poss
       POSTGRES_PASSWORD: poss
-      POSTGRES_DB: poss_db
+      POSTGRES_DB: order_poss_db
     expose:
       - 5434
     ports:
@@ -68,7 +68,7 @@ services:
     volumes:
       - ./.db/order-management-data:/var/lib/postgresql/data
     healthcheck:
-      test: pg_isready -d poss_db -U poss
+      test: pg_isready -d order_poss_db -U poss
       interval: 3s
       retries: 4
       start_period: 10s

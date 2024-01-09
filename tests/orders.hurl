@@ -1,9 +1,7 @@
 POST http://localhost:8082/api/Orders
 {
-    "email": "asd",
-    "loyaltyPoints": "23",
-    "loyaltyLevel": "Level",
-    "name": "asd"
+    "staffUserId": 1;
+    "appointmentId": 2;
 }
 HTTP 201
 [Captures]
@@ -11,16 +9,14 @@ id: jsonpath "$.id"
 
 PUT http://localhost:8082/api/Orders/{{id}}
 {
-    "email": "example@example.com"
+    "staffUserId": 3;
 }
 
 GET http://localhost:8082/api/Orders/{{id}}
 HTTP 200
 [Asserts]
-jsonpath "$.email" == "example@example.com"
-jsonpath "$.loyaltyLevel" == "Level"
-jsonpath "$.loyaltyPoints" == 23
-jsonpath "$.name" == "asd"
+jsonpath "$.staffUserId" == 1
+jsonpath "$.appointmentId" == 2
 
 DELETE http://localhost:8082/api/Orders/{{id}}
 
