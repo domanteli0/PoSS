@@ -3,8 +3,8 @@ FROM gradle:jdk17
 EXPOSE 8082
 
 ## Use this if you want to just copy the executable
-COPY customer-service/build/libs/customer-service.jar app.jar
-COPY customer-service/build/resources resources
+COPY order-management-service/build/libs/customer-service.jar app.jar
+COPY order-management-service/build/resources resources
 CMD java -jar app.jar
 
 # Use this if you want to build in docker
