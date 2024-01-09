@@ -24,12 +24,15 @@ services:
       dockerfile: api-gateway/Dockerfile
       context: .
     environment:
-      - SPRING_APPLICATION_JSON={"customerService":{"hostname":"customer-service","port":8081}}
-      - SPRING_APPLICATION_JSON={"inventoryService":{"hostname":"inventory-service","port":8087}}
+      -
+       SPRING_APPLICATION_JSON={"customerService":{"hostname":"customer-service","port":8081}}
+      - INVENTORY_SERVICE_HOSTNAME=inventory-service
+      - INVENTORY_SERVICE_PORT=8087
     ports:
       - "8080:8080"
     depends_on:
-      [customer-service]
+      - customer-service
+      - inventory-service
 
   customer-db:
     image: postgres:14

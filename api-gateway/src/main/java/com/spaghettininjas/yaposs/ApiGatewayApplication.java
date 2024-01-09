@@ -16,10 +16,10 @@ public class ApiGatewayApplication {
     @Value("${customerService.port:8081}")
     private String customerServicePort;
 
-    @Value("${inventoryService.hostname:localhost}")
+    @Value("${INVENTORY_SERVICE_HOSTNAME:localhost}")
     private String inventoryServiceHostname;
 
-    @Value("${inventoryService.port:8085}")
+    @Value("${INVENTORY_SERVICE_PORT:8081}")
     private String inventoryServicePort;
 
 
@@ -37,12 +37,19 @@ public class ApiGatewayApplication {
                     .filters(f -> f.rewritePath("/api/Customers/(?<segment>.*)", "/api/Customers/${segment}"))
                     .uri("http://" + customerServiceHostname + ":" + customerServicePort)
             )
+            .route(
+                "inventory-service",
+                p -> p
+                    .path("/api/Inventory/**")
+                    .filters(f -> f.rewritePath("/api/Inventory/(?<segment>.*)", "/api/Inventory/${segment}"))
+                    .uri("http://" + inventoryServiceHostname + ":" + inventoryServicePort) // добавить порт
+            )
                 .route(
                         "inventory-service",
                         p -> p
-                                .path("/api/Inventory/**")
-                                .filters(f -> f.rewritePath("/api/Inventory/(?<segment>.*)", "/api/Inventory/${segment}"))
-                                .uri("http://" + inventoryServiceHostname + ":" + inventoryServicePort)
+                                .path("/api/Products/**")
+                                .filters(f -> f.rewritePath("/api/Products/(?<segment>.*)", "/api/Products/${segment}"))
+                                .uri("http://" + inventoryServiceHostname + ":" + inventoryServicePort) // добавить порт
                 )
             .build();
     }
