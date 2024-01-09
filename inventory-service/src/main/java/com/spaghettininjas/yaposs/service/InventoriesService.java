@@ -41,7 +41,6 @@ public class InventoriesService {
 
         Product product = productRepository.findById(productId)
                 .orElseThrow(() -> {
-                    System.out.println("Product not found for productId: " + productId);
                     return new RuntimeException("Product not found");
                 });
         newInventory.setProduct(product);
