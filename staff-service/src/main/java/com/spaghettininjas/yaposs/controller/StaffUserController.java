@@ -46,9 +46,9 @@ public class StaffUserController {
         @RequestParam(required = false) String name,
         @RequestParam(required = false) String email
     ) {
-        Iterable<StaffUser> staffUsersItarable = service
+        Iterable<StaffUser> staffUsersIterable = service
             .findAll(page, pageSize, name, email);
-        var staffUsersPasswordless = StreamSupport.stream(staffUsersItarable.spliterator(), false)
+        var staffUsersPasswordless = StreamSupport.stream(staffUsersIterable.spliterator(), false)
             .map(mapper::toPasswordlessDTO)
             .iterator();
 
@@ -73,7 +73,7 @@ public class StaffUserController {
     }
 
     @PutMapping(path = "/{id}")
-    ResponseEntity<StaffUserPasswordless> createOrUpdateStaffUser(
+    ResponseEntity<StaffUserPasswordless> createOrReplaceStaffUser(
         @PathVariable int id,
         @RequestBody StaffUser staffUser
     ) {
