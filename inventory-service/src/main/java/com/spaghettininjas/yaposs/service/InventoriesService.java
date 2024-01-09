@@ -45,9 +45,9 @@ public class InventoriesService {
 
     }
 
-    public Optional<Inventory> updateInventory(InventoryDTO inventory, Long id){
+    public Optional<Inventory> updateInventory(InventoryDTO inventory, Long inventoryId){
         return productRepository.findById(inventory.getProductId())
-                .flatMap(newProduct -> this.findById(id).map(existingInventory -> {
+                .flatMap(newProduct -> this.findById(inventoryId).map(existingInventory -> {
             existingInventory.setStockQuantity(inventory.getStockQuantity());
             existingInventory.setProduct(newProduct);
             return inventoryRepository.save(existingInventory);

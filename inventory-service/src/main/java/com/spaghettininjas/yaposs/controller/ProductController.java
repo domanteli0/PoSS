@@ -50,7 +50,9 @@ public class ProductController {
                     p.setCategory(product.getCategory());
                     return ResponseEntity.status(HttpStatus.OK).body(service.save(p));
                 })
-                .orElseGet(() -> ResponseEntity.notFound().build());
+                .orElseGet(() -> {
+                    return ResponseEntity.status(HttpStatus.CREATED).body(service.save(product));
+                });
 
     }
 
