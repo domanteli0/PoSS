@@ -46,21 +46,20 @@ public class InventoryController {
         Iterable<Inventory> products = inventoriesService.findAll(page, pageSize);
         return new ResponseEntity<>(products, HttpStatus.OK);
     }
-    @PutMapping(path = "/{id}")
 
+    @PutMapping(path = "/{id}")
     public ResponseEntity<Inventory> updateInventory(
             @PathVariable int id,
             @RequestBody InventoryDTO inventory
     ) {
         return inventoriesService.findById((long)id)
-                .map(in->{
+                .map(in -> {
                     in.setStockQuantity(inventory.getStockQuantity());
                     Product newP = productService.findById(inventory.getProductId()).orElse(null);
                     in.setProduct(newP);
                     return ResponseEntity.status(HttpStatus.OK).body(inventoriesService.save(in));
                 })
                 .orElseGet(() -> ResponseEntity.notFound().build());
-
     }
 
 }

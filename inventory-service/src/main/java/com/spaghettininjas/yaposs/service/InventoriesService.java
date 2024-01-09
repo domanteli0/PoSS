@@ -33,8 +33,6 @@ public class InventoriesService {
     public Inventory save(InventoryDTO inventory) {
         Long productId = inventory.getProductId();
 
-
-
         Inventory newInventory = new Inventory();
         newInventory.setStockQuantity(inventory.getStockQuantity());
 

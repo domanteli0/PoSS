@@ -44,7 +44,7 @@ public class ProductController {
             @RequestBody Product product
     ) {
         return service.findById((long)id)
-                .map(p ->{
+                .map(p -> {
                     p.setPrice(product.getPrice());
                     p.setName(product.getName());
                     p.setCategory(product.getCategory());
@@ -53,6 +53,7 @@ public class ProductController {
                 .orElseGet(() -> ResponseEntity.notFound().build());
 
     }
+
     @PostMapping
     public ResponseEntity<Product> addProduct(@RequestBody Product product) {
         return ResponseEntity.status(HttpStatus.CREATED).body(service.save(product));
