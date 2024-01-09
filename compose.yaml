@@ -14,7 +14,7 @@ services:
       dockerfile: order-management-service/Dockerfile
       context: .
     ports:
-      - "8082:8082"
+      - "8088:8088"
     depends_on:
       order-management-db:
         condition: service_healthy
@@ -27,12 +27,13 @@ services:
       -
         SPRING_APPLICATION_JSON={
         "customerService":{"hostname":"customer-service","port":8081},
-        "orderManagementService":{"hostname":"order-management-service","port":8082}
+        "orderManagementService":{"hostname":"order-management-service","port":8088}
         }
     ports:
       - "8080:8080"
     depends_on:
-      [customer-service, order-management-service]
+      - customer-service
+      - order-management-service
 
   customer-db:
     image: postgres:14
@@ -60,15 +61,15 @@ services:
     environment:
       POSTGRES_USER: poss
       POSTGRES_PASSWORD: poss
-      POSTGRES_DB: order_poss_db
+      POSTGRES_DB: poss_db
     expose:
-      - 5434
+      - 5432
     ports:
-      - "5435:5434"
+      - "5438:5432"
     volumes:
       - ./.db/order-management-data:/var/lib/postgresql/data
     healthcheck:
-      test: pg_isready -d order_poss_db -U poss
+      test: pg_isready -d poss_db -U poss
       interval: 3s
       retries: 4
       start_period: 10s

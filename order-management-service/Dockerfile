@@ -1,6 +1,6 @@
 FROM gradle:jdk17
 
-EXPOSE 8082
+EXPOSE 8088
 
 ## Use this if you want to just copy the executable
 COPY order-management-service/build/libs/order-management-service.jar app.jar
