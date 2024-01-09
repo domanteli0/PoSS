@@ -5,7 +5,6 @@ import com.spaghettininjas.yaposs.repository.ProductRepository;
 import com.spaghettininjas.yaposs.repository.entity.Inventory;
 import com.spaghettininjas.yaposs.repository.entity.InventoryDTO;
 import com.spaghettininjas.yaposs.repository.entity.Product;
-import jakarta.persistence.criteria.CriteriaBuilder;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
