@@ -19,7 +19,7 @@ public class ApiGatewayApplication {
     @Value("${orderManagementService.hostname:localhost}")
     private String orderManagementServiceHostname;
 
-    @Value("${orderManagementService.port:8082}")
+    @Value("${orderManagementService.port:8088}")
     private String orderManagementServicePort;
 
     public static void main(String[] args) {
@@ -55,8 +55,8 @@ public class ApiGatewayApplication {
             .route(
                     "order-management-service",
                     p -> p
-                            .path("/api/Appointment/**")
-                            .filters(f -> f.rewritePath("/api/Appointment/(?<segment>.*)", "/api/Appointment/${segment}"))
+                            .path("/api/Appointments/**")
+                            .filters(f -> f.rewritePath("/api/Appointments/(?<segment>.*)", "/api/Appointments/${segment}"))
                             .uri("http://" + orderManagementServiceHostname + ":" + orderManagementServicePort)
             )
             .build();
