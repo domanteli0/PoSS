@@ -16,6 +16,13 @@ public class ApiGatewayApplication {
     @Value("${customerService.port:8081}")
     private String customerServicePort;
 
+    @Value("${inventoryService.hostname:localhost}")
+    private String inventoryServiceHostname;
+
+    @Value("${inventoryService.port:8085}")
+    private String inventoryServicePort;
+
+
     public static void main(String[] args) {
         SpringApplication.run(ApiGatewayApplication.class, args);
     }
@@ -30,6 +37,13 @@ public class ApiGatewayApplication {
                     .filters(f -> f.rewritePath("/api/Customers/(?<segment>.*)", "/api/Customers/${segment}"))
                     .uri("http://" + customerServiceHostname + ":" + customerServicePort)
             )
+                .route(
+                        "inventory-service",
+                        p -> p
+                                .path("/api/Inventory/**")
+                                .filters(f -> f.rewritePath("/api/Inventory/(?<segment>.*)", "/api/Inventory/${segment}"))
+                                .uri("http://" + inventoryServiceHostname + ":" + inventoryServicePort)
+                )
             .build();
     }
 
