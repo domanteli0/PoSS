@@ -3,7 +3,7 @@ FROM gradle:jdk17
 EXPOSE 8082
 
 ## Use this if you want to just copy the executable
-COPY order-management-service/build/libs/customer-service.jar app.jar
+COPY order-management-service/build/libs/order-management-service.jar app.jar
 COPY order-management-service/build/resources resources
 CMD java -jar app.jar
 

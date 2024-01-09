@@ -9,6 +9,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import java.math.BigDecimal;
+import java.time.ZoneId;
 import java.time.ZonedDateTime;
 
 @RestController
@@ -46,6 +47,9 @@ public class OrdersController {
 
     @PostMapping
     public ResponseEntity<Order> addOrder(@RequestBody Order order) {
+        if (order.getDateTimeGMT() == null) {
+            order.setDateTimeGMT(ZonedDateTime.now(ZoneId.of("GMT")));
+        }
         return ResponseEntity.status(HttpStatus.CREATED).body(service.save(order));
     }
 

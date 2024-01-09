@@ -8,6 +8,7 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
+import java.time.ZoneId;
 import java.time.ZonedDateTime;
 
 @RestController
@@ -45,6 +46,9 @@ public class AppointmentsController {
 
     @PostMapping
     public ResponseEntity<Appointment> addOrder(@RequestBody Appointment appointment) {
+        if (appointment.getDateTimeGMT() == null) {
+            appointment.setDateTimeGMT(ZonedDateTime.now(ZoneId.of("GMT")));
+        }
         return ResponseEntity.status(HttpStatus.CREATED).body(service.save(appointment));
     }
 

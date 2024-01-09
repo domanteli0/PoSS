@@ -7,6 +7,4 @@ public interface AppointmentMapper {
     @Mapping(source = "orderId", target = "order.id")
     @BeanMapping(nullValuePropertyMappingStrategy = NullValuePropertyMappingStrategy.IGNORE)
     Appointment mergeWithDto(@MappingTarget Appointment domain, AppointmentDTO dto);
-//    Appointment toDomain(AppointmentDTO dto);
-//    AppointmentDTO toDto(Appointment domain);
 }
