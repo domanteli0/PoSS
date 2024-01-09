@@ -17,7 +17,7 @@ jsonpath "$.price" == 0
 # Test POST /api/Inventory
 POST http://localhost:8080/api/Inventory
 {
-  "productId": 1,
+  "product_id": 1,
   "stockQuantity": 99
 }
 HTTP 201

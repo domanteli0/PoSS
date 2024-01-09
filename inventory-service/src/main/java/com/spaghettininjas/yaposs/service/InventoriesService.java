@@ -33,12 +33,17 @@ public class InventoriesService {
 
     public Inventory save(InventoryDTO inventory) {
         Long productId = inventory.getProduct_id();
+
+
+
         Inventory newInventory = new Inventory();
         newInventory.setStockQuantity(inventory.getStockQuantity());
 
-
-        Product product = productRepository.findById(productId).orElse(null);
-
+        Product product = productRepository.findById(productId)
+                .orElseThrow(() -> {
+                    System.out.println("Product not found for productId: " + productId);
+                    return new RuntimeException("Product not found");
+                });
         newInventory.setProduct(product);
 
         return inventoryRepository.save(newInventory);
