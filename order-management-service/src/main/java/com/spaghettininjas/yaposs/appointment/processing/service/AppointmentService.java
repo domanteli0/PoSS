@@ -10,10 +10,11 @@ import org.springframework.data.domain.Sort;
 import org.springframework.data.jpa.domain.Specification;
 import org.springframework.stereotype.Service;
 
+import java.time.ZonedDateTime;
 import java.util.Optional;
 
-import static com.spaghettininjas.yaposs.order.processing.repository.specification.CustomerSpecification.emailLike;
-import static com.spaghettininjas.yaposs.order.processing.repository.specification.CustomerSpecification.nameLike;
+import static com.spaghettininjas.yaposs.appointment.processing.repository.specification.AppointmentSpecification.dateTimeGreaterThan;
+import static com.spaghettininjas.yaposs.appointment.processing.repository.specification.AppointmentSpecification.dateTimeLessThan;
 
 @Service
 public class AppointmentService {
@@ -27,10 +28,10 @@ public class AppointmentService {
         return repository.findById(id);
     }
 
-    public Iterable<Appointment> findAll(Integer page, Integer pageSize, @Nullable String name, @Nullable String email) {
+    public Iterable<Appointment> findAll(Integer page, Integer pageSize, @Nullable ZonedDateTime fromDateTimeGMT, @Nullable ZonedDateTime tillDateTimeGMT) {
         Pageable pageable = PageRequest.of(page, pageSize, Sort.Direction.ASC, "name");
-        Specification<Appointment> filters = Specification.where(StringUtils.isBlank(name) ? null : nameLike(name))
-                .and(StringUtils.isBlank(email) ? null : emailLike(email));
+        Specification<Appointment> filters = Specification.where(fromDateTimeGMT == null ? null : dateTimeGreaterThan(fromDateTimeGMT))
+                .and(tillDateTimeGMT == null ? null : dateTimeLessThan(tillDateTimeGMT));
         return repository.findAll(filters, pageable).getContent();
     }
 

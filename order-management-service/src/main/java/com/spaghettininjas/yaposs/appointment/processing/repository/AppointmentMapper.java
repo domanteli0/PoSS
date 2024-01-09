@@ -12,6 +12,6 @@ import org.mapstruct.NullValuePropertyMappingStrategy;
 public interface AppointmentMapper {
     @BeanMapping(nullValuePropertyMappingStrategy = NullValuePropertyMappingStrategy.IGNORE)
     Appointment mergeWithDto(@MappingTarget Appointment domain, AppointmentDTO dto);
-    Appointment toDomain(DTO.Customer dto);
-    DTO.Customer toDto(Appointment domain);
+    Appointment toDomain(AppointmentDTO dto);
+    AppointmentDTO toDto(Appointment domain);
 }

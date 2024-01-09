@@ -2,7 +2,6 @@ package com.spaghettininjas.yaposs.order.processing.service;
 
 import com.spaghettininjas.yaposs.order.processing.repository.OrderRepository;
 import com.spaghettininjas.yaposs.order.processing.repository.entity.order.Order;
-import io.micrometer.common.util.StringUtils;
 import jakarta.annotation.Nullable;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
@@ -10,10 +9,10 @@ import org.springframework.data.domain.Sort;
 import org.springframework.data.jpa.domain.Specification;
 import org.springframework.stereotype.Service;
 
+import java.math.BigDecimal;
 import java.util.Optional;
 
-import static com.spaghettininjas.yaposs.order.processing.repository.specification.CustomerSpecification.emailLike;
-import static com.spaghettininjas.yaposs.order.processing.repository.specification.CustomerSpecification.nameLike;
+import static com.spaghettininjas.yaposs.order.processing.repository.specification.OrderSpecification.*;
 
 @Service
 public class OrderService {
@@ -27,10 +26,10 @@ public class OrderService {
         return repository.findById(id);
     }
 
-    public Iterable<Order> findAll(Integer page, Integer pageSize, @Nullable String name, @Nullable String email) {
+    public Iterable<Order> findAll(Integer page, Integer pageSize, @Nullable BigDecimal priceFloor, @Nullable BigDecimal priceCeiling) {
         Pageable pageable = PageRequest.of(page, pageSize, Sort.Direction.ASC, "name");
-        Specification<Order> filters = Specification.where(StringUtils.isBlank(name) ? null : nameLike(name))
-                .and(StringUtils.isBlank(email) ? null : emailLike(email));
+        Specification<Order> filters = Specification.where(priceFloor == null ? null : priceGreaterThan(priceFloor))
+                .and(priceCeiling == null ? null : priceLessThan(priceCeiling));
         return repository.findAll(filters, pageable).getContent();
     }
 

@@ -8,6 +8,8 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
+import java.time.ZonedDateTime;
+
 @RestController
 @RequestMapping("/api/Appointments")
 public class AppointmentsController {
@@ -30,9 +32,9 @@ public class AppointmentsController {
     @GetMapping
     public ResponseEntity<Iterable<Appointment>> findAll(@RequestParam(required = false, defaultValue = "0") Integer page,
                                                    @RequestParam(required = false, defaultValue = "10") Integer pageSize,
-                                                   @RequestParam(required = false) String name,
-                                                   @RequestParam(required = false) String email) {
-        Iterable<Appointment> appointments = service.findAll(page, pageSize, name, email);
+                                                   @RequestParam(required = false) ZonedDateTime fromDateTime,
+                                                   @RequestParam(required = false) ZonedDateTime tillDateTime) {
+        Iterable<Appointment> appointments = service.findAll(page, pageSize, fromDateTime, tillDateTime);
         return new ResponseEntity<>(appointments, HttpStatus.OK);
     }
 

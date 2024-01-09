@@ -9,6 +9,6 @@ import org.mapstruct.*;
 public interface OrderMapper {
     @BeanMapping(nullValuePropertyMappingStrategy = NullValuePropertyMappingStrategy.IGNORE)
     Order mergeWithDto(@MappingTarget Order domain, OrderDTO dto);
-    Order toDomain(DTO.Customer dto);
-    DTO.Customer toDto(Order domain);
+    Order toDomain(OrderDTO dto);
+    OrderDTO toDto(Order domain);
 }

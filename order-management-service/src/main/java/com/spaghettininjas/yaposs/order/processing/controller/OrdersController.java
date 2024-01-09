@@ -8,6 +8,8 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
+import java.math.BigDecimal;
+
 @RestController
 @RequestMapping("/api/Orders")
 public class OrdersController {
@@ -30,9 +32,9 @@ public class OrdersController {
     @GetMapping
     public ResponseEntity<Iterable<Order>> findAll(@RequestParam(required = false, defaultValue = "0") Integer page,
                                                    @RequestParam(required = false, defaultValue = "10") Integer pageSize,
-                                                   @RequestParam(required = false) String name,
-                                                   @RequestParam(required = false) String email) {
-        Iterable<Order> orders = service.findAll(page, pageSize, name, email);
+                                                   @RequestParam(required = false) BigDecimal priceFloor,
+                                                   @RequestParam(required = false) BigDecimal priceCeiling) {
+        Iterable<Order> orders = service.findAll(page, pageSize, priceFloor, priceCeiling);
         return new ResponseEntity<>(orders, HttpStatus.OK);
     }
 
