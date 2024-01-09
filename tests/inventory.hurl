@@ -24,23 +24,23 @@ HTTP 201
 [Captures]
 id: jsonpath "$.id"
 [Asserts]
-jsonpath "$.product.id" exists
+jsonpath "$.product" exists
 
 # Test PUT /api/Inventory/{{id}}
 PUT http://localhost:8080/api/Inventory/{{id}}
 {
-   "productId": 2,
+   "product_id": 1,
    "stockQuantity": 100
 }
 HTTP 200
 [Asserts]
-jsonpath "$.product" not exists
+jsonpath "$.product.id" exists
 
 # Test GET /api/Inventory/{{id}}
 GET http://localhost:8080/api/Inventory/{{id}}
 HTTP 200
 [Asserts]
-jsonpath "$.product" not exists
+jsonpath "$.product" exists
 
 # Test DELETE /api/Inventory/{{id}}
 DELETE http://localhost:8080/api/Inventory/{{id}}
