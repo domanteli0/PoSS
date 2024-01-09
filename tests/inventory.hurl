@@ -7,7 +7,7 @@ POST http://localhost:8080/api/Products
 }
 HTTP 201
 [Captures]
-id: jsonpath "$.id"
+product_id: jsonpath "$.id"
 [Asserts]
 jsonpath "$.category" == "string"
 jsonpath "$.name" == "string"
@@ -17,7 +17,7 @@ jsonpath "$.price" == 0
 # Test POST /api/Inventory
 POST http://localhost:8080/api/Inventory
 {
-  "product_id": 1,
+  "product_id": {{product_id}},
   "stockQuantity": 99
 }
 HTTP 201
@@ -29,7 +29,7 @@ jsonpath "$.product" exists
 # Test PUT /api/Inventory/{{id}}
 PUT http://localhost:8080/api/Inventory/{{id}}
 {
-   "product_id": 1,
+   "product_id": {{product_id}},
    "stockQuantity": 100
 }
 HTTP 200

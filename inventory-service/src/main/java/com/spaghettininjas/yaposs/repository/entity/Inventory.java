@@ -1,6 +1,7 @@
 package com.spaghettininjas.yaposs.repository.entity;
 
 
+import com.fasterxml.jackson.annotation.JsonProperty;
 import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
 import lombok.Data;
@@ -20,7 +21,7 @@ public class Inventory {
     private Long id;
 
     @ManyToOne()
-    @JoinColumn(name = "product_id")
+    @JoinColumn(name = "productId")
     private Product product;
 
     private int stockQuantity;
