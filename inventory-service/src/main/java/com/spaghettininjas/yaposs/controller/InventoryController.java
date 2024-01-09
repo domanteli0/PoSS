@@ -35,7 +35,7 @@ public class InventoryController {
     @PostMapping
     public ResponseEntity<Inventory> addInventory(@RequestBody InventoryDTO inventory) {
         return inventoriesService.save(inventory)
-                .map(in -> ResponseEntity.status(HttpStatus.UPGRADE_REQUIRED).body(in))
+                .map(in -> ResponseEntity.status(HttpStatus.CREATED).body(in))
                 .orElse(ResponseEntity.notFound().build());
     }
 

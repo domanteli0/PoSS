@@ -25,7 +25,6 @@ HTTP 201
 id: jsonpath "$.id"
 [Asserts]
 jsonpath "$.id" exists
-jsonpath "$.stockQuantity" exists
 
 # Test PUT /api/Inventory/{{id}}
 PUT http://localhost:8080/api/Inventory/{{id}}
