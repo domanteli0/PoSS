@@ -2,11 +2,15 @@ package com.spaghettininjas.yaposs.controller;
 
 import com.spaghettininjas.yaposs.repository.StaffUserMapper;
 import com.spaghettininjas.yaposs.repository.entity.StaffUser;
-import com.spaghettininjas.yaposs.repository.entity.StaffUserDTO;
+import com.spaghettininjas.yaposs.repository.entity.StaffUserPasswordless;
 import com.spaghettininjas.yaposs.service.StaffUsersService;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.web.bind.annotation.*;
+
+import java.util.Iterator;
+import java.util.stream.StreamSupport;
 
 @RestController
 @RequestMapping("/api/Staff")
@@ -15,27 +19,40 @@ public class StaffUserController {
     private final StaffUsersService service;
     private final StaffUserMapper mapper;
 
-    public StaffUserController(StaffUsersService service, StaffUserMapper mapper) {
+    private final PasswordEncoder passwordEncoder;
+
+    public StaffUserController(
+        StaffUsersService service,
+        StaffUserMapper mapper,
+        PasswordEncoder passwordEncoder
+    ) {
+        this.passwordEncoder = passwordEncoder;
         this.mapper = mapper;
         this.service = service;
     }
 
     @GetMapping(path = "/{id}")
-    public ResponseEntity<StaffUser> getById(@PathVariable int id) {
+    public ResponseEntity<StaffUserPasswordless> getById(@PathVariable int id) {
         return service.findById((long) id)
-                .map(staff -> ResponseEntity.ok().body(staff))
-                .orElse(ResponseEntity.notFound().build());
+            .map(mapper::toPasswordlessDTO)
+            .map(ResponseEntity.ok()::body)
+            .orElseGet(() -> ResponseEntity.notFound().build());
     }
 
     @GetMapping
-    public ResponseEntity<Iterable<StaffUser>> findAll(
+    public ResponseEntity<Iterator<StaffUserPasswordless>> findAll(
         @RequestParam(required = false, defaultValue = "0") Integer page,
         @RequestParam(required = false, defaultValue = "10") Integer pageSize,
         @RequestParam(required = false) String name,
         @RequestParam(required = false) String email
     ) {
-        Iterable<StaffUser> staffUsers = service.findAll(page, pageSize, name, email);
-        return new ResponseEntity<>(staffUsers, HttpStatus.OK);
+        Iterable<StaffUser> staffUsersItarable = service
+            .findAll(page, pageSize, name, email);
+        var staffUsersPasswordless = StreamSupport.stream(staffUsersItarable.spliterator(), false)
+            .map(mapper::toPasswordlessDTO)
+            .iterator();
+
+        return new ResponseEntity<>(staffUsersPasswordless, HttpStatus.OK);
     }
 
     @DeleteMapping(path = "/{id}")
@@ -44,22 +61,41 @@ public class StaffUserController {
     }
 
     @PostMapping
-    public ResponseEntity<StaffUser> addStaffUser(@RequestBody StaffUser staffUser) {
-        // TODO: password hashing
-        return ResponseEntity.status(HttpStatus.CREATED).body(service.save(staffUser));
+    public ResponseEntity<StaffUserPasswordless> createStaffUser(@RequestBody StaffUser staffUser) {
+        staffUser.setId(null);
+        hashPasswordOnStaffUser(staffUser);
+
+        return ResponseEntity
+            .status(HttpStatus.CREATED)
+            .body(
+                mapper.toPasswordlessDTO(service.createOrReplace(staffUser))
+            );
     }
 
     @PutMapping(path = "/{id}")
-    ResponseEntity<StaffUser> addOrUpdateStaffUser(
+    ResponseEntity<StaffUserPasswordless> createOrUpdateStaffUser(
         @PathVariable int id,
-        @RequestBody StaffUserDTO dto
+        @RequestBody StaffUser staffUser
     ) {
-      // TODO: password hashing
-      dto.setId((long) id);
+      staffUser.setId((long) id);
+      hashPasswordOnStaffUser(staffUser);
+
       return service.findById((long) id)
-            .map(value -> mapper.mergeWithDto(value, dto))
-            .map(service::save)
-            .map(value -> ResponseEntity.ok().body(value))
-            .orElseGet(() -> ResponseEntity.notFound().build());
+          .map(__ -> service.createOrReplace(staffUser))
+          .map(mapper::toPasswordlessDTO)
+          .map(ResponseEntity.ok()::body)
+          .orElseGet( () -> {
+              var createdStaffUser = service.createOrReplace(staffUser);
+
+              return ResponseEntity
+                  .status(HttpStatus.CREATED)
+                  .body(mapper.toPasswordlessDTO(createdStaffUser));
+              }
+          );
+    }
+
+    private void hashPasswordOnStaffUser(StaffUser staffUser) {
+        var hashedPassword = passwordEncoder.encode(staffUser.getPasswordHash());
+        staffUser.setPasswordHash(hashedPassword);
     }
 }

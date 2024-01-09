@@ -4,13 +4,10 @@ import lombok.*;
 
 @Data
 @Builder
-public class StaffUserDTO {
+public class StaffUserPasswordless {
     private Long id;
 
     private String name;
 
     private String email;
-
-    private String password;
-
 }

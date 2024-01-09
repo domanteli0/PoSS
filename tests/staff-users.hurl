@@ -9,25 +9,26 @@ HTTP 201
 [Captures]
 id: jsonpath "$.id"
 [Asserts]
-#jsonpath "$.password" not exists
-#jsonpath "$.passwordHash" not exists
+jsonpath "$.password" not exists
+jsonpath "$.passwordHash" not exists
 
 PUT http://localhost:8080/api/Staff/{{id}}
 {
-    "email": "1@example.com"
+    "email": "1@example.com",
+    "password": "newPassword"
 }
 HTTP 200
 [Asserts]
-#jsonpath "$.password" not exists
-#jsonpath "$.passwordHash" not exists
+jsonpath "$.password" not exists
+jsonpath "$.passwordHash" not exists
 
 GET http://localhost:8080/api/Staff/{{id}}
 HTTP 200
 [Asserts]
 jsonpath "$.email" == "1@example.com"
-jsonpath "$.name" == "name"
-#jsonpath "$.password" not exists
-#jsonpath "$.passwordHash" not exists
+jsonpath "$.name" == null
+jsonpath "$.password" not exists
+jsonpath "$.passwordHash" not exists
 
 ### Test DELETE ###
 DELETE http://localhost:8080/api/Staff/{{id}}

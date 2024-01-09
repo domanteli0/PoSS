@@ -46,7 +46,7 @@ public class StaffUsersService {
         repository.deleteById(id);
     }
 
-    public StaffUser save(StaffUser staffUser){
+    public StaffUser createOrReplace(StaffUser staffUser){
         return repository.save(staffUser);
     }
 

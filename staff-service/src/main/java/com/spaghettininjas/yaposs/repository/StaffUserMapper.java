@@ -5,6 +5,5 @@ import org.mapstruct.*;
 
 @Mapper(componentModel = "spring")
 public interface StaffUserMapper {
-    @BeanMapping(nullValuePropertyMappingStrategy = NullValuePropertyMappingStrategy.IGNORE)
-    StaffUser mergeWithDto(@MappingTarget StaffUser domain, StaffUserDTO dto);
+    StaffUserPasswordless toPasswordlessDTO(StaffUser staffUser);
 }

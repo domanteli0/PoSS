@@ -1,5 +1,6 @@
 package com.spaghettininjas.yaposs.repository.entity;
 
+import com.fasterxml.jackson.annotation.JsonProperty;
 import jakarta.persistence.*;
 import lombok.*;
 
@@ -20,6 +21,7 @@ public class StaffUser {
 
     private String email;
 
+    @JsonProperty("password")
     private String passwordHash;
 
     public StaffUser(String name, String email, String passwordHash) {

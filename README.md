@@ -70,7 +70,7 @@ Currently, these ports are taken:
 | API Gateway      | `8080` |
 
 
-### Tests
+### E2E Tests
 
 All tests assume to be in init state, i.e. there are no entities. Therefore, all tests should clean up after themselves, deleting all entities they have created.
 
@@ -84,11 +84,13 @@ For example: `curl 'http://localhost:8080/api/Staff' | jq -r '.[].id' | xargs -I
 
 ## Testing
 
-Testing is done with [Hurl](https://hurl.dev). To run them all simply `hurl tests/*.hurl`.
+There are some unit tests, run them with: `gradle PROJECT_NAME:test`.
+
+E2E testing is done with [Hurl](https://hurl.dev). To run them all simply `hurl tests/*.hurl`.
 
 > [!WARNING]
 > 
-> As mentioned, some tests may fail because they did not expect there to be additional entities. See [Development Guidelines/Tetes](#tests) for more detail.
+> As mentioned, some tests may fail because they did not expect there to be additional entities. See [Development Guidelines/E2E Tests](#e2e-tests) for more detail.
 
 ## Project generation
 
