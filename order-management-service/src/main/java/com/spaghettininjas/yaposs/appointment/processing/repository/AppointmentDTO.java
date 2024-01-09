@@ -1,5 +1,6 @@
-package com.spaghettininjas.yaposs.appointment.processing.repository.entity.appointment;
+package com.spaghettininjas.yaposs.appointment.processing.repository;
 
+import com.spaghettininjas.yaposs.enums.StatusEnum;
 import lombok.Builder;
 import lombok.Data;
 
@@ -13,9 +14,11 @@ public class AppointmentDTO {
 
     private Long customerId;
 
-    private Long staffUserId;
+    private Long orderId;
 
     private ZonedDateTime dateTimeGMT;
 
-    private String status;
+    private Integer durationMinutes;
+
+    private StatusEnum status;
 }

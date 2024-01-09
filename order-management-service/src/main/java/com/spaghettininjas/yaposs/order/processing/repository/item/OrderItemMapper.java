@@ -1,4 +1,4 @@
-package com.spaghettininjas.yaposs.appointment.processing.repository;
+package com.spaghettininjas.yaposs.order.processing.repository.item;
 
 import org.mapstruct.BeanMapping;
 import org.mapstruct.Mapper;
@@ -6,9 +6,9 @@ import org.mapstruct.MappingTarget;
 import org.mapstruct.NullValuePropertyMappingStrategy;
 
 @Mapper(componentModel = "spring")
-public interface AppointmentMapper {
+public interface OrderItemMapper {
     @BeanMapping(nullValuePropertyMappingStrategy = NullValuePropertyMappingStrategy.IGNORE)
-    Appointment mergeWithDto(@MappingTarget Appointment domain, AppointmentDTO dto);
-    Appointment toDomain(AppointmentDTO dto);
-    AppointmentDTO toDto(Appointment domain);
+    OrderItem mergeWithDto(@MappingTarget OrderItem domain, OrderItemDTO dto);
+    OrderItem toDomain(OrderItemDTO dto);
+    OrderItemDTO toDto(OrderItem domain);
 }

@@ -1,8 +1,8 @@
 package com.spaghettininjas.yaposs.appointment.processing.controller;
 
 import com.spaghettininjas.yaposs.appointment.processing.repository.AppointmentMapper;
-import com.spaghettininjas.yaposs.appointment.processing.repository.entity.appointment.Appointment;
-import com.spaghettininjas.yaposs.appointment.processing.repository.entity.appointment.AppointmentDTO;
+import com.spaghettininjas.yaposs.appointment.processing.repository.Appointment;
+import com.spaghettininjas.yaposs.appointment.processing.repository.AppointmentDTO;
 import com.spaghettininjas.yaposs.appointment.processing.service.AppointmentService;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;

@@ -1,6 +1,5 @@
-package com.spaghettininjas.yaposs.order.processing.repository;
+package com.spaghettininjas.yaposs.order.processing.repository.order;
 
-import com.spaghettininjas.yaposs.order.processing.repository.entity.order.Order;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.JpaSpecificationExecutor;
 import org.springframework.stereotype.Repository;

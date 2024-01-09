@@ -1,8 +1,7 @@
 package com.spaghettininjas.yaposs.appointment.processing.service;
 
 import com.spaghettininjas.yaposs.appointment.processing.repository.AppointmentRepository;
-import com.spaghettininjas.yaposs.appointment.processing.repository.entity.appointment.Appointment;
-import io.micrometer.common.util.StringUtils;
+import com.spaghettininjas.yaposs.appointment.processing.repository.Appointment;
 import jakarta.annotation.Nullable;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
@@ -13,8 +12,8 @@ import org.springframework.stereotype.Service;
 import java.time.ZonedDateTime;
 import java.util.Optional;
 
-import static com.spaghettininjas.yaposs.appointment.processing.repository.specification.AppointmentSpecification.dateTimeGreaterThan;
-import static com.spaghettininjas.yaposs.appointment.processing.repository.specification.AppointmentSpecification.dateTimeLessThan;
+import static com.spaghettininjas.yaposs.appointment.processing.repository.AppointmentSpecification.dateTimeGreaterThan;
+import static com.spaghettininjas.yaposs.appointment.processing.repository.AppointmentSpecification.dateTimeLessThan;
 
 @Service
 public class AppointmentService {

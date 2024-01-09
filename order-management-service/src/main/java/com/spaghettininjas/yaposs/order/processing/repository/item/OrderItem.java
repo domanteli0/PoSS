@@ -1,7 +1,7 @@
-package com.spaghettininjas.yaposs.order.processing.repository.entity.item;
+package com.spaghettininjas.yaposs.order.processing.repository.item;
 
 
-import com.spaghettininjas.yaposs.order.processing.repository.entity.order.Order;
+import com.spaghettininjas.yaposs.order.processing.repository.order.Order;
 import jakarta.persistence.*;
 import lombok.*;
 
@@ -25,9 +25,9 @@ public class OrderItem {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
-    @OneToOne
-    @JoinColumn(name = "order_id")
-    private Order orderId;
+    @ManyToOne
+    @JoinColumn(name = "orderId")
+    private Order order;
 
     private String name;
 

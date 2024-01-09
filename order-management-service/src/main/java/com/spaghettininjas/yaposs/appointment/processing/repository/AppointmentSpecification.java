@@ -1,6 +1,6 @@
-package com.spaghettininjas.yaposs.appointment.processing.repository.specification;
+package com.spaghettininjas.yaposs.appointment.processing.repository;
 
-import com.spaghettininjas.yaposs.appointment.processing.repository.entity.appointment.Appointment;
+import com.spaghettininjas.yaposs.appointment.processing.repository.Appointment;
 import org.springframework.data.jpa.domain.Specification;
 
 import java.time.ZonedDateTime;
@@ -13,6 +13,6 @@ public class AppointmentSpecification {
     }
 
     public static Specification<Appointment> dateTimeGreaterThan(ZonedDateTime dateTimeFromGMT) {
-        return (root, query, builder) -> builder.greaterThan(root.get("email"), dateTimeFromGMT);
+        return (root, query, builder) -> builder.greaterThan(root.get("dateTime"), dateTimeFromGMT);
     }
 }

@@ -1,7 +1,7 @@
 package com.spaghettininjas.yaposs.order.processing.service;
 
-import com.spaghettininjas.yaposs.order.processing.repository.OrderRepository;
-import com.spaghettininjas.yaposs.order.processing.repository.entity.order.Order;
+import com.spaghettininjas.yaposs.order.processing.repository.order.OrderRepository;
+import com.spaghettininjas.yaposs.order.processing.repository.order.Order;
 import jakarta.annotation.Nullable;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
@@ -9,10 +9,11 @@ import org.springframework.data.domain.Sort;
 import org.springframework.data.jpa.domain.Specification;
 import org.springframework.stereotype.Service;
 
-import java.math.BigDecimal;
+import java.time.ZonedDateTime;
 import java.util.Optional;
 
-import static com.spaghettininjas.yaposs.order.processing.repository.specification.OrderSpecification.*;
+import static com.spaghettininjas.yaposs.order.processing.repository.order.OrderSpecification.dateTimeGreaterThan;
+import static com.spaghettininjas.yaposs.order.processing.repository.order.OrderSpecification.dateTimeLessThan;
 
 @Service
 public class OrderService {
@@ -26,10 +27,10 @@ public class OrderService {
         return repository.findById(id);
     }
 
-    public Iterable<Order> findAll(Integer page, Integer pageSize, @Nullable BigDecimal priceFloor, @Nullable BigDecimal priceCeiling) {
+    public Iterable<Order> findAll(Integer page, Integer pageSize, @Nullable ZonedDateTime fromDateTimeGMT, @Nullable ZonedDateTime tillDateTimeGMT) {
         Pageable pageable = PageRequest.of(page, pageSize, Sort.Direction.ASC, "name");
-        Specification<Order> filters = Specification.where(priceFloor == null ? null : priceGreaterThan(priceFloor))
-                .and(priceCeiling == null ? null : priceLessThan(priceCeiling));
+        Specification<Order> filters = Specification.where(fromDateTimeGMT == null ? null : dateTimeGreaterThan(fromDateTimeGMT))
+                .and(tillDateTimeGMT == null ? null : dateTimeLessThan(tillDateTimeGMT));
         return repository.findAll(filters, pageable).getContent();
     }
 

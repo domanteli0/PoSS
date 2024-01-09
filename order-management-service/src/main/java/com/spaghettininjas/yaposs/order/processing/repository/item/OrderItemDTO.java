@@ -1,4 +1,4 @@
-package com.spaghettininjas.yaposs.order.processing.repository.entity.item;
+package com.spaghettininjas.yaposs.order.processing.repository.item;
 
 import lombok.*;
 

@@ -1,8 +1,5 @@
-package com.spaghettininjas.yaposs.order.processing.repository;
+package com.spaghettininjas.yaposs.order.processing.repository.order;
 
-import com.spaghettininjas.yaposs.DTO;
-import com.spaghettininjas.yaposs.order.processing.repository.entity.order.Order;
-import com.spaghettininjas.yaposs.order.processing.repository.entity.order.OrderDTO;
 import org.mapstruct.*;
 
 @Mapper(componentModel = "spring")

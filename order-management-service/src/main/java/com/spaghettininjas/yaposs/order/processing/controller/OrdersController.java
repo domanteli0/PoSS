@@ -1,14 +1,15 @@
 package com.spaghettininjas.yaposs.order.processing.controller;
 
-import com.spaghettininjas.yaposs.order.processing.repository.entity.order.Order;
+import com.spaghettininjas.yaposs.order.processing.repository.order.Order;
 import com.spaghettininjas.yaposs.order.processing.service.OrderService;
-import com.spaghettininjas.yaposs.order.processing.repository.OrderMapper;
-import com.spaghettininjas.yaposs.order.processing.repository.entity.order.OrderDTO;
+import com.spaghettininjas.yaposs.order.processing.repository.order.OrderMapper;
+import com.spaghettininjas.yaposs.order.processing.repository.order.OrderDTO;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import java.math.BigDecimal;
+import java.time.ZonedDateTime;
 
 @RestController
 @RequestMapping("/api/Orders")
@@ -32,9 +33,9 @@ public class OrdersController {
     @GetMapping
     public ResponseEntity<Iterable<Order>> findAll(@RequestParam(required = false, defaultValue = "0") Integer page,
                                                    @RequestParam(required = false, defaultValue = "10") Integer pageSize,
-                                                   @RequestParam(required = false) BigDecimal priceFloor,
-                                                   @RequestParam(required = false) BigDecimal priceCeiling) {
-        Iterable<Order> orders = service.findAll(page, pageSize, priceFloor, priceCeiling);
+                                                   @RequestParam(required = false) ZonedDateTime dateTimeFromGMT,
+                                                   @RequestParam(required = false) ZonedDateTime dateTimeTillGMT) {
+        Iterable<Order> orders = service.findAll(page, pageSize, dateTimeFromGMT, dateTimeTillGMT);
         return new ResponseEntity<>(orders, HttpStatus.OK);
     }
 
