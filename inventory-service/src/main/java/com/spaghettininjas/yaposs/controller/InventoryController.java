@@ -34,7 +34,9 @@ public class InventoryController {
 
     @PostMapping
     public ResponseEntity<Inventory> addInventory(@RequestBody InventoryDTO inventory) {
-        return ResponseEntity.status(HttpStatus.CREATED).body(inventoriesService.save(inventory));
+        return inventoriesService.save(inventory)
+                .map(in -> ResponseEntity.ok().body(in))
+                .orElse(ResponseEntity.notFound().build());
     }
 
     @GetMapping
@@ -52,14 +54,9 @@ public class InventoryController {
             @PathVariable int id,
             @RequestBody InventoryDTO inventory
     ) {
-        return inventoriesService.findById((long)id)
-                .map(in -> {
-                    in.setStockQuantity(inventory.getStockQuantity());
-                    Product newP = productService.findById(inventory.getProductId()).orElse(null);
-                    in.setProduct(newP);
-                    return ResponseEntity.status(HttpStatus.OK).body(inventoriesService.save(in));
-                })
-                .orElseGet(() -> ResponseEntity.notFound().build());
+        return inventoriesService.updateInventory(inventory, (long) id)
+                .map(in -> ResponseEntity.ok().body(in))
+                .orElse(ResponseEntity.notFound().build());
     }
 
 }

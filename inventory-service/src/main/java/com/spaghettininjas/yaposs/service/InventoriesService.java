@@ -7,6 +7,7 @@ import com.spaghettininjas.yaposs.repository.entity.InventoryDTO;
 import com.spaghettininjas.yaposs.repository.entity.Product;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
+import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 
 import java.util.Optional;
@@ -30,17 +31,27 @@ public class InventoriesService {
         inventoryRepository.deleteById(id);
     }
 
-    public Inventory save(InventoryDTO inventory) {
+    public Optional<Inventory> save(InventoryDTO inventory) {
         Long productId = inventory.getProductId();
 
         Inventory newInventory = new Inventory();
         newInventory.setStockQuantity(inventory.getStockQuantity());
 
-        Product product = productRepository.findById(productId)
-                .orElseThrow(() -> new RuntimeException("Product not found"));
-        newInventory.setProduct(product);
+        return productRepository.findById(productId).map(p -> {
+            newInventory.setProduct(p);
+            return inventoryRepository.save(newInventory);
 
-        return inventoryRepository.save(newInventory);
+        });
+
+    }
+
+    public Optional<Inventory> updateInventory(InventoryDTO inventory, Long id){
+        return productRepository.findById(inventory.getProductId())
+                .flatMap(newProduct -> this.findById(id).map(existingInventory -> {
+            existingInventory.setStockQuantity(inventory.getStockQuantity());
+            existingInventory.setProduct(newProduct);
+            return inventoryRepository.save(existingInventory);
+        }));
     }
 
     public Iterable<Inventory> findAll(Integer page, Integer pageSize) {
