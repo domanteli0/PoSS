@@ -9,17 +9,30 @@ services:
       customer-db:
         condition: service_healthy
 
+  inventory-service:
+    build:
+      dockerfile: inventory-service/Dockerfile
+      context: .
+    ports:
+      - "8087:8087"
+    depends_on:
+      inventory-db:
+        condition: service_healthy
+
   api-gateway:
     build:
       dockerfile: api-gateway/Dockerfile
       context: .
     environment:
       -
-        SPRING_APPLICATION_JSON={"customerService":{"hostname":"customer-service","port":8081}}
+       SPRING_APPLICATION_JSON={"customerService":{"hostname":"customer-service","port":8081}}
+      - INVENTORY_SERVICE_HOSTNAME=inventory-service
+      - INVENTORY_SERVICE_PORT=8087
     ports:
       - "8080:8080"
     depends_on:
-      [customer-service]
+      - customer-service
+      - inventory-service
 
   customer-db:
     image: postgres:14
@@ -34,6 +47,26 @@ services:
       - "5433:5432"
     volumes:
       - ./.db/customer-data:/var/lib/postgresql/data
+    healthcheck:
+      test: pg_isready -d poss_db -U poss
+      interval: 3s
+      retries: 4
+      start_period: 10s
+      timeout: 1s
+
+  inventory-db:
+    image: postgres:14
+    restart: always
+    environment:
+      POSTGRES_USER: poss
+      POSTGRES_PASSWORD: poss
+      POSTGRES_DB: poss_db
+    expose:
+      - 5432
+    ports:
+      - "5437:5432"
+    volumes:
+      - ./.db/inventory-data:/var/lib/postgresql/data
     healthcheck:
       test: pg_isready -d poss_db -U poss
       interval: 3s
