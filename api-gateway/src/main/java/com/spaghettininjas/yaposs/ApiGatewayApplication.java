@@ -19,7 +19,7 @@ public class ApiGatewayApplication {
     @Value("${INVENTORY_SERVICE_HOSTNAME:localhost}")
     private String inventoryServiceHostname;
 
-    @Value("${INVENTORY_SERVICE_PORT:8081}")
+    @Value("${INVENTORY_SERVICE_PORT:8087}")
     private String inventoryServicePort;
 
 
