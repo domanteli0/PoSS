@@ -7,6 +7,11 @@ import lombok.*;
 import java.math.BigDecimal;
 
 
+/**
+ * Also known as Cheque from contract.
+ * Renamed so that endpoint and entity naming matches.
+ */
+
 @Getter
 @Entity
 @Data

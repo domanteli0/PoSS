@@ -1,13 +1,14 @@
 package com.spaghettininjas.yaposs.order.processing.repository.entity.item;
 
 
+import com.spaghettininjas.yaposs.order.processing.repository.entity.order.Order;
 import jakarta.persistence.*;
 import lombok.*;
 
 import java.math.BigDecimal;
 
 /**
- * Item is a product with quantity.
+ * OrderItem is a product with quantity associated with an order.
  * It duplicates price for ease of access and captures it at order time.
  * It also refers to the product through name.
  */
@@ -19,10 +20,14 @@ import java.math.BigDecimal;
 @NoArgsConstructor
 @AllArgsConstructor
 @Builder
-public class Item {
+public class OrderItem {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
+
+    @OneToOne
+    @JoinColumn(name = "order_id")
+    private Order orderId;
 
     private String name;
 
