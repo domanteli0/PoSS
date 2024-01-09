@@ -7,8 +7,6 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
-import java.util.Optional;
-
 @RestController
 @RequestMapping("/api/Payments")
 public class PaymentController {
@@ -30,12 +28,8 @@ public class PaymentController {
     }
 
     @GetMapping(path = "/{id}")
-    public ResponseEntity<Transaction> getById(@PathVariable Long id) {
-        Optional<Transaction> optionalTransaction = this.service.findById(id);
-
-        return optionalTransaction
-                .map(transaction -> ResponseEntity.ok().body(transaction))
-                .orElse(ResponseEntity.notFound().build());
+    public Transaction getById(@PathVariable Long id) {
+        return this.service.findById(id);
     }
 
     @PostMapping

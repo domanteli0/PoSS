@@ -1,7 +1,6 @@
 package com.spaghettininjas.yaposs.entity;
 
 
-import com.sun.istack.NotNull;
 import jakarta.persistence.*;
 import lombok.*;
 
@@ -17,10 +16,8 @@ public class Transaction {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
     private Long discountApplied;
-    @NotNull
     private Long orderId;
     private String paymentType;
-    @NotNull
     private Long staffUserId;
     private Long tax;
     private Long tip;

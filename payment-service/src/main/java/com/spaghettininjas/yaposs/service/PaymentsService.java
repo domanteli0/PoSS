@@ -2,6 +2,7 @@ package com.spaghettininjas.yaposs.service;
 
 import com.spaghettininjas.yaposs.dto.TransactionUpdateRequest;
 import com.spaghettininjas.yaposs.entity.Transaction;
+import com.spaghettininjas.yaposs.exception.ApiException;
 import com.spaghettininjas.yaposs.repository.PaymentRepository;
 import com.spaghettininjas.yaposs.repository.specification.PaymentSpecification;
 import io.micrometer.common.util.StringUtils;
@@ -29,23 +30,33 @@ public class PaymentsService {
         Specification<Transaction> filters = Specification.where(StringUtils.isBlank(paymentType) ? null : paymentTypeLike(paymentType))
                 .and(staffUserId == null ? null : PaymentSpecification.staffUserIdEqual(staffUserId))
                 .and(orderId == null ? null : PaymentSpecification.orderIdEqual(orderId));
-        return repository.findAll(filters, pageable).getContent();
+        return this.repository.findAll(filters, pageable).getContent();
     }
 
     public Transaction save(Transaction transaction){
-        return repository.save(transaction);
+        return this.repository.save(transaction);
     }
 
-    public Optional<Transaction> findById(Long id) { return repository.findById(id);}
+    public Boolean existsById(Long id) {
+        return this.repository.existsById(id);
+    }
+
+    public Transaction findById(Long id) {
+        return this.repository.findById(id)
+                .orElseThrow(() -> ApiException.notFound("err.transaction.doesnt.exist"));
+    }
 
     public void deleteById(Long id){
-        repository.deleteById(id);
+        if (!existsById(id)) {
+            throw ApiException.notFound("err.transaction.doesnt.exist");
+        }
+        this.repository.deleteById(id);
     }
 
     public Transaction updateTransaction(Long id, TransactionUpdateRequest request) {
-        Optional<Transaction> foundTransaction = repository.findById(id);
+        Optional<Transaction> foundTransaction = this.repository.findById(id);
         if(foundTransaction.isEmpty())
-            return null;
+            throw ApiException.notFound("err.transaction.doesnt.exist");
         Transaction updatedTransaction = foundTransaction.get().setDiscountApplied(request.getDiscountApplied())
                 .setOrderId(request.getOrderId())
                 .setPaymentType(request.getPaymentType())
@@ -53,7 +64,7 @@ public class PaymentsService {
                 .setTax(request.getTax())
                 .setTip(request.getTip())
                 .setTotalDiscount(request.getTotalDiscount());
-        return repository.save(updatedTransaction);
+        return this.repository.save(updatedTransaction);
     }
 
 }
