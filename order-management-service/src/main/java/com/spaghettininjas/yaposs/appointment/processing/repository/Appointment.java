@@ -25,7 +25,7 @@ public class Appointment {
 
     @OneToOne
     @JoinColumn(name = "orderId")
-    private Order orderId;
+    private Order order;
 
     @DateTimeFormat(iso = DateTimeFormat.ISO.DATE_TIME)
     private ZonedDateTime dateTimeGMT;
