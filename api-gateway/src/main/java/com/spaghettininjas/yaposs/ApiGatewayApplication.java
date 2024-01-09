@@ -16,10 +16,10 @@ public class ApiGatewayApplication {
     @Value("${customerService.port:8081}")
     private String customerServicePort;
 
-    @Value("${paymentService.hostname:localhost}")
+    @Value("${PAYMENT_SERVICE_HOSTNAME:localhost}")
     private String paymentServiceHostname;
 
-    @Value("${paymentService.port:8085}")
+    @Value("${PAYMENT_SERVICE_PORT:8085}")
     private String paymentServicePort;
 
     public static void main(String[] args) {
