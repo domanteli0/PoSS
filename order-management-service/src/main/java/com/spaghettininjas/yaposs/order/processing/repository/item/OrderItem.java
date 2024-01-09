@@ -26,12 +26,12 @@ public class OrderItem {
     private Long id;
 
     @ManyToOne
-    @JoinColumn(name = "orderId")
+    @JoinColumn(name = "order_id", referencedColumnName = "id")
     private Order order;
 
     private String name;
 
     private Integer quantity;
 
-    private BigDecimal price;
+    private Double price;
 }

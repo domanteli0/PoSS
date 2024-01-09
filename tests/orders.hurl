@@ -1,24 +1,22 @@
-POST http://localhost:8082/api/Orders
+POST http://localhost:8088/api/Orders
 {
-    "staffUserId": 1;
-    "appointmentId": 2;
+    "staffUserId": 2,
 }
 HTTP 201
 [Captures]
 id: jsonpath "$.id"
 
-PUT http://localhost:8082/api/Orders/{{id}}
+PUT http://localhost:8088/api/Orders/{{id}}
 {
-    "staffUserId": 3;
+    "staffUserId": 2
 }
 
-GET http://localhost:8082/api/Orders/{{id}}
+GET http://localhost:8088/api/Orders/{{id}}
 HTTP 200
 [Asserts]
 jsonpath "$.staffUserId" == 1
-jsonpath "$.appointmentId" == 2
 
-DELETE http://localhost:8082/api/Orders/{{id}}
+DELETE http://localhost:8088/api/Orders/{{id}}
 
-GET http://localhost:8082/api/Orders/{{id}}
+GET http://localhost:8088/api/Orders/{{id}}
 HTTP 404

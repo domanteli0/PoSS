@@ -12,7 +12,5 @@ public class OrderDTO {
 
     private Long staffUserId;
 
-    private Long appointmentId;
-
-    private ZonedDateTime dateTimeGMT;
+    private String dateTimeGMT;
 }

@@ -16,7 +16,7 @@ public class AppointmentDTO {
 
     private Long orderId;
 
-    private ZonedDateTime dateTimeGMT;
+    private String dateTimeGMT;
 
     private Integer durationMinutes;
 

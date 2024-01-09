@@ -50,7 +50,7 @@ public class OrderItemsController {
     }
 
     @PutMapping(path = "/{id}")
-    ResponseEntity<OrderItem> addOrUpdateOrderItem(
+    ResponseEntity<OrderItem> addOrUpdate(
         @PathVariable int id,
         @RequestBody OrderItemDTO dto
     ) {

@@ -4,6 +4,7 @@ import com.spaghettininjas.yaposs.appointment.processing.repository.AppointmentM
 import com.spaghettininjas.yaposs.appointment.processing.repository.Appointment;
 import com.spaghettininjas.yaposs.appointment.processing.repository.AppointmentDTO;
 import com.spaghettininjas.yaposs.appointment.processing.service.AppointmentService;
+import com.spaghettininjas.yaposs.order.processing.service.OrderService;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
@@ -16,6 +17,7 @@ import java.time.ZonedDateTime;
 public class AppointmentsController {
 
     private final AppointmentService service;
+
     private final AppointmentMapper mapper;
 
     public AppointmentsController(AppointmentService service, AppointmentMapper mapper) {
@@ -33,9 +35,10 @@ public class AppointmentsController {
     @GetMapping
     public ResponseEntity<Iterable<Appointment>> findAll(@RequestParam(required = false, defaultValue = "0") Integer page,
                                                    @RequestParam(required = false, defaultValue = "10") Integer pageSize,
-                                                   @RequestParam(required = false) ZonedDateTime fromDateTimeGMT,
-                                                   @RequestParam(required = false) ZonedDateTime tillDateTimeGMT) {
-        Iterable<Appointment> appointments = service.findAll(page, pageSize, fromDateTimeGMT, tillDateTimeGMT);
+                                                   @RequestParam(required = false) String fromDateTimeGMT,
+                                                   @RequestParam(required = false) String tillDateTimeGMT) {
+        Iterable<Appointment> appointments = service.findAll(page, pageSize,
+                ZonedDateTime.parse(fromDateTimeGMT), ZonedDateTime.parse(tillDateTimeGMT));
         return new ResponseEntity<>(appointments, HttpStatus.OK);
     }
 
@@ -47,13 +50,13 @@ public class AppointmentsController {
     @PostMapping
     public ResponseEntity<Appointment> addOrder(@RequestBody Appointment appointment) {
         if (appointment.getDateTimeGMT() == null) {
-            appointment.setDateTimeGMT(ZonedDateTime.now(ZoneId.of("GMT")));
+            appointment.setDateTimeGMT(ZonedDateTime.now(ZoneId.of("GMT")).toString());
         }
         return ResponseEntity.status(HttpStatus.CREATED).body(service.save(appointment));
     }
 
     @PutMapping(path = "/{id}")
-    ResponseEntity<Appointment> addOrUpdateOrder(
+    ResponseEntity<Appointment> addOrUpdate(
         @PathVariable int id,
         @RequestBody AppointmentDTO dto
     ) {

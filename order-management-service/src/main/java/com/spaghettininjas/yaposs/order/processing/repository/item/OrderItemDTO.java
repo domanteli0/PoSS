@@ -2,8 +2,6 @@ package com.spaghettininjas.yaposs.order.processing.repository.item;
 
 import lombok.*;
 
-import java.math.BigDecimal;
-
 @Data
 @Builder
 public class OrderItemDTO {
@@ -15,5 +13,5 @@ public class OrderItemDTO {
 
     private Integer quantity;
 
-    private BigDecimal price;
+    private Double price;
 }

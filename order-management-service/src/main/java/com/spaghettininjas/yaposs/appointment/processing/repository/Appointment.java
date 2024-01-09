@@ -24,11 +24,11 @@ public class Appointment {
     private Long customerId;
 
     @OneToOne
-    @JoinColumn(name = "orderId")
+    @JoinColumn(name = "order_id", referencedColumnName = "id")
     private Order order;
 
     @DateTimeFormat(iso = DateTimeFormat.ISO.DATE_TIME)
-    private ZonedDateTime dateTimeGMT;
+    private String dateTimeGMT;
 
     private Integer durationMinutes;
 

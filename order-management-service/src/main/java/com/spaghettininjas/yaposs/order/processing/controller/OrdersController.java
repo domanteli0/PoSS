@@ -1,5 +1,7 @@
 package com.spaghettininjas.yaposs.order.processing.controller;
 
+import com.spaghettininjas.yaposs.appointment.processing.repository.Appointment;
+import com.spaghettininjas.yaposs.appointment.processing.service.AppointmentService;
 import com.spaghettininjas.yaposs.order.processing.repository.order.Order;
 import com.spaghettininjas.yaposs.order.processing.service.OrderService;
 import com.spaghettininjas.yaposs.order.processing.repository.order.OrderMapper;
@@ -11,6 +13,7 @@ import org.springframework.web.bind.annotation.*;
 import java.math.BigDecimal;
 import java.time.ZoneId;
 import java.time.ZonedDateTime;
+import java.util.Optional;
 
 @RestController
 @RequestMapping("/api/Orders")
@@ -34,9 +37,10 @@ public class OrdersController {
     @GetMapping
     public ResponseEntity<Iterable<Order>> findAll(@RequestParam(required = false, defaultValue = "0") Integer page,
                                                    @RequestParam(required = false, defaultValue = "10") Integer pageSize,
-                                                   @RequestParam(required = false) ZonedDateTime dateTimeFromGMT,
-                                                   @RequestParam(required = false) ZonedDateTime dateTimeTillGMT) {
-        Iterable<Order> orders = service.findAll(page, pageSize, dateTimeFromGMT, dateTimeTillGMT);
+                                                   @RequestParam(required = false) String dateTimeFromGMT,
+                                                   @RequestParam(required = false) String dateTimeTillGMT) {
+        Iterable<Order> orders = service.findAll(page, pageSize,
+                ZonedDateTime.parse(dateTimeFromGMT), ZonedDateTime.parse(dateTimeTillGMT));
         return new ResponseEntity<>(orders, HttpStatus.OK);
     }
 
@@ -48,13 +52,13 @@ public class OrdersController {
     @PostMapping
     public ResponseEntity<Order> addOrder(@RequestBody Order order) {
         if (order.getDateTimeGMT() == null) {
-            order.setDateTimeGMT(ZonedDateTime.now(ZoneId.of("GMT")));
+            order.setDateTimeGMT(ZonedDateTime.now(ZoneId.of("GMT")).toString());
         }
         return ResponseEntity.status(HttpStatus.CREATED).body(service.save(order));
     }
 
     @PutMapping(path = "/{id}")
-    ResponseEntity<Order> addOrUpdateOrder(
+    ResponseEntity<Order> addOrUpdate(
         @PathVariable int id,
         @RequestBody OrderDTO dto
     ) {

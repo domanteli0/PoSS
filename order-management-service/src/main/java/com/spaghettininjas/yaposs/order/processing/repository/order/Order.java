@@ -1,18 +1,16 @@
 package com.spaghettininjas.yaposs.order.processing.repository.order;
 
 
-import com.spaghettininjas.yaposs.appointment.processing.repository.Appointment;
 import jakarta.persistence.*;
 import lombok.*;
 import org.springframework.format.annotation.DateTimeFormat;
-
-import java.time.ZonedDateTime;
 
 
 @Getter
 @Entity
 @Data
-@Table(name = "order")
+// rename something other to "order" because it's a sql keyword
+@Table(name="pos_order")
 @NoArgsConstructor
 @AllArgsConstructor
 @Builder
@@ -23,10 +21,6 @@ public class Order {
 
     private Long staffUserId;
 
-    @OneToOne
-    @JoinColumn(name = "appointmentId")
-    private Appointment appointment;
-
     @DateTimeFormat(iso = DateTimeFormat.ISO.DATE_TIME)
-    private ZonedDateTime dateTimeGMT;
+    private String dateTimeGMT;
 }
