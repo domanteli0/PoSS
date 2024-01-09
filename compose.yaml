@@ -26,9 +26,9 @@ services:
     environment:
       -
         SPRING_APPLICATION_JSON={
-        "customerService":{"hostname":"customer-service","port":8081},
-        "orderManagementService":{"hostname":"order-management-service","port":8088}
-        }
+        "customerService":{"hostname":"customer-service","port":8081}}
+      - ORDER_MANAGEMENT_SERVICE_HOSTNAME=order-management-service
+      - ORDER_MANAGEMENT_SERVICE_PORT=8088
     ports:
       - "8080:8080"
     depends_on:

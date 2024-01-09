@@ -16,10 +16,10 @@ public class ApiGatewayApplication {
     @Value("${customerService.port:8081}")
     private String customerServicePort;
 
-    @Value("${orderManagementService.hostname:localhost}")
+    @Value("${ORDER_MANAGEMENT_SERVICE_HOSTNAME:localhost}")
     private String orderManagementServiceHostname;
 
-    @Value("${orderManagementService.port:8088}")
+    @Value("${ORDER_MANAGEMENT_SERVICE_PORT:8088}")
     private String orderManagementServicePort;
 
     public static void main(String[] args) {
