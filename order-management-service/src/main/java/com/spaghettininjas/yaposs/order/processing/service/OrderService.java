@@ -38,8 +38,8 @@ public class OrderService {
         repository.deleteById(id);
     }
 
-    public Order save(Order customer){
-        return repository.save(customer);
+    public Order save(Order order){
+        return repository.save(order);
     }
 
     public boolean existsById(Long id){

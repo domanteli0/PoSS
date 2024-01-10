@@ -38,8 +38,8 @@ public class AppointmentService {
         repository.deleteById(id);
     }
 
-    public Appointment save(Appointment customer){
-        return repository.save(customer);
+    public Appointment save(Appointment appointment){
+        return repository.save(appointment);
     }
 
     public boolean existsById(Long id){

@@ -24,9 +24,10 @@ public class Appointment {
     private Long customerId;
 
     @OneToOne
-    @JoinColumn(name = "order_id", referencedColumnName = "id")
+    @JoinColumn(name = "poss_order_id", referencedColumnName = "id")
     private Order order;
 
+    // Appointed date time should be written in the order
     @DateTimeFormat(iso = DateTimeFormat.ISO.DATE_TIME)
     private String dateTimeGMT;
 

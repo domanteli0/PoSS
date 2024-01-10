@@ -4,11 +4,13 @@ import com.spaghettininjas.yaposs.appointment.processing.repository.AppointmentM
 import com.spaghettininjas.yaposs.appointment.processing.repository.Appointment;
 import com.spaghettininjas.yaposs.appointment.processing.repository.AppointmentDTO;
 import com.spaghettininjas.yaposs.appointment.processing.service.AppointmentService;
+import com.spaghettininjas.yaposs.order.processing.repository.order.Order;
 import com.spaghettininjas.yaposs.order.processing.service.OrderService;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
+import java.time.Instant;
 import java.time.ZoneId;
 import java.time.ZonedDateTime;
 
@@ -18,11 +20,14 @@ public class AppointmentsController {
 
     private final AppointmentService service;
 
+    private final OrderService orderService;
+
     private final AppointmentMapper mapper;
 
-    public AppointmentsController(AppointmentService service, AppointmentMapper mapper) {
+    public AppointmentsController(AppointmentService service, AppointmentMapper mapper, OrderService orderService) {
         this.mapper = mapper;
         this.service = service;
+        this.orderService = orderService;
     }
 
     @GetMapping(path = "/{id}")
@@ -52,6 +57,10 @@ public class AppointmentsController {
         if (appointment.getDateTimeGMT() == null) {
             appointment.setDateTimeGMT(ZonedDateTime.now(ZoneId.of("GMT")).toString());
         }
+        // create Order first before Appointment
+        Order order = appointment.getOrder();
+        order.setId(null);
+        orderService.save(order);
         return ResponseEntity.status(HttpStatus.CREATED).body(service.save(appointment));
     }
 
