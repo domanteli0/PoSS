@@ -1,6 +1,7 @@
 package com.spaghettininjas.yaposs.order.processing.repository.item;
 
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.spaghettininjas.yaposs.order.processing.repository.order.Order;
 import jakarta.persistence.*;
 import lombok.*;
@@ -25,13 +26,14 @@ public class OrderItem {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
+    @JsonIgnore
     @ManyToOne
-    @JoinColumn(name = "order_id", referencedColumnName = "id")
+    @JoinColumn(name = "poss_order_id", referencedColumnName = "id")
     private Order order;
 
     private String name;
 
     private Integer quantity;
 
-    private Double price;
+    private Double priceOfUnit;
 }

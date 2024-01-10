@@ -4,7 +4,7 @@ import org.mapstruct.*;
 
 @Mapper(componentModel = "spring")
 public interface OrderMapper {
-    @Mapping(source = "appointmentId", target = "appointment.id")
+//    @Mapping(source = "items", target = "", ignore = true)
     @BeanMapping(nullValuePropertyMappingStrategy = NullValuePropertyMappingStrategy.IGNORE)
-    Order mergeWithDto(@MappingTarget Order domain, OrderDTO dto);
+    OrderDTO mapToDTO(Order order);
 }

@@ -13,5 +13,5 @@ public class OrderItemDTO {
 
     private Integer quantity;
 
-    private Double price;
+    private Double priceOfUnit;
 }
