@@ -26,8 +26,8 @@ public class AppointmentsController {
     }
 
     @GetMapping(path = "/{id}")
-    public ResponseEntity<Appointment> getById(@PathVariable int id) {
-        return service.findById((long) id)
+    public ResponseEntity<Appointment> getById(@PathVariable long id) {
+        return service.findById(id)
                 .map(appointment -> ResponseEntity.ok().body(appointment))
                 .orElse(ResponseEntity.notFound().build());
     }
@@ -43,12 +43,12 @@ public class AppointmentsController {
     }
 
     @DeleteMapping(path = "/{id}")
-    public void deleteById(@PathVariable int id){
-        service.deleteById((long) id);
+    public void deleteById(@PathVariable long id){
+        service.deleteById(id);
     }
 
     @PostMapping
-    public ResponseEntity<Appointment> addOrder(@RequestBody Appointment appointment) {
+    public ResponseEntity<Appointment> add(@RequestBody Appointment appointment) {
         if (appointment.getDateTimeGMT() == null) {
             appointment.setDateTimeGMT(ZonedDateTime.now(ZoneId.of("GMT")).toString());
         }
@@ -57,11 +57,11 @@ public class AppointmentsController {
 
     @PutMapping(path = "/{id}")
     ResponseEntity<Appointment> addOrUpdate(
-        @PathVariable int id,
+        @PathVariable long id,
         @RequestBody AppointmentDTO dto
     ) {
-      dto.setId((long) id);
-      return service.findById((long) id)
+      dto.setId(id);
+      return service.findById(id)
             .map(value -> mapper.mergeWithDto(value, dto))
             .map(service::save)
             .map(value -> ResponseEntity.ok().body(value))

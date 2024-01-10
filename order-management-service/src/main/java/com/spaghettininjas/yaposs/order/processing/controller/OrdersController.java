@@ -26,10 +26,8 @@ import java.util.stream.StreamSupport;
 public class OrdersController {
 
     private final OrderService service;
-    private final OrderMapper mapper;
 
-    public OrdersController(OrderService service, OrderMapper mapper) {
-        this.mapper = mapper;
+    public OrdersController(OrderService service) {
         this.service = service;
     }
 
