@@ -9,7 +9,7 @@ import org.springframework.data.domain.Sort;
 import org.springframework.data.jpa.domain.Specification;
 import org.springframework.stereotype.Service;
 
-import java.time.ZonedDateTime;
+import java.time.LocalDateTime;
 import java.util.Optional;
 
 import static com.spaghettininjas.yaposs.appointment.processing.repository.AppointmentSpecification.dateTimeGreaterThan;
@@ -27,7 +27,7 @@ public class AppointmentService {
         return repository.findById(id);
     }
 
-    public Iterable<Appointment> findAll(Integer page, Integer pageSize, @Nullable ZonedDateTime fromDateTimeGMT, @Nullable ZonedDateTime tillDateTimeGMT) {
+    public Iterable<Appointment> findAll(Integer page, Integer pageSize, @Nullable LocalDateTime fromDateTimeGMT, @Nullable LocalDateTime tillDateTimeGMT) {
         Pageable pageable = PageRequest.of(page, pageSize, Sort.Direction.ASC, "name");
         Specification<Appointment> filters = Specification.where(fromDateTimeGMT == null ? null : dateTimeGreaterThan(fromDateTimeGMT))
                 .and(tillDateTimeGMT == null ? null : dateTimeLessThan(tillDateTimeGMT));

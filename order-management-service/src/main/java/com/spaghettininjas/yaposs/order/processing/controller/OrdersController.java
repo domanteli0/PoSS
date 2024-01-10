@@ -1,25 +1,18 @@
 package com.spaghettininjas.yaposs.order.processing.controller;
 
-import com.spaghettininjas.yaposs.appointment.processing.repository.Appointment;
-import com.spaghettininjas.yaposs.appointment.processing.service.AppointmentService;
 import com.spaghettininjas.yaposs.order.processing.repository.item.OrderItem;
 import com.spaghettininjas.yaposs.order.processing.repository.order.Order;
 import com.spaghettininjas.yaposs.order.processing.service.OrderService;
-import com.spaghettininjas.yaposs.order.processing.repository.order.OrderMapper;
-import com.spaghettininjas.yaposs.order.processing.repository.order.OrderDTO;
+import com.spaghettininjas.yaposs.standarts.DateTimeStandard;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
-import java.math.BigDecimal;
-import java.time.ZoneId;
-import java.time.ZonedDateTime;
+
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
-import java.util.UUID;
-import java.util.stream.Collectors;
-import java.util.stream.StreamSupport;
+
 
 @RestController
 @RequestMapping("/api/Orders")
@@ -44,7 +37,7 @@ public class OrdersController {
                                                    @RequestParam(required = false) String dateTimeFromGMT,
                                                    @RequestParam(required = false) String dateTimeTillGMT) {
         Iterable<Order> orders = service.findAll(page, pageSize,
-                ZonedDateTime.parse(dateTimeFromGMT), ZonedDateTime.parse(dateTimeTillGMT));
+                DateTimeStandard.getDateTimeFromString(dateTimeFromGMT), DateTimeStandard.getDateTimeFromString(dateTimeTillGMT));
         return new ResponseEntity<>(orders, HttpStatus.OK);
     }
 
@@ -56,7 +49,7 @@ public class OrdersController {
     @PostMapping
     public ResponseEntity<Order> addOrder(@RequestBody Order order) {
         if (order.getDateTimeGMT() == null) {
-            order.setDateTimeGMT(ZonedDateTime.now(ZoneId.of("GMT")).toString());
+            order.setDateTimeGMT(DateTimeStandard.getCurrentFormattedDateTime());
         }
         // generate ids and set them to reference order in items
         order.setId(null);

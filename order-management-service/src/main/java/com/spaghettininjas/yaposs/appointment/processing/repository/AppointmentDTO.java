@@ -4,9 +4,6 @@ import com.spaghettininjas.yaposs.enums.StatusEnum;
 import lombok.Builder;
 import lombok.Data;
 
-import java.time.LocalDateTime;
-import java.time.ZonedDateTime;
-
 @Data
 @Builder
 public class AppointmentDTO {

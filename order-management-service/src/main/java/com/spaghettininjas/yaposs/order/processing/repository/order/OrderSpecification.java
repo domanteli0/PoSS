@@ -1,19 +1,17 @@
 package com.spaghettininjas.yaposs.order.processing.repository.order;
 
-import com.spaghettininjas.yaposs.appointment.processing.repository.Appointment;
 import org.springframework.data.jpa.domain.Specification;
 
-import java.math.BigDecimal;
-import java.time.ZonedDateTime;
+import java.time.LocalDateTime;
 
 public class OrderSpecification {
     private OrderSpecification() {}
 
-    public static Specification<Order> dateTimeLessThan(ZonedDateTime dateTimeTillGMT) {
+    public static Specification<Order> dateTimeLessThan(LocalDateTime dateTimeTillGMT) {
         return (root, query, builder) -> builder.lessThan(root.get("dateTime"), dateTimeTillGMT);
     }
 
-    public static Specification<Order> dateTimeGreaterThan(ZonedDateTime dateTimeFromGMT) {
+    public static Specification<Order> dateTimeGreaterThan(LocalDateTime dateTimeFromGMT) {
         return (root, query, builder) -> builder.greaterThan(root.get("dateTime"), dateTimeFromGMT);
     }
 }

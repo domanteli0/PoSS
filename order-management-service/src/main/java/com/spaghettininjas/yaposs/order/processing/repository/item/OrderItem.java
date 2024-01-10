@@ -6,8 +6,6 @@ import com.spaghettininjas.yaposs.order.processing.repository.order.Order;
 import jakarta.persistence.*;
 import lombok.*;
 
-import java.math.BigDecimal;
-
 /**
  * OrderItem is a product with quantity associated with an order.
  * It duplicates price for ease of access and captures it at order time.

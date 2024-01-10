@@ -3,8 +3,6 @@ package com.spaghettininjas.yaposs.order.processing.repository.order;
 
 import lombok.*;
 
-import java.time.ZonedDateTime;
-
 @Data
 @Builder
 public class OrderDTO {

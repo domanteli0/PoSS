@@ -9,7 +9,6 @@ import org.springframework.data.domain.Sort;
 import org.springframework.data.jpa.domain.Specification;
 import org.springframework.stereotype.Service;
 
-import java.math.BigDecimal;
 import java.util.Optional;
 
 import static com.spaghettininjas.yaposs.order.processing.repository.item.OrderItemSpecification.priceGreaterThan;

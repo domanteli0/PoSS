@@ -6,13 +6,10 @@ import com.spaghettininjas.yaposs.appointment.processing.repository.AppointmentD
 import com.spaghettininjas.yaposs.appointment.processing.service.AppointmentService;
 import com.spaghettininjas.yaposs.order.processing.repository.order.Order;
 import com.spaghettininjas.yaposs.order.processing.service.OrderService;
+import com.spaghettininjas.yaposs.standarts.DateTimeStandard;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
-
-import java.time.Instant;
-import java.time.ZoneId;
-import java.time.ZonedDateTime;
 
 @RestController
 @RequestMapping("/api/Appointments")
@@ -43,7 +40,7 @@ public class AppointmentsController {
                                                    @RequestParam(required = false) String fromDateTimeGMT,
                                                    @RequestParam(required = false) String tillDateTimeGMT) {
         Iterable<Appointment> appointments = service.findAll(page, pageSize,
-                ZonedDateTime.parse(fromDateTimeGMT), ZonedDateTime.parse(tillDateTimeGMT));
+                DateTimeStandard.getDateTimeFromString(fromDateTimeGMT), DateTimeStandard.getDateTimeFromString(tillDateTimeGMT));
         return new ResponseEntity<>(appointments, HttpStatus.OK);
     }
 
@@ -55,7 +52,7 @@ public class AppointmentsController {
     @PostMapping
     public ResponseEntity<Appointment> add(@RequestBody Appointment appointment) {
         if (appointment.getDateTimeGMT() == null) {
-            appointment.setDateTimeGMT(ZonedDateTime.now(ZoneId.of("GMT")).toString());
+            appointment.setDateTimeGMT(DateTimeStandard.getCurrentFormattedDateTime());
         }
         // create Order first before Appointment
         Order order = appointment.getOrder();

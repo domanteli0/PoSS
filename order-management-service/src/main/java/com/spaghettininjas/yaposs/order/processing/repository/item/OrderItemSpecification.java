@@ -2,8 +2,6 @@ package com.spaghettininjas.yaposs.order.processing.repository.item;
 
 import org.springframework.data.jpa.domain.Specification;
 
-import java.math.BigDecimal;
-
 public class OrderItemSpecification {
     private OrderItemSpecification() {}
 
