@@ -1,6 +1,6 @@
 FROM gradle:jdk17
 
-EXPOSE 8085
+EXPOSE 8084
 
 ## Use this if you want to just copy the executable
 COPY payment-service/build/libs/payment-service.jar app.jar
