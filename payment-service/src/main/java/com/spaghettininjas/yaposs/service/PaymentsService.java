@@ -53,7 +53,7 @@ public class PaymentsService {
     }
 
     public Transaction findById(Long id) {
-        System.out.print(restTemplate.exchange("http://localhost:8080/api/Staff/1", HttpMethod.GET, null,  StaffUserPasswordless.class));
+        System.out.print(restTemplate.exchange("http://api-gateway:8080/api/Staff/1", HttpMethod.GET, null,  StaffUserPasswordless.class));
         return this.repository.findById(id)
                 .orElseThrow(() -> ApiException.notFound("err.transaction.doesnt.exist"));
     }
