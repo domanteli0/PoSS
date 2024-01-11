@@ -19,6 +19,16 @@ services:
       inventory-db:
         condition: service_healthy
 
+  staff-service:
+    build:
+      dockerfile: staff-service/Dockerfile
+      context: .
+    ports:
+      - "8085:8085"
+    depends_on:
+      staff-db:
+        condition: service_healthy
+
   api-gateway:
     build:
       dockerfile: api-gateway/Dockerfile
@@ -28,9 +38,13 @@ services:
        SPRING_APPLICATION_JSON={"customerService":{"hostname":"customer-service","port":8081}}
       - INVENTORY_SERVICE_HOSTNAME=inventory-service
       - INVENTORY_SERVICE_PORT=8087
+      - STAFF_SERVICE_HOSTNAME=staff-service
+      - STAFF_SERVICE_PORT=8085
     ports:
       - "8080:8080"
     depends_on:
+      - customer-service
+      - staff-service
       - customer-service
       - inventory-service
 
@@ -67,6 +81,26 @@ services:
       - "5437:5432"
     volumes:
       - ./.db/inventory-data:/var/lib/postgresql/data
+    healthcheck:
+      test: pg_isready -d poss_db -U poss
+      interval: 3s
+      retries: 4
+      start_period: 10s
+      timeout: 1s
+
+  staff-db:
+    image: postgres:14
+    restart: always
+    environment:
+      POSTGRES_USER: poss
+      POSTGRES_PASSWORD: poss
+      POSTGRES_DB: poss_db
+    expose:
+      - 5432
+    ports:
+      - "5435:5432"
+    volumes:
+      - ./.db/staff-data:/var/lib/postgresql/data
     healthcheck:
       test: pg_isready -d poss_db -U poss
       interval: 3s
