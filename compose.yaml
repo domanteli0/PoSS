@@ -45,7 +45,6 @@ services:
     depends_on:
       - customer-service
       - staff-service
-      - customer-service
       - inventory-service
 
   customer-db:
