@@ -9,6 +9,16 @@ services:
       customer-db:
         condition: service_healthy
 
+  order-management-service:
+    build:
+      dockerfile: order-management-service/Dockerfile
+      context: .
+    ports:
+      - "8088:8088"
+    depends_on:
+      order-management-db:
+        condition: service_healthy
+
   inventory-service:
     build:
       dockerfile: inventory-service/Dockerfile
@@ -50,12 +60,15 @@ services:
       - INVENTORY_SERVICE_PORT=8087
       - STAFF_SERVICE_HOSTNAME=staff-service
       - STAFF_SERVICE_PORT=8085
+      - ORDER_MANAGEMENT_SERVICE_HOSTNAME=order-management-service
+      - ORDER_MANAGEMENT_SERVICE_PORT=8088
       - PAYMENT_SERVICE_HOSTNAME=payment-service
       - PAYMENT_SERVICE_PORT=8084
     ports:
       - "8080:8080"
     depends_on:
       - customer-service
+      - order-management-service
       - staff-service
       - inventory-service
       - payment-service
@@ -73,6 +86,26 @@ services:
       - "5433:5432"
     volumes:
       - ./.db/customer-data:/var/lib/postgresql/data
+    healthcheck:
+      test: pg_isready -d poss_db -U poss
+      interval: 3s
+      retries: 4
+      start_period: 10s
+      timeout: 1s
+
+  order-management-db:
+    image: postgres:14
+    restart: always
+    environment:
+      POSTGRES_USER: poss
+      POSTGRES_PASSWORD: poss
+      POSTGRES_DB: poss_db
+    expose:
+      - 5432
+    ports:
+      - "5438:5432"
+    volumes:
+      - ./.db/order-management-data:/var/lib/postgresql/data
     healthcheck:
       test: pg_isready -d poss_db -U poss
       interval: 3s

@@ -1,11 +1,16 @@
 package com.spaghettininjas.yaposs;
 
+import io.swagger.v3.oas.annotations.OpenAPIDefinition;
+import io.swagger.v3.oas.models.OpenAPI;
+import io.swagger.v3.oas.models.info.Info;
+import io.swagger.v3.oas.models.servers.Server;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 import org.springframework.context.annotation.Bean;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.crypto.password.DelegatingPasswordEncoder;
 import org.springframework.security.crypto.password.PasswordEncoder;
+import org.springframework.web.servlet.config.annotation.EnableWebMvc;
 
 import java.util.HashMap;
 import java.util.Map;
@@ -24,5 +29,13 @@ public class StaffService {
 
 		return new DelegatingPasswordEncoder("bcrypt", encoders);
 	}
+
+	@Bean
+	public OpenAPI springShopOpenAPI() {
+		return new OpenAPI()
+			.info(new Info().title("Customer service"))
+			.addServersItem(new Server().url("http://localhost:8080"));
+	}
+
 
 }
