@@ -1,11 +1,10 @@
 package com.spaghettininjas.yaposs.order.processing.repository.order;
 
-
 import com.spaghettininjas.yaposs.order.processing.repository.item.OrderItem;
 import jakarta.persistence.*;
 import lombok.*;
-import org.springframework.format.annotation.DateTimeFormat;
 
+import java.util.Date;
 import java.util.List;
 import java.util.UUID;
 
@@ -27,12 +26,12 @@ public class Order {
     @OneToMany(mappedBy = "order", cascade = CascadeType.ALL, orphanRemoval = true)
     private List<OrderItem> items;
 
-    @DateTimeFormat(iso = DateTimeFormat.ISO.DATE_TIME)
-    private String dateTimeGMT;
+    private Date dateTimeGMT;
 
-    // needed for manually adding references to the order on POST and mapping from DTO
+    // needed for manually adding references to the Order on POST and mapping from DTO
     public void setId(Long id) {
         if (id == null) {
+            // generate id
             UUID uuid = UUID.randomUUID();
             long mostSignificantBits = uuid.getMostSignificantBits();
             long leastSignificantBits = uuid.getLeastSignificantBits();

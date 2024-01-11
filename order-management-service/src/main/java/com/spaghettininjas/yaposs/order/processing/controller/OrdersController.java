@@ -3,13 +3,15 @@ package com.spaghettininjas.yaposs.order.processing.controller;
 import com.spaghettininjas.yaposs.order.processing.repository.item.OrderItem;
 import com.spaghettininjas.yaposs.order.processing.repository.order.Order;
 import com.spaghettininjas.yaposs.order.processing.service.OrderService;
-import com.spaghettininjas.yaposs.standarts.DateTimeStandard;
+import org.springframework.format.annotation.DateTimeFormat;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 
+import java.time.Instant;
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.List;
 import java.util.Optional;
 
@@ -34,10 +36,9 @@ public class OrdersController {
     @GetMapping
     public ResponseEntity<Iterable<Order>> findAll(@RequestParam(required = false, defaultValue = "0") Integer page,
                                                    @RequestParam(required = false, defaultValue = "10") Integer pageSize,
-                                                   @RequestParam(required = false) String dateTimeFromGMT,
-                                                   @RequestParam(required = false) String dateTimeTillGMT) {
-        Iterable<Order> orders = service.findAll(page, pageSize,
-                DateTimeStandard.getDateTimeFromString(dateTimeFromGMT), DateTimeStandard.getDateTimeFromString(dateTimeTillGMT));
+                                                   @RequestParam(required = false) @DateTimeFormat(pattern = "yyyy-MM-dd HH:mm") Date dateTimeFromGMT,
+                                                   @RequestParam(required = false) @DateTimeFormat(pattern = "yyyy-MM-dd HH:mm") Date dateTimeTillGMT) {
+        Iterable<Order> orders = service.findAll(page, pageSize, dateTimeFromGMT, dateTimeTillGMT);
         return new ResponseEntity<>(orders, HttpStatus.OK);
     }
 
@@ -49,7 +50,7 @@ public class OrdersController {
     @PostMapping
     public ResponseEntity<Order> addOrder(@RequestBody Order order) {
         if (order.getDateTimeGMT() == null) {
-            order.setDateTimeGMT(DateTimeStandard.getCurrentFormattedDateTime());
+            order.setDateTimeGMT(Date.from(Instant.now()));
         }
         // generate ids and set them to reference order in items
         order.setId(null);

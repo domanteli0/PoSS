@@ -3,6 +3,8 @@ package com.spaghettininjas.yaposs.order.processing.repository.order;
 
 import lombok.*;
 
+import java.util.Date;
+
 @Data
 @Builder
 public class OrderDTO {
@@ -10,5 +12,5 @@ public class OrderDTO {
 
     private Long staffUserId;
 
-    private String dateTimeGMT;
+    private Date dateTimeGMT;
 }

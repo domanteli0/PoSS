@@ -5,7 +5,7 @@ import com.spaghettininjas.yaposs.enums.StatusEnum;
 import com.spaghettininjas.yaposs.order.processing.repository.order.Order;
 import jakarta.persistence.*;
 import lombok.*;
-import org.springframework.format.annotation.DateTimeFormat;
+import java.util.Date;
 
 
 @Getter
@@ -22,13 +22,11 @@ public class Appointment {
 
     private Long customerId;
 
-    @OneToOne
+    @OneToOne(mappedBy = "appointment", cascade = CascadeType.ALL, orphanRemoval = true)
     @JoinColumn(name = "poss_order_id", referencedColumnName = "id")
     private Order order;
 
-    // Appointed date time should be written in the order
-    @DateTimeFormat(iso = DateTimeFormat.ISO.DATE_TIME)
-    private String dateTimeGMT;
+    private Date dateTimeGMT;
 
     private Integer durationMinutes;
 

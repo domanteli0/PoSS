@@ -9,7 +9,7 @@ import org.springframework.data.domain.Sort;
 import org.springframework.data.jpa.domain.Specification;
 import org.springframework.stereotype.Service;
 
-import java.time.LocalDateTime;
+import java.util.Date;
 import java.util.Optional;
 
 import static com.spaghettininjas.yaposs.order.processing.repository.order.OrderSpecification.dateTimeGreaterThan;
@@ -27,8 +27,8 @@ public class OrderService {
         return repository.findById(id);
     }
 
-    public Iterable<Order> findAll(Integer page, Integer pageSize, @Nullable LocalDateTime fromDateTimeGMT, @Nullable LocalDateTime tillDateTimeGMT) {
-        Pageable pageable = PageRequest.of(page, pageSize, Sort.Direction.ASC, "name");
+    public Iterable<Order> findAll(Integer page, Integer pageSize, @Nullable Date fromDateTimeGMT, @Nullable Date tillDateTimeGMT) {
+        Pageable pageable = PageRequest.of(page, pageSize, Sort.Direction.ASC, "dateTimeGMT");
         Specification<Order> filters = Specification.where(fromDateTimeGMT == null ? null : dateTimeGreaterThan(fromDateTimeGMT))
                 .and(tillDateTimeGMT == null ? null : dateTimeLessThan(tillDateTimeGMT));
         return repository.findAll(filters, pageable).getContent();

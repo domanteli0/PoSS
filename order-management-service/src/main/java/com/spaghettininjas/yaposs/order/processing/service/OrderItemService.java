@@ -27,7 +27,7 @@ public class OrderItemService {
     }
 
     public Iterable<OrderItem> findAll(Integer page, Integer pageSize, @Nullable Double priceFloor, @Nullable Double priceCeiling) {
-        Pageable pageable = PageRequest.of(page, pageSize, Sort.Direction.ASC, "name");
+        Pageable pageable = PageRequest.of(page, pageSize, Sort.Direction.ASC, "priceOfUnit");
         Specification<OrderItem> filters = Specification.where(priceFloor == null ? null : priceGreaterThan(priceFloor))
                 .and(priceCeiling == null ? null : priceLessThan(priceCeiling));
         return repository.findAll(filters, pageable).getContent();

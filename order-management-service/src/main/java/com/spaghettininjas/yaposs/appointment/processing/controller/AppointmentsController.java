@@ -6,10 +6,12 @@ import com.spaghettininjas.yaposs.appointment.processing.repository.AppointmentD
 import com.spaghettininjas.yaposs.appointment.processing.service.AppointmentService;
 import com.spaghettininjas.yaposs.order.processing.repository.order.Order;
 import com.spaghettininjas.yaposs.order.processing.service.OrderService;
-import com.spaghettininjas.yaposs.standarts.DateTimeStandard;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
+
+import java.time.Instant;
+import java.util.Date;
 
 @RestController
 @RequestMapping("/api/Appointments")
@@ -37,10 +39,9 @@ public class AppointmentsController {
     @GetMapping
     public ResponseEntity<Iterable<Appointment>> findAll(@RequestParam(required = false, defaultValue = "0") Integer page,
                                                    @RequestParam(required = false, defaultValue = "10") Integer pageSize,
-                                                   @RequestParam(required = false) String fromDateTimeGMT,
-                                                   @RequestParam(required = false) String tillDateTimeGMT) {
-        Iterable<Appointment> appointments = service.findAll(page, pageSize,
-                DateTimeStandard.getDateTimeFromString(fromDateTimeGMT), DateTimeStandard.getDateTimeFromString(tillDateTimeGMT));
+                                                   @RequestParam(required = false) Date fromDateTimeGMT,
+                                                   @RequestParam(required = false) Date tillDateTimeGMT) {
+        Iterable<Appointment> appointments = service.findAll(page, pageSize, fromDateTimeGMT, tillDateTimeGMT);
         return new ResponseEntity<>(appointments, HttpStatus.OK);
     }
 
@@ -52,10 +53,14 @@ public class AppointmentsController {
     @PostMapping
     public ResponseEntity<Appointment> add(@RequestBody Appointment appointment) {
         if (appointment.getDateTimeGMT() == null) {
-            appointment.setDateTimeGMT(DateTimeStandard.getCurrentFormattedDateTime());
+            appointment.setDateTimeGMT(Date.from(Instant.now()));
         }
-        // create Order first before Appointment
+        // create Order in db first before Appointment
         Order order = appointment.getOrder();
+        // have to provide Order date-time
+        if (order.getDateTimeGMT() == null) {
+            return ResponseEntity.badRequest().build();
+        }
         order.setId(null);
         orderService.save(order);
         return ResponseEntity.status(HttpStatus.CREATED).body(service.save(appointment));
