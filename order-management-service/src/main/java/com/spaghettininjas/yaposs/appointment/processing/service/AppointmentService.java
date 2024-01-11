@@ -12,8 +12,7 @@ import org.springframework.stereotype.Service;
 import java.util.Date;
 import java.util.Optional;
 
-import static com.spaghettininjas.yaposs.appointment.processing.repository.AppointmentSpecification.dateTimeGreaterThan;
-import static com.spaghettininjas.yaposs.appointment.processing.repository.AppointmentSpecification.dateTimeLessThan;
+import static com.spaghettininjas.yaposs.appointment.processing.repository.AppointmentSpecification.*;
 
 @Service
 public class AppointmentService {
@@ -27,10 +26,12 @@ public class AppointmentService {
         return repository.findById(id);
     }
 
-    public Iterable<Appointment> findAll(Integer page, Integer pageSize, @Nullable Date fromDateTimeGMT, @Nullable Date tillDateTimeGMT) {
-        Pageable pageable = PageRequest.of(page, pageSize, Sort.Direction.ASC, "dateTimeGMT");
+    public Iterable<Appointment> findAll(Integer page, Integer pageSize, @Nullable Date fromDateTimeGMT,
+                                         @Nullable Date tillDateTimeGMT, @Nullable Long staffUserId) {
+        Pageable pageable = PageRequest.of(page, pageSize, Sort.Direction.ASC, "endDateTimeGMT");
         Specification<Appointment> filters = Specification.where(fromDateTimeGMT == null ? null : dateTimeGreaterThan(fromDateTimeGMT))
-                .and(tillDateTimeGMT == null ? null : dateTimeLessThan(tillDateTimeGMT));
+                .and(tillDateTimeGMT == null ? null : dateTimeLessThan(tillDateTimeGMT))
+                .and(staffUserId == null ? null : staffUserIdEqual(staffUserId));
         return repository.findAll(filters, pageable).getContent();
     }
 

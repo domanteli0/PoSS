@@ -28,7 +28,7 @@ public class OrderItemsController {
     }
 
     @GetMapping(path = "/{id}")
-    public ResponseEntity<OrderItem> getById(@PathVariable long id) {
+    public ResponseEntity<OrderItem> getById(@PathVariable Long id) {
         return service.findById(id)
                 .map(orderItem -> ResponseEntity.ok().body(orderItem))
                 .orElse(ResponseEntity.notFound().build());
@@ -44,7 +44,7 @@ public class OrderItemsController {
     }
 
     @DeleteMapping(path = "/{id}")
-    public void deleteById(@PathVariable long id){
+    public void deleteById(@PathVariable Long id){
         service.deleteById(id);
     }
 
@@ -53,6 +53,7 @@ public class OrderItemsController {
         if (orderItemDTO.getOrderId() == null) {
             return ResponseEntity.notFound().build();
         }
+        // attach existing order to this order-item by id
         Optional<Order> order = orderService.findById(orderItemDTO.getOrderId());
         if (order.isEmpty()) {
             return ResponseEntity.notFound().build();
@@ -68,7 +69,7 @@ public class OrderItemsController {
 
     @PutMapping(path = "/{id}")
     ResponseEntity<OrderItem> addOrUpdate(
-        @PathVariable long id,
+        @PathVariable Long id,
         @RequestBody OrderItemDTO dto
     ) {
       dto.setId(id);

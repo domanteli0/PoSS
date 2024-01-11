@@ -12,5 +12,5 @@ public class OrderDTO {
 
     private Long staffUserId;
 
-    private Date dateTimeGMT;
+    private Date startDateTimeGMT;
 }

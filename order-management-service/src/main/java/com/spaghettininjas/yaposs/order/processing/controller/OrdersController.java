@@ -27,7 +27,7 @@ public class OrdersController {
     }
 
     @GetMapping(path = "/{id}")
-    public ResponseEntity<Order> getById(@PathVariable long id) {
+    public ResponseEntity<Order> getById(@PathVariable Long id) {
         return service.findById(id)
                 .map(order -> ResponseEntity.ok().body(order))
                 .orElse(ResponseEntity.notFound().build());
@@ -36,31 +36,33 @@ public class OrdersController {
     @GetMapping
     public ResponseEntity<Iterable<Order>> findAll(@RequestParam(required = false, defaultValue = "0") Integer page,
                                                    @RequestParam(required = false, defaultValue = "10") Integer pageSize,
-                                                   @RequestParam(required = false) @DateTimeFormat(pattern = "yyyy-MM-dd HH:mm") Date dateTimeFromGMT,
-                                                   @RequestParam(required = false) @DateTimeFormat(pattern = "yyyy-MM-dd HH:mm") Date dateTimeTillGMT) {
-        Iterable<Order> orders = service.findAll(page, pageSize, dateTimeFromGMT, dateTimeTillGMT);
+                                                   @RequestParam(required = false) @DateTimeFormat(pattern = "yyyy-MM-dd HH:mm") Date fromDateTimeGMT,
+                                                   @RequestParam(required = false) @DateTimeFormat(pattern = "yyyy-MM-dd HH:mm") Date tillDateTimeGMT,
+                                                   @RequestParam(required = false) Long staffUserId
+                                                   ) {
+        Iterable<Order> orders = service.findAll(page, pageSize, fromDateTimeGMT, tillDateTimeGMT, staffUserId);
         return new ResponseEntity<>(orders, HttpStatus.OK);
     }
 
     @DeleteMapping(path = "/{id}")
-    public void deleteById(@PathVariable long id){
+    public void deleteById(@PathVariable Long id){
         service.deleteById(id);
     }
 
     @PostMapping
     public ResponseEntity<Order> addOrder(@RequestBody Order order) {
-        if (order.getDateTimeGMT() == null) {
-            order.setDateTimeGMT(Date.from(Instant.now()));
+        if (order.getStartDateTimeGMT() == null) {
+            order.setStartDateTimeGMT(Date.from(Instant.now()));
         }
         // generate ids and set them to reference order in items
-        order.setId(null);
+        order.generateId();
         order.getItems().forEach(item -> item.setOrder(order));
         return ResponseEntity.status(HttpStatus.CREATED).body(service.save(order));
     }
 
     @PutMapping(path = "/{id}")
     ResponseEntity<Order> addOrUpdate(
-        @PathVariable long id,
+        @PathVariable Long id,
         @RequestBody Order order
     ) {
         Optional<Order> queriedOrder = service.findById(id);

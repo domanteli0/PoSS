@@ -3,6 +3,7 @@ package com.spaghettininjas.yaposs.appointment.processing.repository;
 import com.spaghettininjas.yaposs.enums.StatusEnum;
 import lombok.Builder;
 import lombok.Data;
+
 import java.util.Date;
 
 @Data
@@ -14,9 +15,7 @@ public class AppointmentDTO {
 
     private Long orderId;
 
-    private Date dateTimeGMT;
-
-    private Integer durationMinutes;
+    private Date endDateTimeGMT;
 
     private StatusEnum status;
 }

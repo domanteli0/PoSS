@@ -12,8 +12,7 @@ import org.springframework.stereotype.Service;
 import java.util.Date;
 import java.util.Optional;
 
-import static com.spaghettininjas.yaposs.order.processing.repository.order.OrderSpecification.dateTimeGreaterThan;
-import static com.spaghettininjas.yaposs.order.processing.repository.order.OrderSpecification.dateTimeLessThan;
+import static com.spaghettininjas.yaposs.order.processing.repository.order.OrderSpecification.*;
 
 @Service
 public class OrderService {
@@ -27,10 +26,14 @@ public class OrderService {
         return repository.findById(id);
     }
 
-    public Iterable<Order> findAll(Integer page, Integer pageSize, @Nullable Date fromDateTimeGMT, @Nullable Date tillDateTimeGMT) {
-        Pageable pageable = PageRequest.of(page, pageSize, Sort.Direction.ASC, "dateTimeGMT");
+    public Iterable<Order> findAll(Integer page, Integer pageSize,
+                                   @Nullable Date fromDateTimeGMT,
+                                   @Nullable Date tillDateTimeGMT,
+                                   @Nullable Long staffUserId) {
+        Pageable pageable = PageRequest.of(page, pageSize, Sort.Direction.ASC, "startDateTimeGMT");
         Specification<Order> filters = Specification.where(fromDateTimeGMT == null ? null : dateTimeGreaterThan(fromDateTimeGMT))
-                .and(tillDateTimeGMT == null ? null : dateTimeLessThan(tillDateTimeGMT));
+                .and(tillDateTimeGMT == null ? null : dateTimeLessThan(tillDateTimeGMT))
+                .and(staffUserId == null ? null : staffUserIdEqual(staffUserId));
         return repository.findAll(filters, pageable).getContent();
     }
 

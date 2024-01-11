@@ -5,6 +5,8 @@ import com.spaghettininjas.yaposs.enums.StatusEnum;
 import com.spaghettininjas.yaposs.order.processing.repository.order.Order;
 import jakarta.persistence.*;
 import lombok.*;
+import org.springframework.format.annotation.DateTimeFormat;
+
 import java.util.Date;
 
 
@@ -22,13 +24,13 @@ public class Appointment {
 
     private Long customerId;
 
-    @OneToOne(mappedBy = "appointment", cascade = CascadeType.ALL, orphanRemoval = true)
-    @JoinColumn(name = "poss_order_id", referencedColumnName = "id")
+    @OneToOne
+    @JoinColumn(name = "appointment_id")
     private Order order;
 
-    private Date dateTimeGMT;
-
-    private Integer durationMinutes;
+    // when order ends, start of order is specified in Order entity
+    @DateTimeFormat(pattern = "yyyy-MM-dd HH:mm")
+    private Date endDateTimeGMT;
 
     private StatusEnum status;
 }

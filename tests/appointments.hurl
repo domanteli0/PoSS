@@ -1,6 +1,6 @@
 POST http://localhost:8088/api/Appointments
 {
-    "durationMinutes": 30,
+    "endDateTimeGMT": "2024-01-20 14:00:00",
     "status": 0,
     "customerId": 101,
     "order": {
@@ -9,7 +9,7 @@ POST http://localhost:8088/api/Appointments
             {"name":"steak", "quantity": 2, "priceOfUnit": 1.2},
             {"name":"coke", "quantity": 1, "priceOfUnit": 300.2}
         ],
-        "dateTimeGMT": "2024-01-20 14:00:00"
+        "startDateTimeGMT": "2024-01-20 14:00:00"
     }
 }
 HTTP 201
@@ -18,14 +18,14 @@ id: jsonpath "$.id"
 
 PUT http://localhost:8088/api/Appointments/{{id}}
 {
-    "durationMinutes": 60
+    "customerId": 102
 }
 HTTP 200
 
 GET http://localhost:8088/api/Appointments/{{id}}
 HTTP 200
 [Asserts]
-jsonpath "$.durationMinutes" == 60
+jsonpath "$.customerId" == 102
 
 DELETE http://localhost:8088/api/Appointments/{{id}}
 
