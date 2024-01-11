@@ -1,7 +1,6 @@
 POST http://localhost:8088/api/Appointments
 {
     "endDateTimeGMT": "2024-01-20 14:00:00",
-    "status": 0,
     "customerId": 101,
     "order": {
         "staffUserId": 2,

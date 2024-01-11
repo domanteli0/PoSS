@@ -1,7 +1,6 @@
 POST http://localhost:8088/api/Appointments
 {
     "endDateTimeGMT": "2024-01-20 14:00:00",
-    "status": 0,
     "customerId": 101,
     "order": {
         "staffUserId": 1,
@@ -19,7 +18,6 @@ id1: jsonpath "$.id"
 POST http://localhost:8088/api/Appointments
 {
     "endDateTimeGMT": "2024-01-20 16:00",
-    "status": 0,
     "customerId": 102,
     "order": {
         "staffUserId": 2,
@@ -37,7 +35,6 @@ id2: jsonpath "$.id"
 POST http://localhost:8088/api/Appointments
 {
     "endDateTimeGMT": "2024-01-20 18:00",
-    "status": 0,
     "customerId": 103,
     "order": {
         "staffUserId": 2,
@@ -56,7 +53,6 @@ id3: jsonpath "$.id"
 POST http://localhost:8088/api/Appointments
 {
     "endDateTimeGMT": "2024-01-20 17:00",
-    "status": 0,
     "customerId": 104,
     "order": {
         "staffUserId": 3,

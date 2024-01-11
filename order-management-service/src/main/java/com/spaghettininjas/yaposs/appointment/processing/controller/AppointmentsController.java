@@ -6,7 +6,6 @@ import com.spaghettininjas.yaposs.appointment.processing.repository.AppointmentD
 import com.spaghettininjas.yaposs.appointment.processing.service.AppointmentService;
 import com.spaghettininjas.yaposs.order.processing.repository.order.Order;
 import com.spaghettininjas.yaposs.order.processing.service.OrderService;
-import lombok.extern.java.Log;
 import org.apache.commons.lang3.time.DateUtils;
 import org.springframework.format.annotation.DateTimeFormat;
 import org.springframework.http.HttpStatus;
@@ -15,7 +14,6 @@ import org.springframework.web.bind.annotation.*;
 
 import java.util.Date;
 
-@Log
 @RestController
 @RequestMapping("/api/Appointments")
 public class AppointmentsController {
@@ -79,9 +77,9 @@ public class AppointmentsController {
         }
         // create Order in db first before Appointment
         order.generateId();
+        order.getItems().forEach(item -> item.setOrder(order));
         orderService.save(order);
-        return ResponseEntity.status(HttpStatus.CREATED).header("objects: "
-        ).body(service.save(appointment));
+        return ResponseEntity.status(HttpStatus.CREATED).body(service.save(appointment));
     }
 
     @PutMapping(path = "/{id}")

@@ -57,6 +57,13 @@ public class ApiGatewayApplication {
                             .filters(f -> f.rewritePath("/api/Appointments/(?<segment>.*)", "/api/Appointments/${segment}"))
                             .uri("http://" + orderManagementServiceHostname + ":" + orderManagementServicePort)
             )
+            .route(
+                    "order-management-service",
+                    p -> p
+                            .path("/api/AppointmentTimes/**")
+                            .filters(f -> f.rewritePath("/api/AppointmentTimes/(?<segment>.*)", "/api/AppointmentTimes/${segment}"))
+                            .uri("http://" + orderManagementServiceHostname + ":" + orderManagementServicePort)
+            )
             .build();
     }
 

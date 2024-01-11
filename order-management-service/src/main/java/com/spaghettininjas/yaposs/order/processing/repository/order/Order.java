@@ -1,11 +1,11 @@
 package com.spaghettininjas.yaposs.order.processing.repository.order;
 
+import com.spaghettininjas.yaposs.enums.OrderStatusEnum;
 import com.spaghettininjas.yaposs.order.processing.repository.item.OrderItem;
 import jakarta.persistence.*;
 import lombok.*;
 import org.springframework.format.annotation.DateTimeFormat;
 
-import java.time.LocalDateTime;
 import java.util.Date;
 import java.util.List;
 import java.util.UUID;
@@ -31,6 +31,9 @@ public class Order {
     // when order started
     @DateTimeFormat(pattern = "yyyy-MM-dd HH:mm")
     private Date startDateTimeGMT;
+
+    @Builder.Default
+    private OrderStatusEnum status = OrderStatusEnum.ACTIVE;
 
     // needed for manually adding references to the Order on POST and mapping from DTO
     public void generateId() {

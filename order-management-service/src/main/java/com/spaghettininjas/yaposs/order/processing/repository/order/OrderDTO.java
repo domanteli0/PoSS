@@ -1,6 +1,7 @@
 package com.spaghettininjas.yaposs.order.processing.repository.order;
 
 
+import com.spaghettininjas.yaposs.enums.OrderStatusEnum;
 import lombok.*;
 
 import java.util.Date;
@@ -13,4 +14,6 @@ public class OrderDTO {
     private Long staffUserId;
 
     private Date startDateTimeGMT;
+
+    private OrderStatusEnum status;
 }
