@@ -17,6 +17,24 @@ services:
       - "8088:8088"
     depends_on:
       order-management-db:
+  inventory-service:
+    build:
+      dockerfile: inventory-service/Dockerfile
+      context: .
+    ports:
+      - "8087:8087"
+    depends_on:
+      inventory-db:
+        condition: service_healthy
+
+  staff-service:
+    build:
+      dockerfile: staff-service/Dockerfile
+      context: .
+    ports:
+      - "8085:8085"
+    depends_on:
+      staff-db:
         condition: service_healthy
 
   api-gateway:
@@ -25,8 +43,11 @@ services:
       context: .
     environment:
       -
-        SPRING_APPLICATION_JSON={
-        "customerService":{"hostname":"customer-service","port":8081}}
+       SPRING_APPLICATION_JSON={"customerService":{"hostname":"customer-service","port":8081}}
+      - INVENTORY_SERVICE_HOSTNAME=inventory-service
+      - INVENTORY_SERVICE_PORT=8087
+      - STAFF_SERVICE_HOSTNAME=staff-service
+      - STAFF_SERVICE_PORT=8085
       - ORDER_MANAGEMENT_SERVICE_HOSTNAME=order-management-service
       - ORDER_MANAGEMENT_SERVICE_PORT=8088
     ports:
@@ -34,6 +55,8 @@ services:
     depends_on:
       - customer-service
       - order-management-service
+      - staff-service
+      - inventory-service
 
   customer-db:
     image: postgres:14
@@ -54,8 +77,28 @@ services:
       retries: 4
       start_period: 10s
       timeout: 1s
-
+      
   order-management-db:
+  image: postgres:14
+  restart: always
+  environment:
+    POSTGRES_USER: poss
+    POSTGRES_PASSWORD: poss
+    POSTGRES_DB: poss_db
+  expose:
+    - 5432
+  ports:
+    - "5438:5432"
+  volumes:
+    - ./.db/order-management-data:/var/lib/postgresql/data
+  healthcheck:
+    test: pg_isready -d poss_db -U poss
+    interval: 3s
+    retries: 4
+    start_period: 10s
+    timeout: 1s
+
+  inventory-db:
     image: postgres:14
     restart: always
     environment:
@@ -65,9 +108,29 @@ services:
     expose:
       - 5432
     ports:
-      - "5438:5432"
+      - "5437:5432"
     volumes:
-      - ./.db/order-management-data:/var/lib/postgresql/data
+      - ./.db/inventory-data:/var/lib/postgresql/data
+    healthcheck:
+      test: pg_isready -d poss_db -U poss
+      interval: 3s
+      retries: 4
+      start_period: 10s
+      timeout: 1s
+
+  staff-db:
+    image: postgres:14
+    restart: always
+    environment:
+      POSTGRES_USER: poss
+      POSTGRES_PASSWORD: poss
+      POSTGRES_DB: poss_db
+    expose:
+      - 5432
+    ports:
+      - "5435:5432"
+    volumes:
+      - ./.db/staff-data:/var/lib/postgresql/data
     healthcheck:
       test: pg_isready -d poss_db -U poss
       interval: 3s

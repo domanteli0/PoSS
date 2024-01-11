@@ -1,6 +1,5 @@
 package com.spaghettininjas.yaposs;
 
-import com.google.protobuf.util.JsonFormat;
 import io.swagger.v3.oas.annotations.OpenAPIDefinition;
 import io.swagger.v3.oas.models.OpenAPI;
 import io.swagger.v3.oas.models.info.Info;
@@ -8,25 +7,27 @@ import io.swagger.v3.oas.models.servers.Server;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 import org.springframework.context.annotation.Bean;
-import org.springframework.http.converter.protobuf.ProtobufHttpMessageConverter;
-import org.springframework.http.converter.protobuf.ProtobufJsonFormatHttpMessageConverter;
+import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
+import org.springframework.security.crypto.password.DelegatingPasswordEncoder;
+import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.web.servlet.config.annotation.EnableWebMvc;
 
+import java.util.HashMap;
+import java.util.Map;
+
 @SpringBootApplication
-@OpenAPIDefinition()
-@EnableWebMvc
-public class CustomerService {
+public class StaffService {
 
 	public static void main(String[] args) {
-		SpringApplication.run(CustomerService.class, args);
+		SpringApplication.run(StaffService.class, args);
 	}
 
 	@Bean
-	ProtobufHttpMessageConverter protobufHttpMessageConverter() {
-		return new ProtobufJsonFormatHttpMessageConverter(
-				JsonFormat.parser().ignoringUnknownFields(),
-				JsonFormat.printer().omittingInsignificantWhitespace()
-		);
+	public PasswordEncoder passwordEncoder() {
+		Map<String, PasswordEncoder> encoders = new HashMap<>();
+		encoders.put("bcrypt", new BCryptPasswordEncoder());
+
+		return new DelegatingPasswordEncoder("bcrypt", encoders);
 	}
 
 	@Bean
@@ -35,5 +36,6 @@ public class CustomerService {
 			.info(new Info().title("Customer service"))
 			.addServersItem(new Server().url("http://localhost:8080"));
 	}
+
 
 }
