@@ -1,5 +1,6 @@
 package com.spaghettininjas.yaposs.controller;
 
+import com.spaghettininjas.yaposs.dto.PaymentReceiptResponse;
 import com.spaghettininjas.yaposs.dto.TransactionUpdateRequest;
 import com.spaghettininjas.yaposs.entity.Transaction;
 import com.spaghettininjas.yaposs.service.PaymentsService;
@@ -44,7 +45,7 @@ public class PaymentController {
     }
 
     @PutMapping(path = "/{id}")
-    ResponseEntity<Transaction> updateTransaction(
+    public ResponseEntity<Transaction> updateTransaction(
             @PathVariable Long id,
             @RequestBody TransactionUpdateRequest transactionUpdateRequest
     ) {
@@ -53,5 +54,12 @@ public class PaymentController {
             return ResponseEntity.notFound().build();
         }
         return ResponseEntity.ok().body(updatedTransaction);
+    }
+    //TODO: need orders to calculate totalPrice.
+    @PutMapping(path = "/payment/{id}")
+    public PaymentReceiptResponse payForOrder(@PathVariable Long id) {
+        Transaction transaction = this.service.findById(id);
+        PaymentReceiptResponse receipt = this.service.payForOrder(transaction);
+        return receipt;
     }
 }

@@ -1,11 +1,13 @@
 package com.spaghettininjas.yaposs.service;
 
+import com.spaghettininjas.yaposs.dto.PaymentReceiptResponse;
 import com.spaghettininjas.yaposs.dto.StaffUserPasswordless;
 import com.spaghettininjas.yaposs.dto.TransactionUpdateRequest;
 import com.spaghettininjas.yaposs.entity.Transaction;
 import com.spaghettininjas.yaposs.exception.ApiException;
 import com.spaghettininjas.yaposs.repository.PaymentRepository;
 import com.spaghettininjas.yaposs.repository.specification.PaymentSpecification;
+import com.spaghettininjas.yaposs.utils.PaymentTypes;
 import io.micrometer.common.util.StringUtils;
 import jakarta.annotation.Nullable;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -53,7 +55,7 @@ public class PaymentsService {
     }
 
     public Transaction findById(Long id) {
-        System.out.print(restTemplate.exchange("http://api-gateway:8080/api/Staff/1", HttpMethod.GET, null,  StaffUserPasswordless.class));
+        restTemplate.exchange("http://api-gateway:8080/api/Staff/1", HttpMethod.GET, null,  StaffUserPasswordless.class);
         return this.repository.findById(id)
                 .orElseThrow(() -> ApiException.notFound("err.transaction.doesnt.exist"));
     }
@@ -77,6 +79,18 @@ public class PaymentsService {
                 .setTip(request.getTip())
                 .setTotalDiscount(request.getTotalDiscount());
         return this.repository.save(updatedTransaction);
+    }
+
+    public PaymentReceiptResponse payForOrder(Transaction transaction) {
+        PaymentReceiptResponse receipt = new PaymentReceiptResponse();
+
+        return receipt
+                .setTransactionId(transaction.getId())
+                .setTotalDiscount(transaction.getTotalDiscount())
+                .setTaxes(transaction.getTax())
+                .setTips(transaction.getTip())
+                .setChange(transaction.getPaymentType().equals(PaymentTypes.creditCard) ? 0 : 111) //TODO fix change
+                .setTotalPrice(transaction.getTotalDiscount());
     }
 
 }
