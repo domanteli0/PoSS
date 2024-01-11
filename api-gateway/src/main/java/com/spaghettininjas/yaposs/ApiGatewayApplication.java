@@ -17,6 +17,19 @@ public class ApiGatewayApplication {
     @Value("${customerService.port:8081}")
     private String customerServicePort;
 
+    @Value("${STAFF_SERVICE_HOSTNAME:localhost}")
+    private String staffServiceHostname;
+
+    @Value("${STAFF_SERVICE_PORT:8085}")
+    private String staffServicePort;
+
+    @Value("${INVENTORY_SERVICE_HOSTNAME:localhost}")
+    private String inventoryServiceHostname;
+
+    @Value("${INVENTORY_SERVICE_PORT:8087}")
+    private String inventoryServicePort;
+
+
     public static void main(String[] args) {
         SpringApplication.run(ApiGatewayApplication.class, args);
     }
@@ -36,6 +49,39 @@ public class ApiGatewayApplication {
                 p -> p
                     .path("/spec/Customers")
                     .uri("http://" + customerServiceHostname + ":" + customerServicePort)
+            )
+            .route(
+                "staff-service",
+                p -> p
+                    .path("/api/Staff/**")
+                    .filters(f -> f.rewritePath("/api/Staff/(?<segment>.*)", "/api/Staff/${segment}"))
+                    .uri("http://" + staffServiceHostname + ":" + staffServicePort)
+            )
+            .route(
+                "staff-service-openapi",
+                p -> p
+                    .path("/spec/Staff")
+                    .uri("http://" + staffServiceHostname + ":" + staffServicePort)
+            )
+            .route(
+                "inventory-service",
+                p -> p
+                    .path("/api/Inventory/**")
+                    .filters(f -> f.rewritePath("/api/Inventory/(?<segment>.*)", "/api/Inventory/${segment}"))
+                    .uri("http://" + inventoryServiceHostname + ":" + inventoryServicePort)
+            )
+            .route(
+                "products-service",
+                p -> p
+                    .path("/api/Products/**")
+                    .filters(f -> f.rewritePath("/api/Products/(?<segment>.*)", "/api/Products/${segment}"))
+                    .uri("http://" + inventoryServiceHostname + ":" + inventoryServicePort)
+            )
+            .route(
+                "inventory-service-openapi",
+                p -> p
+                    .path("/spec/Inventory")
+                    .uri("http://" + inventoryServiceHostname + ":" + inventoryServicePort)
             )
             .build();
     }
