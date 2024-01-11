@@ -72,11 +72,20 @@ public class ApiGatewayApplication {
                             .uri("http://" + orderManagementServiceHostname + ":" + orderManagementServicePort)
             )
             .route(
-                    "order-management-service",
+                "order-management-service",
+                p -> p
+                        .path("/api/AppointmentTimes/**")
+                        .filters(f -> f.rewritePath("/api/Appointments/(?<segment>.*)", "/api/AppointmentTimes/${segment}"))
+                        .uri("http://" + orderManagementServiceHostname + ":" + orderManagementServicePort)
+            )
+            .route(
+                    "customer-service",
                     p -> p
-                            .path("/api/AppointmentTimes/**")
-                            .filters(f -> f.rewritePath("/api/AppointmentTimes/(?<segment>.*)", "/api/AppointmentTimes/${segment}"))
-                            .uri("http://" + orderManagementServiceHostname + ":" + orderManagementServicePort)
+                            .path("/api/Customers/**")
+                            .filters(f -> f.rewritePath("/api/Customers/(?<segment>.*)", "/api/Customers/${segment}"))
+                            .uri("http://" + customerServiceHostname + ":" + customerServicePort)
+            )
+            .route(
                 "customer-service-openapi",
                 p -> p
                     .path("/spec/Customers")
