@@ -1,8 +1,8 @@
 name: tests
 run-name: Tests
-on: [pull_request]
+on: [pull_request, push]
 jobs:
-  postman-tests:
+  e2e-tests:
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v4
@@ -17,5 +17,15 @@ jobs:
           compose-file: "compose.yaml"
       - uses: gacts/install-hurl@v1
       # wait a minute for all services to be up
-      - run: sleep 30 && hurl --verbose tests/*.hurl
+      - run: sleep 30 && hurl --very-verbose tests/*.hurl
         shell: bash
+  unit-tests:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-java@v4
+        with:
+          distribution: temurin
+          java-version: 17
+      - uses: gradle/gradle-build-action@v2
+      - run: gradle staff-service:test
