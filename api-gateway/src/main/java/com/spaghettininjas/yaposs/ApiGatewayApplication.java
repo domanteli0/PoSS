@@ -17,6 +17,12 @@ public class ApiGatewayApplication {
     @Value("${customerService.port:8081}")
     private String customerServicePort;
 
+    @Value("${ORDER_MANAGEMENT_SERVICE_HOSTNAME:localhost}")
+    private String orderManagementServiceHostname;
+
+    @Value("${ORDER_MANAGEMENT_SERVICE_PORT:8088}")
+    private String orderManagementServicePort;
+  
     @Value("${STAFF_SERVICE_HOSTNAME:localhost}")
     private String staffServiceHostname;
 
@@ -28,7 +34,7 @@ public class ApiGatewayApplication {
 
     @Value("${INVENTORY_SERVICE_PORT:8087}")
     private String inventoryServicePort;
-
+  
 
     public static void main(String[] args) {
         SpringApplication.run(ApiGatewayApplication.class, args);
@@ -43,6 +49,41 @@ public class ApiGatewayApplication {
                     .path("/api/Customers/**")
                     .filters(f -> f.rewritePath("/api/Customers/(?<segment>.*)", "/api/Customers/${segment}"))
                     .uri("http://" + customerServiceHostname + ":" + customerServicePort)
+            )
+            .route(
+                    "order-management-service",
+                p -> p
+                        .path("/api/Orders/**")
+                        .filters(f -> f.rewritePath("/api/Orders/(?<segment>.*)", "/api/Orders/${segment}"))
+                        .uri("http://" + orderManagementServiceHostname + ":" + orderManagementServicePort)
+            )
+            .route(
+                    "order-management-service",
+                    p -> p
+                            .path("/api/OrderItems/**")
+                            .filters(f -> f.rewritePath("/api/OrderItems/(?<segment>.*)", "/api/OrderItems/${segment}"))
+                            .uri("http://" + orderManagementServiceHostname + ":" + orderManagementServicePort)
+            )
+            .route(
+                    "order-management-service",
+                    p -> p
+                            .path("/api/Appointments/**")
+                            .filters(f -> f.rewritePath("/api/Appointments/(?<segment>.*)", "/api/Appointments/${segment}"))
+                            .uri("http://" + orderManagementServiceHostname + ":" + orderManagementServicePort)
+            )
+            .route(
+                "order-management-service",
+                p -> p
+                        .path("/api/AppointmentTimes/**")
+                        .filters(f -> f.rewritePath("/api/Appointments/(?<segment>.*)", "/api/AppointmentTimes/${segment}"))
+                        .uri("http://" + orderManagementServiceHostname + ":" + orderManagementServicePort)
+            )
+            .route(
+                    "customer-service",
+                    p -> p
+                            .path("/api/Customers/**")
+                            .filters(f -> f.rewritePath("/api/Customers/(?<segment>.*)", "/api/Customers/${segment}"))
+                            .uri("http://" + customerServiceHostname + ":" + customerServicePort)
             )
             .route(
                 "customer-service-openapi",
