@@ -8,6 +8,7 @@ import org.springframework.cloud.gateway.route.builder.RouteLocatorBuilder;
 import org.springframework.context.annotation.Bean;
 
 @SpringBootApplication
+//@EnableWebFlux
 public class ApiGatewayApplication {
 
     @Value("${customerService.hostname:localhost}")
@@ -44,6 +45,12 @@ public class ApiGatewayApplication {
                     .uri("http://" + customerServiceHostname + ":" + customerServicePort)
             )
             .route(
+                "customer-service-openapi",
+                p -> p
+                    .path("/spec/Customers")
+                    .uri("http://" + customerServiceHostname + ":" + customerServicePort)
+            )
+            .route(
                 "staff-service",
                 p -> p
                     .path("/api/Staff/**")
@@ -51,20 +58,31 @@ public class ApiGatewayApplication {
                     .uri("http://" + staffServiceHostname + ":" + staffServicePort)
             )
             .route(
-                "inventory-service",
+                "staff-service-openapi",
                 p -> p
-                    .path("/api/Inventory/**")
-                    .filters(f -> f.rewritePath("/api/Inventory/(?<segment>.*)", "/api/Inventory/${segment}"))
-                    .uri("http://" + inventoryServiceHostname + ":" + inventoryServicePort) // добавить порт
+                    .path("/spec/Staff")
+                    .uri("http://" + staffServiceHostname + ":" + staffServicePort)
             )
             .route(
                 "inventory-service",
                 p -> p
+                    .path("/api/Inventory/**")
+                    .filters(f -> f.rewritePath("/api/Inventory/(?<segment>.*)", "/api/Inventory/${segment}"))
+                    .uri("http://" + inventoryServiceHostname + ":" + inventoryServicePort)
+            )
+            .route(
+                "products-service",
+                p -> p
                     .path("/api/Products/**")
                     .filters(f -> f.rewritePath("/api/Products/(?<segment>.*)", "/api/Products/${segment}"))
-                    .uri("http://" + inventoryServiceHostname + ":" + inventoryServicePort) // добавить порт
+                    .uri("http://" + inventoryServiceHostname + ":" + inventoryServicePort)
+            )
+            .route(
+                "inventory-service-openapi",
+                p -> p
+                    .path("/spec/Inventory")
+                    .uri("http://" + inventoryServiceHostname + ":" + inventoryServicePort)
             )
             .build();
     }
-
 }
