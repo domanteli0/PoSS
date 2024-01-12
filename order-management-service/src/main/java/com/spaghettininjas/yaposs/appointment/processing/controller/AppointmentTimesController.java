@@ -1,5 +1,6 @@
 package com.spaghettininjas.yaposs.appointment.processing.controller;
 
+import com.fasterxml.jackson.annotation.JsonFormat;
 import com.spaghettininjas.yaposs.appointment.processing.repository.Appointment;
 import com.spaghettininjas.yaposs.appointment.processing.repository.AppointmentTimeDTO;
 import com.spaghettininjas.yaposs.appointment.processing.service.AppointmentService;
@@ -29,10 +30,16 @@ public class AppointmentTimesController {
     }
 
     @GetMapping
-    public ResponseEntity<Iterable<AppointmentTimeDTO>> findAll(@RequestParam Long staffUserId, @RequestParam(required = false, defaultValue = "0") Integer page,
-                                                         @RequestParam(required = false, defaultValue = "10") Integer pageSize,
-                                                         @RequestParam(required = false) @DateTimeFormat(pattern = "yyyy-MM-dd HH:mm") Date tillDateTimeGMT
-                                                         ) {
+    public ResponseEntity<Iterable<AppointmentTimeDTO>> findAll(
+        @RequestParam Long staffUserId, @RequestParam(required = false, defaultValue = "0") Integer page,
+
+        @RequestParam(required = false, defaultValue = "10") Integer pageSize,
+
+        @RequestParam(required = false)
+        @DateTimeFormat(pattern = "yyyy-MM-dd HH:mm")
+        @JsonFormat(shape=JsonFormat.Shape.STRING, pattern="yyyy-MM-dd HH:mm:ss")
+        Date tillDateTimeGMT
+    ) {
         Iterable<Appointment> appointments = service.findAll(page, pageSize, Date.from(Instant.now()), tillDateTimeGMT, staffUserId);
         Iterator<Appointment> appointmentIterator = appointments.iterator();
         List<AppointmentTimeDTO> appointmentTimeDTOS = new ArrayList<>();

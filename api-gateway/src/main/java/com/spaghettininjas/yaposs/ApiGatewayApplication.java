@@ -81,7 +81,7 @@ public class ApiGatewayApplication {
             .route(
                 "order-management-service-openapi",
                 p -> p
-                    .path("/spec/Order")
+                    .path("/spec/OrderManagement")
                     .uri("http://" + orderManagementServiceHostname + ":" + orderManagementServicePort)
             )
             .route(

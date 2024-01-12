@@ -1,5 +1,6 @@
 package com.spaghettininjas.yaposs.order.processing.repository.order;
 
+import com.fasterxml.jackson.annotation.JsonFormat;
 import com.spaghettininjas.yaposs.enums.OrderStatusEnum;
 import com.spaghettininjas.yaposs.order.processing.repository.item.OrderItem;
 import jakarta.persistence.*;
@@ -29,7 +30,8 @@ public class Order {
     private List<OrderItem> items;
 
     // when order started
-    @DateTimeFormat(pattern = "yyyy-MM-dd HH:mm")
+    @DateTimeFormat(pattern = "yyyy-MM-dd HH:mm:ss")
+    @JsonFormat(shape=JsonFormat.Shape.STRING, pattern="yyyy-MM-dd HH:mm:ss")
     private Date startDateTimeGMT;
 
     @Builder.Default
