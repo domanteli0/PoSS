@@ -44,7 +44,7 @@ services:
       dockerfile: payment-service/Dockerfile
       context: .
     ports:
-      - "8084:8084"
+      - "8090:8090"
     depends_on:
       payment-db:
         condition: service_healthy

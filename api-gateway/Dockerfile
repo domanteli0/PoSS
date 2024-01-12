@@ -5,7 +5,7 @@ EXPOSE 8080
 ## Use this if you want to just copy the executable
 COPY api-gateway/build/libs/api-gateway.jar app.jar
 COPY api-gateway/build/resources resources
-CMD java -jar app.jar
+CMD java -jar app.jar --debug
 
 ## Use this if you want to build in docker
 #WORKDIR /app
