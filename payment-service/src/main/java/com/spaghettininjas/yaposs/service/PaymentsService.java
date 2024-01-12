@@ -1,13 +1,12 @@
 package com.spaghettininjas.yaposs.service;
 
 import com.spaghettininjas.yaposs.dto.PaymentReceiptResponse;
-import com.spaghettininjas.yaposs.dto.StaffUserPasswordless;
 import com.spaghettininjas.yaposs.dto.TransactionUpdateRequest;
 import com.spaghettininjas.yaposs.entity.Transaction;
 import com.spaghettininjas.yaposs.exception.ApiException;
 import com.spaghettininjas.yaposs.repository.PaymentRepository;
 import com.spaghettininjas.yaposs.repository.specification.PaymentSpecification;
-import com.spaghettininjas.yaposs.utils.PaymentTypes;
+import com.spaghettininjas.yaposs.utils.PaymentTypesEnum;
 import io.micrometer.common.util.StringUtils;
 import jakarta.annotation.Nullable;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -15,7 +14,7 @@ import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.domain.Sort;
 import org.springframework.data.jpa.domain.Specification;
-import org.springframework.http.HttpMethod;
+import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Service;
 import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.client.RestTemplate;
@@ -33,6 +32,8 @@ public class PaymentsService {
     private RestTemplate restTemplate;
 
     public final PaymentRepository repository;
+
+    public final double taxes = 0.21;
 
     public PaymentsService(PaymentRepository repository) {
         this.repository = repository;
@@ -55,7 +56,6 @@ public class PaymentsService {
     }
 
     public Transaction findById(Long id) {
-        restTemplate.exchange("http://api-gateway:8080/api/Staff/1", HttpMethod.GET, null,  StaffUserPasswordless.class);
         return this.repository.findById(id)
                 .orElseThrow(() -> ApiException.notFound("err.transaction.doesnt.exist"));
     }
@@ -81,16 +81,38 @@ public class PaymentsService {
         return this.repository.save(updatedTransaction);
     }
 
-    public PaymentReceiptResponse payForOrder(Transaction transaction) {
-        PaymentReceiptResponse receipt = new PaymentReceiptResponse();
+    public PaymentReceiptResponse payForOrder(Transaction transaction, Long moneyAmount) {
+//        Order order = restTemplate.exchange("http://api-gateway:8080/api/Staff/" + transaction.getOrderId()
+//                , HttpMethod.GET, null,  Order.class).getBody();
+        double totalPrice = 100;
+        //TODO: Add update status endpoint for Order.
+//        Order updatedOrder = restTemplate.exchange("http://api-gateway:8080/api/Orders/" + transaction.getOrderId()
+//                , HttpMethod.GET, null,  Order.class).getBody();
 
-        return receipt
+
+        PaymentReceiptResponse receipt = new PaymentReceiptResponse()
                 .setTransactionId(transaction.getId())
-                .setTotalDiscount(transaction.getTotalDiscount())
-                .setTaxes(transaction.getTax())
+                .setTotalDiscount(transaction.getTotalDiscount()) //TODO: Add discounts enum
+                .setTaxes(totalPrice * taxes)
                 .setTips(transaction.getTip())
-                .setChange(transaction.getPaymentType().equals(PaymentTypes.creditCard) ? 0 : 111) //TODO fix change
-                .setTotalPrice(transaction.getTotalDiscount());
+                .setTotalPrice(calculateTotalPrice(totalPrice, transaction.getTotalDiscount(), taxes, transaction.getTip()));
+            System.out.println("the money amount is: " + moneyAmount);
+        if(moneyAmount < receipt.getTotalPrice()) {
+//            updatedOrder.setStatus(OrderStatusEnum.CANCELED);
+//            restTemplate.put("http://api-gateway:8080/api/Orders/" + transaction.getOrderId()
+//                , updatedOrder);
+            throw new ApiException("err.payment.notEnoughMoney", HttpStatus.BAD_REQUEST);
+        }
+        receipt.setChange((transaction.getPaymentType().equals(PaymentTypesEnum.CASH.name())) ? (moneyAmount - receipt.getTotalPrice()) : 0);
+//        updatedOrder.setStatus(OrderStatusEnum.COMPLETE);
+//        restTemplate.put("http://api-gateway:8080/api/Orders/" + transaction.getOrderId()
+//                , updatedOrder);
+        return receipt;
+    }
+
+    public double calculateTotalPrice(double price, double discount, double taxes, double tips) {
+        double totalPrice = price + price * taxes - discount + tips;
+        return totalPrice >= 0 ? totalPrice : 0;
     }
 
 }

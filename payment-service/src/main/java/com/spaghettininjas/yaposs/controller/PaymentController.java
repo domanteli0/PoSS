@@ -57,9 +57,9 @@ public class PaymentController {
     }
     //TODO: need orders to calculate totalPrice.
     @PutMapping(path = "/payment/{id}")
-    public PaymentReceiptResponse payForOrder(@PathVariable Long id) {
+    public PaymentReceiptResponse payForOrder(@PathVariable Long id, @RequestParam(required = false, defaultValue = "0") Long moneyAmount) {
         Transaction transaction = this.service.findById(id);
-        PaymentReceiptResponse receipt = this.service.payForOrder(transaction);
+        PaymentReceiptResponse receipt = this.service.payForOrder(transaction, moneyAmount);
         return receipt;
     }
 }
