@@ -1,6 +1,7 @@
 package com.spaghettininjas.yaposs.appointment.processing.repository;
 
 
+import com.fasterxml.jackson.annotation.JsonFormat;
 import com.spaghettininjas.yaposs.order.processing.repository.order.Order;
 import jakarta.persistence.*;
 import lombok.*;
@@ -28,6 +29,7 @@ public class Appointment {
     private Order order;
 
     // when order ends, start of order is specified in Order entity
-    @DateTimeFormat(pattern = "yyyy-MM-dd HH:mm")
+    @DateTimeFormat(pattern = "yyyy-MM-dd HH:mm:ss")
+    @JsonFormat(shape=JsonFormat.Shape.STRING, pattern="yyyy-MM-dd HH:mm:ss")
     private Date endDateTimeGMT;
 }

@@ -1,5 +1,6 @@
 package com.spaghettininjas.yaposs.appointment.processing.controller;
 
+import com.fasterxml.jackson.annotation.JsonFormat;
 import com.spaghettininjas.yaposs.appointment.processing.repository.AppointmentMapper;
 import com.spaghettininjas.yaposs.appointment.processing.repository.Appointment;
 import com.spaghettininjas.yaposs.appointment.processing.repository.AppointmentDTO;
@@ -38,11 +39,23 @@ public class AppointmentsController {
     }
 
     @GetMapping
-    public ResponseEntity<Iterable<Appointment>> findAll(@RequestParam(required = false, defaultValue = "0") Integer page,
-                                                   @RequestParam(required = false, defaultValue = "10") Integer pageSize,
-                                                   @RequestParam(required = false) @DateTimeFormat(pattern = "yyyy-MM-dd HH:mm") Date fromDateTimeGMT,
-                                                   @RequestParam(required = false) @DateTimeFormat(pattern = "yyyy-MM-dd HH:mm") Date tillDateTimeGMT,
-                                                   @RequestParam(required = false) Long staffUserId) {
+    public ResponseEntity<Iterable<Appointment>> findAll(
+        @RequestParam(required = false, defaultValue = "0") Integer page,
+
+        @RequestParam(required = false, defaultValue = "10") Integer pageSize,
+
+        @RequestParam(required = false)
+        @DateTimeFormat(pattern = "yyyy-MM-dd HH:mm")
+        @JsonFormat(shape=JsonFormat.Shape.STRING, pattern="yyyy-MM-dd HH:mm:ss")
+        Date fromDateTimeGMT,
+
+        @RequestParam(required = false)
+        @DateTimeFormat(pattern = "yyyy-MM-dd HH:mm")
+        @JsonFormat(shape=JsonFormat.Shape.STRING, pattern="yyyy-MM-dd HH:mm:ss")
+        Date tillDateTimeGMT,
+
+        @RequestParam(required = false) Long staffUserId
+    ) {
         Iterable<Appointment> appointments = service.findAll(page, pageSize, fromDateTimeGMT, tillDateTimeGMT, staffUserId);
         return new ResponseEntity<>(appointments, HttpStatus.OK);
     }

@@ -1,6 +1,5 @@
 package com.spaghettininjas.yaposs;
 
-import io.swagger.v3.oas.annotations.OpenAPIDefinition;
 import io.swagger.v3.oas.models.OpenAPI;
 import io.swagger.v3.oas.models.info.Info;
 import io.swagger.v3.oas.models.servers.Server;
@@ -10,7 +9,6 @@ import org.springframework.context.annotation.Bean;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.crypto.password.DelegatingPasswordEncoder;
 import org.springframework.security.crypto.password.PasswordEncoder;
-import org.springframework.web.servlet.config.annotation.EnableWebMvc;
 
 import java.util.HashMap;
 import java.util.Map;
@@ -33,9 +31,8 @@ public class StaffService {
 	@Bean
 	public OpenAPI springShopOpenAPI() {
 		return new OpenAPI()
-			.info(new Info().title("Customer service"))
+			.info(new Info().title("Staff service"))
 			.addServersItem(new Server().url("http://localhost:8080"));
 	}
-
 
 }

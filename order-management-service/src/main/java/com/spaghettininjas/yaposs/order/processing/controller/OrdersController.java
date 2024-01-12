@@ -36,8 +36,8 @@ public class OrdersController {
     @GetMapping
     public ResponseEntity<Iterable<Order>> findAll(@RequestParam(required = false, defaultValue = "0") Integer page,
                                                    @RequestParam(required = false, defaultValue = "10") Integer pageSize,
-                                                   @RequestParam(required = false) @DateTimeFormat(pattern = "yyyy-MM-dd HH:mm") Date fromDateTimeGMT,
-                                                   @RequestParam(required = false) @DateTimeFormat(pattern = "yyyy-MM-dd HH:mm") Date tillDateTimeGMT,
+                                                   @RequestParam(required = false) @DateTimeFormat(pattern = "yyyy-MM-dd HH:mm:ss") Date fromDateTimeGMT,
+                                                   @RequestParam(required = false) @DateTimeFormat(pattern = "yyyy-MM-dd HH:mm:ss") Date tillDateTimeGMT,
                                                    @RequestParam(required = false) Long staffUserId
                                                    ) {
         Iterable<Order> orders = service.findAll(page, pageSize, fromDateTimeGMT, tillDateTimeGMT, staffUserId);
