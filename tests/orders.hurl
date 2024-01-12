@@ -22,7 +22,7 @@ HTTP 200
 GET http://localhost:8088/api/Orders/{{id}}
 HTTP 200
 [Asserts]
-jsonpath "$.staffUserId" == 3
+jsonpath "$.staffUserId" == 2
 jsonpath "$.items" count == 3
 jsonpath "$.items[2].name" == "sprite"
 

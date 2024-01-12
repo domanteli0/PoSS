@@ -110,6 +110,7 @@ public class OrdersController {
         Map<String, String> result = new HashMap<>();
         result.put("orderId", id.toString());
         result.put("newStatus", status.name());
+        service.save(existingOrder);
         return ResponseEntity.ok().body(result);
     }
 

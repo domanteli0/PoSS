@@ -6,6 +6,7 @@ import com.spaghettininjas.yaposs.entity.Transaction;
 import com.spaghettininjas.yaposs.exception.ApiException;
 import com.spaghettininjas.yaposs.repository.PaymentRepository;
 import com.spaghettininjas.yaposs.repository.specification.PaymentSpecification;
+import com.spaghettininjas.yaposs.utils.OrderStatusEnum;
 import com.spaghettininjas.yaposs.utils.PaymentTypesEnum;
 import io.micrometer.common.util.StringUtils;
 import jakarta.annotation.Nullable;
@@ -14,7 +15,9 @@ import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.domain.Sort;
 import org.springframework.data.jpa.domain.Specification;
+import org.springframework.http.HttpMethod;
 import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 import org.springframework.web.client.RestTemplate;
 
@@ -80,31 +83,25 @@ public class PaymentsService {
     }
 
     public PaymentReceiptResponse payForOrder(Transaction transaction, Long moneyAmount) {
-//        Order order = restTemplate.exchange("http://api-gateway:8080/api/Staff/" + transaction.getOrderId()
-//                , HttpMethod.GET, null,  Order.class).getBody();
-        double totalPrice = 100;
-        //TODO: Add update status endpoint for Order.
-//        Order updatedOrder = restTemplate.exchange("http://api-gateway:8080/api/Orders/" + transaction.getOrderId()
-//                , HttpMethod.GET, null,  Order.class).getBody();
-
-
+        ResponseEntity<Double> totalPrice = restTemplate.exchange("http://api-gateway:8080/api/Orders/totalPrice/" + transaction.getOrderId()
+                , HttpMethod.GET, null, Double.class);
+        if(totalPrice.getBody() == null) {
+            throw new ApiException(ERR_PREFIX + "order.notFound", HttpStatus.NOT_FOUND);
+        }
         PaymentReceiptResponse receipt = new PaymentReceiptResponse()
                 .setTransactionId(transaction.getId())
-                .setTotalDiscount(transaction.getTotalDiscount()) //TODO: Add discounts enum
-                .setTaxes(totalPrice * TAXES)
+                .setTotalDiscount(transaction.getTotalDiscount())
+                .setTaxes(totalPrice.getBody() * TAXES)
                 .setTips(transaction.getTip())
-                .setTotalPrice(calculateTotalPrice(totalPrice, transaction.getTotalDiscount(), TAXES, transaction.getTip()));
-            System.out.println("the money amount is: " + moneyAmount);
+                .setTotalPrice(calculateTotalPrice(totalPrice.getBody(), transaction.getTotalDiscount(), TAXES, transaction.getTip()));
         if(moneyAmount < receipt.getTotalPrice()) {
-//            updatedOrder.setStatus(OrderStatusEnum.CANCELED);
-//            restTemplate.put("http://api-gateway:8080/api/Orders/" + transaction.getOrderId()
-//                , updatedOrder);
+            restTemplate.put("http://api-gateway:8080/api/Orders/status/" + transaction.getOrderId()
+        + "?status=" + OrderStatusEnum.CANCELED, null);
             throw new ApiException(ERR_PREFIX + "notEnoughMoney", HttpStatus.BAD_REQUEST);
         }
         receipt.setChange((transaction.getPaymentType().equals(PaymentTypesEnum.CASH.name())) ? (moneyAmount - receipt.getTotalPrice()) : 0);
-//        updatedOrder.setStatus(OrderStatusEnum.COMPLETE);
-//        restTemplate.put("http://api-gateway:8080/api/Orders/" + transaction.getOrderId()
-//                , updatedOrder);
+        restTemplate.put("http://api-gateway:8080/api/Orders/status/" + transaction.getOrderId()
+                + "?status=" + OrderStatusEnum.COMPLETE, null);
         return receipt;
     }
 
