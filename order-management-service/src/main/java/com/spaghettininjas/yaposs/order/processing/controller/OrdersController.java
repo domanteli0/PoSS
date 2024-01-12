@@ -1,5 +1,6 @@
 package com.spaghettininjas.yaposs.order.processing.controller;
 
+import com.spaghettininjas.yaposs.enums.OrderStatusEnum;
 import com.spaghettininjas.yaposs.order.processing.repository.item.OrderItem;
 import com.spaghettininjas.yaposs.order.processing.repository.order.Order;
 import com.spaghettininjas.yaposs.order.processing.service.OrderService;
@@ -9,11 +10,9 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 
+import java.math.BigDecimal;
 import java.time.Instant;
-import java.util.ArrayList;
-import java.util.Date;
-import java.util.List;
-import java.util.Optional;
+import java.util.*;
 
 
 @RestController
@@ -54,7 +53,7 @@ public class OrdersController {
         if (order.getStartDateTimeGMT() == null) {
             order.setStartDateTimeGMT(Date.from(Instant.now()));
         }
-        // generate ids and set them to reference order in items
+        // generate id and set it in items to reference order
         order.generateId();
         order.getItems().forEach(item -> item.setOrder(order));
         return ResponseEntity.status(HttpStatus.CREATED).body(service.save(order));
@@ -74,7 +73,7 @@ public class OrdersController {
         };
         for (OrderItem item : order.getItems()) {
             if (item.getId() == null) {
-                // new id will be assigned in OrderItem db
+                // new ids for items will be assigned in OrderItem db
                 item.setId(existingOrder.getId());
                 item.setOrder(existingOrder);
                 itemsToAdd.add(item);
@@ -87,7 +86,48 @@ public class OrdersController {
                 }
             }
         }
+        if (order.getStatus() != null) {
+            existingOrder.setStatus(order.getStatus());
+        }
+        if (order.getStartDateTimeGMT() != null) {
+            existingOrder.setStartDateTimeGMT(order.getStartDateTimeGMT());
+        }
         existingOrder.addItems(itemsToAdd);
         return ResponseEntity.ok().body(service.save(existingOrder));
+    }
+
+    @PutMapping(path = "/status/{id}")
+    ResponseEntity<Map<String, String>> updateStatus(
+            @PathVariable Long id,
+            @RequestParam OrderStatusEnum status
+            ) {
+        Optional<Order> queriedOrder = service.findById(id);
+        if (queriedOrder.isEmpty()) {
+            return ResponseEntity.notFound().build();
+        }
+        Order existingOrder = queriedOrder.get();
+        existingOrder.setStatus(status);
+        Map<String, String> result = new HashMap<>();
+        result.put("orderId", id.toString());
+        result.put("newStatus", status.name());
+        return ResponseEntity.ok().body(result);
+    }
+
+    @GetMapping(path = "/totalPrice/{id}")
+    ResponseEntity<Double> getTotalPrice(
+            @PathVariable Long id
+    ) {
+        Optional<Order> queriedOrder = service.findById(id);
+        if (queriedOrder.isEmpty()) {
+            return ResponseEntity.notFound().build();
+        }
+        Order existingOrder = queriedOrder.get();
+        BigDecimal totalPrice = BigDecimal.ZERO;
+        for (OrderItem item : existingOrder.getItems()) {
+            totalPrice = totalPrice
+                    .add(BigDecimal.valueOf(item.getPriceOfUnit())
+                            .multiply(BigDecimal.valueOf(item.getQuantity())));
+        }
+        return ResponseEntity.ok().body(totalPrice.doubleValue());
     }
 }
