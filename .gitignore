@@ -2,10 +2,12 @@
 gradle/
 build/
 target/
+bin/
 gradlew.bat
 gradlew
 
 .idea/
+.vscode/
 
 postgres-data/
 .db/
