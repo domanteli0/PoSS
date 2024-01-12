@@ -22,7 +22,7 @@ public class ApiGatewayApplication {
 
     @Value("${ORDER_MANAGEMENT_SERVICE_PORT:8088}")
     private String orderManagementServicePort;
-  
+
     @Value("${STAFF_SERVICE_HOSTNAME:localhost}")
     private String staffServiceHostname;
 
@@ -34,7 +34,12 @@ public class ApiGatewayApplication {
 
     @Value("${INVENTORY_SERVICE_PORT:8087}")
     private String inventoryServicePort;
-  
+
+    @Value("${PAYMENT_SERVICE_HOSTNAME:localhost}")
+    private String paymentServiceHostname;
+
+    @Value("${PAYMENT_SERVICE_PORT:8084}")
+    private String paymentServicePort;
 
     public static void main(String[] args) {
         SpringApplication.run(ApiGatewayApplication.class, args);
@@ -129,6 +134,13 @@ public class ApiGatewayApplication {
                 p -> p
                     .path("/spec/Inventory")
                     .uri("http://" + inventoryServiceHostname + ":" + inventoryServicePort)
+            )
+            .route(
+                "payment-service",
+                p -> p
+                    .path("/api/Payments/**")
+                    .filters(f -> f.rewritePath("/api/Payments/(?<segment>.*)", "/api/Payments/${segment}"))
+                    .uri("http://" + paymentServiceHostname + ":" + paymentServicePort)
             )
             .build();
     }

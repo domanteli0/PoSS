@@ -12,7 +12,7 @@ id: jsonpath "$.id"
 
 PUT http://localhost:8088/api/Orders/{{id}}
 {
-    "staffUserId": 2,
+    "staffUserId": 3,
     "items": [
         {"name":"sprite", "quantity": 1, "priceOfUnit": 1.2}
     ]

@@ -39,6 +39,16 @@ services:
       staff-db:
         condition: service_healthy
 
+  payment-service:
+    build:
+      dockerfile: payment-service/Dockerfile
+      context: .
+    ports:
+      - "8084:8084"
+    depends_on:
+      payment-db:
+        condition: service_healthy
+
   api-gateway:
     build:
       dockerfile: api-gateway/Dockerfile
@@ -52,6 +62,8 @@ services:
       - STAFF_SERVICE_PORT=8085
       - ORDER_MANAGEMENT_SERVICE_HOSTNAME=order-management-service
       - ORDER_MANAGEMENT_SERVICE_PORT=8088
+      - PAYMENT_SERVICE_HOSTNAME=payment-service
+      - PAYMENT_SERVICE_PORT=8084
     ports:
       - "8080:8080"
     depends_on:
@@ -59,6 +71,7 @@ services:
       - order-management-service
       - staff-service
       - inventory-service
+      - payment-service
 
   customer-db:
     image: postgres:14
@@ -79,7 +92,7 @@ services:
       retries: 4
       start_period: 10s
       timeout: 1s
-      
+
   order-management-db:
     image: postgres:14
     restart: always
@@ -133,6 +146,26 @@ services:
       - "5435:5432"
     volumes:
       - ./.db/staff-data:/var/lib/postgresql/data
+    healthcheck:
+      test: pg_isready -d poss_db -U poss
+      interval: 3s
+      retries: 4
+      start_period: 10s
+      timeout: 1s
+
+  payment-db:
+    image: postgres:14
+    restart: always
+    environment:
+      POSTGRES_USER: poss
+      POSTGRES_PASSWORD: poss
+      POSTGRES_DB: poss_db
+    expose:
+      - 5432
+    ports:
+      - "5434:5432"
+    volumes:
+      - ./.db/payment-data:/var/lib/postgresql/data
     healthcheck:
       test: pg_isready -d poss_db -U poss
       interval: 3s
