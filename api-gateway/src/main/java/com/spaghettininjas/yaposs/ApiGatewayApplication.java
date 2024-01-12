@@ -38,7 +38,7 @@ public class ApiGatewayApplication {
     @Value("${PAYMENT_SERVICE_HOSTNAME:localhost}")
     private String paymentServiceHostname;
 
-    @Value("${PAYMENT_SERVICE_PORT:8084}")
+    @Value("${PAYMENT_SERVICE_PORT:8090}")
     private String paymentServicePort;
 
     public static void main(String[] args) {
