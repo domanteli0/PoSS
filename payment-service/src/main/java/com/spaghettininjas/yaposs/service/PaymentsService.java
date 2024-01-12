@@ -16,14 +16,11 @@ import org.springframework.data.domain.Sort;
 import org.springframework.data.jpa.domain.Specification;
 import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Service;
-import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.client.RestTemplate;
 
 import java.util.Optional;
 
 import static com.spaghettininjas.yaposs.repository.specification.PaymentSpecification.paymentTypeLike;
-
-@CrossOrigin(origins = "http://localhost:8080") // Specify your frontend origin
 
 @Service
 public class PaymentsService {
@@ -33,7 +30,8 @@ public class PaymentsService {
 
     public final PaymentRepository repository;
 
-    public final double taxes = 0.21;
+    public static final double TAXES = 0.21;
+    public static final String ERR_PREFIX= "err.payment.";
 
     public PaymentsService(PaymentRepository repository) {
         this.repository = repository;
@@ -57,12 +55,12 @@ public class PaymentsService {
 
     public Transaction findById(Long id) {
         return this.repository.findById(id)
-                .orElseThrow(() -> ApiException.notFound("err.transaction.doesnt.exist"));
+                .orElseThrow(() -> ApiException.notFound(ERR_PREFIX + "doesnt.exist"));
     }
 
     public void deleteById(Long id){
         if (!existsById(id)) {
-            throw ApiException.notFound("err.transaction.doesnt.exist");
+            throw ApiException.notFound(ERR_PREFIX + "doesnt.exist");
         }
         this.repository.deleteById(id);
     }
@@ -70,7 +68,7 @@ public class PaymentsService {
     public Transaction updateTransaction(Long id, TransactionUpdateRequest request) {
         Optional<Transaction> foundTransaction = this.repository.findById(id);
         if(foundTransaction.isEmpty())
-            throw ApiException.notFound("err.transaction.doesnt.exist");
+            throw ApiException.notFound(ERR_PREFIX + "doesnt.exist");
         Transaction updatedTransaction = foundTransaction.get().setDiscountApplied(request.getDiscountApplied())
                 .setOrderId(request.getOrderId())
                 .setPaymentType(request.getPaymentType())
@@ -93,15 +91,15 @@ public class PaymentsService {
         PaymentReceiptResponse receipt = new PaymentReceiptResponse()
                 .setTransactionId(transaction.getId())
                 .setTotalDiscount(transaction.getTotalDiscount()) //TODO: Add discounts enum
-                .setTaxes(totalPrice * taxes)
+                .setTaxes(totalPrice * TAXES)
                 .setTips(transaction.getTip())
-                .setTotalPrice(calculateTotalPrice(totalPrice, transaction.getTotalDiscount(), taxes, transaction.getTip()));
+                .setTotalPrice(calculateTotalPrice(totalPrice, transaction.getTotalDiscount(), TAXES, transaction.getTip()));
             System.out.println("the money amount is: " + moneyAmount);
         if(moneyAmount < receipt.getTotalPrice()) {
 //            updatedOrder.setStatus(OrderStatusEnum.CANCELED);
 //            restTemplate.put("http://api-gateway:8080/api/Orders/" + transaction.getOrderId()
 //                , updatedOrder);
-            throw new ApiException("err.payment.notEnoughMoney", HttpStatus.BAD_REQUEST);
+            throw new ApiException(ERR_PREFIX + "notEnoughMoney", HttpStatus.BAD_REQUEST);
         }
         receipt.setChange((transaction.getPaymentType().equals(PaymentTypesEnum.CASH.name())) ? (moneyAmount - receipt.getTotalPrice()) : 0);
 //        updatedOrder.setStatus(OrderStatusEnum.COMPLETE);

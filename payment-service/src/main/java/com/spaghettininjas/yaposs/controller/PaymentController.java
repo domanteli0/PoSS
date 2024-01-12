@@ -59,7 +59,6 @@ public class PaymentController {
     @PutMapping(path = "/payment/{id}")
     public PaymentReceiptResponse payForOrder(@PathVariable Long id, @RequestParam(required = false, defaultValue = "0") Long moneyAmount) {
         Transaction transaction = this.service.findById(id);
-        PaymentReceiptResponse receipt = this.service.payForOrder(transaction, moneyAmount);
-        return receipt;
+        return this.service.payForOrder(transaction, moneyAmount);
     }
 }
