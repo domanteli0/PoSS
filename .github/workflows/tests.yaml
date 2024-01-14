@@ -19,6 +19,8 @@ jobs:
       # wait a minute for all services to be up
       - run: sleep 30 && hurl --very-verbose tests/*.hurl
         shell: bash
+      - run: hurl --very-verbose tests/flows/*.hurl
+        shell: bash
   unit-tests:
     runs-on: ubuntu-latest
     steps:
